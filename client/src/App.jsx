@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import Player from './components/Player/Player'
+import PlayerList from './components/PlayerList/PlayerList'
 import './App.css'
 
 /**
@@ -50,6 +51,7 @@ function App() {
 
     return (
         <>
+        <PlayerList players={players} handleUpdate={handleUpdate} />
           <div>
             <h1>Player Test</h1>
             {players.map((player) => (
