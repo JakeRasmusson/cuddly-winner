@@ -3,6 +3,27 @@ import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
 
+/**
+ * 
+ * Components
+ *     - Player
+ *         - Name
+ *         - Number
+ *         - Position
+ *         - Arbitrary stats?
+ *     - Templates
+ *         - Overall (Team v Team)
+ *         - Defense
+ *         - Offense
+ *         - Arbitrary stats?
+ *     - Roster
+ *         - Drag players into roster
+ *     - Preview
+ *         - Selected template displays preview
+ *     - Data Webpage 
+ * 
+ */
+
 function App() {
   const [count, setCount] = useState(0)
 
