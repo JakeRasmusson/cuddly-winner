@@ -1,6 +1,5 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import Player from './components/Player/Player'
 import './App.css'
 
 /**
@@ -27,32 +26,45 @@ import './App.css'
  */
 
 function App() {
-  const [count, setCount] = useState(0)
 
-  return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    const [players, setPlayers] = useState([
+      { id: 1, name: "John Jacob Jingleheimer-Schmidt", number: 43, position: 'WR'}
+    ])
+
+    const handleUpdate = (id, updatedData) => {
+        setPlayers((prev) => {
+            console.log('Previous state:', prev);
+            const updatedPlayers = prev.map((player) => {
+                if (player.id === id) {
+                    //console.log(`Updating player ${id} with:`, updatedData);
+                    return { ...player, ...updatedData };
+                }
+                return player;
+            });
+
+            //console.log('Updated state:', updatedPlayers);
+            return updatedPlayers;
+        });
+    };
+    
+
+    return (
+        <>
+          <div>
+            <h1>Player Test</h1>
+            {players.map((player) => (
+              <Player
+                key={player.id}
+                id={player.id}
+                name={player.name}
+                number={player.number}
+                position={player.position}
+                onUpdate={handleUpdate}
+              />
+            ))}
+          </div>
+        </>
+    )
 }
 
 export default App
