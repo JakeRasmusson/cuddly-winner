@@ -20,7 +20,9 @@ import './App.css'
  *         - Drag players into roster
  *     - Preview
  *         - Selected template displays preview
- *     - Data Webpage 
+ *     - Data Webpage
+ * 
+ * Selecting new template displays updated URL to see live stats
  * 
  */
 
