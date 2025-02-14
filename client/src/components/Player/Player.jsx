@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import './Player.css'
 
-const Player = ({ id, name, number, position, onUpdate }) => {
+const Player = ({ id, name, number, position, onUpdate, onDragStart }) => {
     const [isEditing, setIsEditing] = useState(false)
     const [formData, setFormData] = useState({name, number, position})
 
@@ -12,13 +12,13 @@ const Player = ({ id, name, number, position, onUpdate }) => {
 
     const handleSubmit = e => {
         e.preventDefault()
-        console.log("Form Submitted")
+        //console.log("Form Submitted")
         onUpdate(id, formData)
         setIsEditing(false)
     }
 
     return (
-        <div className="player" draggable>
+        <div className="player" draggable onDragStart={e => onDragStart(e, id)} data-id={id}>
             {isEditing ? (
                 <form onSubmit={handleSubmit} className="player-form">
                     <input
@@ -50,9 +50,10 @@ const Player = ({ id, name, number, position, onUpdate }) => {
                 </form>
             ) : (
                 <div className="player-details" onClick = { _ => setIsEditing(true)}>
-                    <h3>{name}</h3>
-                    <p>Number: {number}</p>
-                    <p>Position: {position}</p>
+                    
+                    <p>{position}</p>
+                    <h3>#{number}</h3>
+                    <h4>{name}</h4>
                 </div>
             )}
         </div>

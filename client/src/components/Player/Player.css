@@ -1,21 +1,43 @@
 .player {
-    border: 1px solid #b9b9b9;
-    margin: 10px;
-    padding: 15px;
-    border-radius: 5px;
-    cursor: grab;
-  }
-  
-  .player:hover {
-    background-color: 'rgba(255, 255, 255, 0.1ß)';
-  }
-  
-  .player-form input {
-    margin: 5px 0;
-    display: block;
-  }
-  
-  .player-details {
-    cursor: pointer;
-  }
-  
+  border: 1px solid #b9b9b9;
+  cursor: grab;
+  width: 330px;
+  height: 80px;
+}
+
+.player:hover {
+  background-color: #5d5d5d;
+}
+
+.player-form input {
+  margin: 5px 0;
+  display: block;
+}
+
+.player-details {
+  cursor: pointer;
+  position: relative;
+  height: 100%;
+}
+
+.player-details p {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  margin: 0;
+}
+
+.player-details h3 {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  margin: 0;
+}
+
+.player-details h4 {
+  position: absolute;
+  bottom: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+}
