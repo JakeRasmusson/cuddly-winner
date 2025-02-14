@@ -22,3 +22,11 @@
   top: 20px;
   padding: 20px
 }
+
+.active-rosters {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+  justify-content: flex-start;
+  margin-left: 20px;
+}

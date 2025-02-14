@@ -45,15 +45,17 @@ const Player = ({ id, name, number, position, onUpdate, onDragStart }) => {
                         placeholder="Position"
                         required
                     />
-                    <button type="submit">Save</button>
-                    <button type="button" onClick={ _ => setIsEditing(false)}>Cancel</button>
+                    <div className="button-container">
+                        <button type="submit">Save</button>
+                        <button type="button" onClick={ _ => setIsEditing(false)}>Cancel</button>
+                    </div>
                 </form>
             ) : (
                 <div className="player-details" onClick = { _ => setIsEditing(true)}>
                     
                     <p>{position}</p>
                     <h3>#{number}</h3>
-                    <h4>{name}</h4>
+                    <h5>{name}</h5>
                 </div>
             )}
         </div>
