@@ -1,8 +1,8 @@
 .player {
   border: 1px solid #b9b9b9;
   cursor: grab;
-  width: 330px;
-  height: 150px;
+  width: 220px;
+  height: 80px;
 }
 
 .player:hover {
@@ -39,19 +39,20 @@ form {
 
 .player-details p {
   position: absolute;
-  top: 10px;
-  right: 10px;
+  top: 2px;
+  right: 5px;
   margin: 0;
+  font-size: 13px;
 }
 
 .player-details h3 {
   position: absolute;
-  top: 10px;
-  left: 10px;
+  top: 2px;
+  left: 5px;
   margin: 0;
 }
 
-.player-details h4 {
+.player-details h5 {
   position: absolute;
   bottom: -15px;
   left: 50%;

@@ -105,6 +105,7 @@ const App = () => {
             </div>
             <div className="active-rosters">
                 <Roster team="Home" roster={homeRoster} handleDrop={handleDrop} />
+                <Roster team="Away" roster={awayRoster} handleDrop={handleDrop} />
             </div>
             
         </>

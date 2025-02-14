@@ -55,7 +55,7 @@ const Player = ({ id, name, number, position, onUpdate, onDragStart }) => {
                     
                     <p>{position}</p>
                     <h3>#{number}</h3>
-                    <h4>{name}</h4>
+                    <h5>{name}</h5>
                 </div>
             )}
         </div>
