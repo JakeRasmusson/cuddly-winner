@@ -11,7 +11,7 @@ const PlayerList = ({ players, handleDragStart, handleUpdate, title, team }) => 
                     <div
                         key={player.id}
                         draggable
-                        onDragStart={e => handleDragStart(e, player)}
+                        onDragStart={e => handleDragStart(e, player, team)}
                         className="draggable-player"
                     >
                         <Player {...player} onUpdate={(id, updateData) => handleUpdate(id, updateData, team)} onDragStart={handleDragStart} />

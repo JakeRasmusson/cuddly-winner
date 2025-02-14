@@ -1,48 +1,38 @@
-import React, { useState } from 'react'
-import Player from './Player'
+import React from 'react'
+import Player from '../Player/Player'
+import './Roster.css'
 
-const Roster = () => {
-    const [playersInRoster, setPlayersInRoster] = useState([])
-
-    const handleDragStart = (e, id) => {
-        e.dataTransfer.setData('playerId', id)
-    }
-
-    const handleDrop = e => {
-        const playerId = e.dataTransfer.getData('playerId')
-        setPlayersInRoster((prevRoster) => [...prevRoster, `Player ${playerId}`])
+const Roster = ({ team, roster, handleDrop }) => {
+    const onDragOver = e => {
         e.preventDefault()
     }
 
-    const handleDragOver = e => {
-        e.preventDefault()
+    const onDrop = e => {
+        const player = JSON.parse(e.dataTransfer.getData('player'))
+        const sourceTeam = e.dataTransfer.getData('team')
+
+        console.log(sourceTeam)
+
+        if(sourceTeam.toLowerCase() == team.toLowerCase()){
+            handleDrop(player, team)
+        }
+        else {
+            alert(`Cannot add ${player.name} to the ${team} roster`)
+        }
     }
 
     return (
-        <div>
-            <h2>Active Roster</h2>
-            <div
-                className="drop-area"
-                onDrop={handleDrop}
-                onDragOver={handleDragOver}
-                style={{
-                    border: '2px dashed #ccc',
-                    padding: '20px',
-                    minHeight: '200px'
-                }}
-            >
-                {!playersInRoster.length ? (
-                    <p>Drag players here to populate current active roster</p>
-                ) : (
-                    playersInRoster.map((player, index) => <div key={index}>{player}</div>)
-                )}
+        <div
+            className='roster'
+            onDragOver={onDragOver}
+            onDrop={onDrop}
+        >
+            <h2>{team} Active Roster</h2>
+            <div className="roster-players">
+                {roster.map(player => (
+                    <Player key={player.id} {...player} />
+                ))}
             </div>
-
-            <Player
-                key={player.id}
-                id={player.id}
-                name={player.name}
-            />
         </div>
     )
 }
