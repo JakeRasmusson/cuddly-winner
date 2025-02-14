@@ -25,6 +25,8 @@ import './App.css'
  * 
  * Selecting new template displays updated URL to see live stats
  * 
+ * Change posession toggle
+ * 
  */
 
 const initialHomePlayers = [
