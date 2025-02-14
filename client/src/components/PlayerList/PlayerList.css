@@ -8,9 +8,9 @@
     overflow-x: hidden;
 
     padding-top: 10px;
+    padding-bottom: 10px;
 
     border: 1px solid white;
-    box-shadow: inset 0 -10px 10px 0 black;
 
     -ms-overlfow-style: none;
     scrollbar-width: none;

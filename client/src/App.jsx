@@ -27,9 +27,16 @@ import './App.css'
  */
 
 const initialPlayers = [
-    { id: 1, name: 'abcdefghighlmnop reallylongnametest', number: 5, position: 'Wide Receiver'},
+    { id: 1, name: 'abcdefghijklmnop reallylongnametest', number: 5, position: 'Wide Receiver'},
     { id: 2, name: 'jake you suck', number: 0, position: 'Bench Warmer'},
-    { id: 3, name: 'billy bob joe', number: 43, position: 'Quarterback'}
+    { id: 3, name: 'billy bob joe', number: 43, position: 'Quarterback'},
+    { id: 4, name: 'john jacob jingleheimer schmidt', number: 53, position: 'Left Tackle'},
+    { id: 5, name: 'john doe', number: 29, position: 'Right Tackle'},
+    { id: 6, name: 'a lskdf;lksa dfl sdflj', number: 4, position: 'Corner'},
+    { id: 7, name: 'asdf asdfasdf', number: 15, position: 'Running Back'},
+    { id: 8, name: 'asdfsd asdffdsa', number: 12, position: 'Center'},
+    { id: 9, name: 'asdffasdf asdads', number: 23, position: 'Kicker'},
+    { id: 10, name: 'asfdfdasfd asdfasdf-asdf', number: 87, position: 'reallylongpositiontest'},
 ]
 
 const App = () => {
