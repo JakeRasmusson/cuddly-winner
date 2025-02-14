@@ -29,7 +29,6 @@ const Player = ({ id, name, number, position, onUpdate, onDragStart }) => {
                         placeholder="Name"
                         required
                     />
-                    
                     <input
                         type="text"
                         name="number"

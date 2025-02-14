@@ -26,45 +26,29 @@ import './App.css'
  * 
  */
 
-function App() {
+const initialPlayers = [
+    { id: 1, name: 'abcdefghighlmnop reallylongnametest', number: 5, position: 'Wide Receiver'},
+    { id: 2, name: 'jake you suck', number: 0, position: 'Bench Warmer'},
+    { id: 3, name: 'billy bob joe', number: 43, position: 'Quarterback'}
+]
 
-    const [players, setPlayers] = useState([
-      { id: 1, name: "John Jacob Jingleheimer-Schmidt", number: 43, position: 'WR'}
-    ])
+const App = () => {
+    const [players, setPlayers] = useState(initialPlayers)
 
-    const handleUpdate = (id, updatedData) => {
-        setPlayers((prev) => {
-            console.log('Previous state:', prev);
-            const updatedPlayers = prev.map((player) => {
-                if (player.id === id) {
-                    //console.log(`Updating player ${id} with:`, updatedData);
-                    return { ...player, ...updatedData };
-                }
-                return player;
-            });
+    const handleUpdate = (id, updateData) => {
+        setPlayers(players.map(p => (p.id == id ? { ...p, ...updatedData } : p)))
+    }
 
-            //console.log('Updated state:', updatedPlayers);
-            return updatedPlayers;
-        });
-    };
-    
+    const handleDragStart = (e, player) => {
+        e.dataTransfer.setData('player', JSON.stringify(player))
+    }
 
     return (
         <>
-        <PlayerList players={players} handleUpdate={handleUpdate} />
-          <div>
-            <h1>Player Test</h1>
-            {players.map((player) => (
-              <Player
-                key={player.id}
-                id={player.id}
-                name={player.name}
-                number={player.number}
-                position={player.position}
-                onUpdate={handleUpdate}
-              />
-            ))}
-          </div>
+            <div>
+                <PlayerList players={players} handleDragSTart={handleDragStart} handleUpdate={handleUpdate} title="Home" />
+                <PlayerList players={players} handleDragSTart={handleDragStart} handleUpdate={handleUpdate} title="Away" />
+            </div>
         </>
     )
 }

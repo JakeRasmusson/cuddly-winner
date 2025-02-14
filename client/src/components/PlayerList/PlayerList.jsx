@@ -1,20 +1,22 @@
 import React, { useState } from 'react'
 import Player from '../Player/Player'
 
-const PlayerList = (players, handleUpdate) => {
+const PlayerList = ({ players, handleDragStart, handleUpdate, title }) => {
     return (
-        <div>
-            <h1>All Players</h1>
-            {players.map((player) => {
-                <Player
-                    key={player.id}
-                    id={player.id}
-                    name={player.name}
-                    number={player.number}
-                    position={player.position}
-                    onUpdate={handleUpdate}
-                />
-            })}
+        <div className='player-list'>
+            <h2>{title}</h2>
+            <div className="player-list-container">
+                {players.map((player) => (
+                    <div
+                        key={player.id}
+                        draggable
+                        onDragStart={e => handleDragStart(e, player)}
+                        className="draggable-player"
+                    >
+                        <Player {...player} onUpdate={handleUpdate} onDragStart={handleDragStart} />
+                    </div>
+                ))}
+            </div>
         </div>
     )
 }
