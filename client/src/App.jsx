@@ -6,6 +6,24 @@ import './App.css'
 
 /**
  * 
+ * 
+ * Baseball
+ *     - avg
+ *     - obp
+ *     - slg
+ *     - hr
+ *     - rbi
+ *     - h
+ *     - 2b
+ *     - 3b
+ *     - bb
+ *     
+ * Softball
+ * Football
+ * Basketball
+ * Soccer
+ * 
+ * 
  * Components
  *     - Player
  *         - Name

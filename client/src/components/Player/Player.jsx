@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import './Player.css'
 
+const sport = ''
+
 const Player = ({ id, name, number, position, onUpdate, onDragStart }) => {
     const [isEditing, setIsEditing] = useState(false)
     const [formData, setFormData] = useState({name, number, position})
