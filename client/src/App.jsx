@@ -45,10 +45,11 @@ const App = () => {
 
     return (
         <>
-            <div>
-                <PlayerList players={players} handleDragSTart={handleDragStart} handleUpdate={handleUpdate} title="Home" />
-                <PlayerList players={players} handleDragSTart={handleDragStart} handleUpdate={handleUpdate} title="Away" />
+            <div className="player-list-wrapper">
+                <PlayerList players={players} handleDragStart={handleDragStart} handleUpdate={handleUpdate} title="Away" />
+                <PlayerList players={players} handleDragStart={handleDragStart} handleUpdate={handleUpdate} title="Home" />
             </div>
+            
         </>
     )
 }

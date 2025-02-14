@@ -1,0 +1,34 @@
+.player-list-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-height: 400px;
+    width: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    padding-top: 10px;
+
+    border: 1px solid white;
+    box-shadow: inset 0 -10px 10px 0 black;
+
+    -ms-overlfow-style: none;
+    scrollbar-width: none;
+}
+
+.player-list-container::-webkit-scrollbar {
+    display: none;
+}
+
+.player-list {
+    width: 350px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.list-title {
+    margin-bottom:  10px;
+    text-align: center;
+}

@@ -50,7 +50,7 @@ const Player = ({ id, name, number, position, onUpdate, onDragStart }) => {
                 </form>
             ) : (
                 <div className="player-details" onClick = { _ => setIsEditing(true)}>
-                    <h3>{name}</h3>
+                    <h4>{name}</h4>
                     <p>Number: {number}</p>
                     <p>Position: {position}</p>
                 </div>
