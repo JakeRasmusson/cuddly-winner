@@ -15,16 +15,19 @@ const GameSelection = ({ games, onCreateGame, onSelectGame }) => {
                     value={newGameName}
                     onChange={e => setNewGameName(e.target.value)}
                 />
+                <br/>
                 <select
                     onChange={e => setNewGameSport(e.target.value)}
+                    defaultValue=""
                 >
-                    <option value="" disabled selected>Select a game</option>
+                    <option value="" disabled hidden>Select a game</option>
                     <option value="Baseball">Baseball</option>
                     <option value="Softball">Softball</option>
                     <option value="Football">Football</option>
                     <option value="Basketball">Basketball</option>
                     <option value="Soccer">Soccer</option>
                 </select>
+                <br/>
                 <button
                     onClick={_ => {
                         if(newGameName.trim()) {
