@@ -89,12 +89,12 @@ const App = () => {
     const [currentPage, setCurrentPage] = useState('selection')
     const [selectedGame, setSelectedGame] = useState(null)
     const [games, setGames] = useState([
-        { id: 1, name: 'Game 1' },
-        { id: 2, name: 'Game 2' }
+        { id: 1, name: 'Game 1', sport: 'Baseball' },
+        { id: 2, name: 'Game 2', sport: 'Football' }
     ])
 
-    const handleCreateGame = (gameName) => {
-        const newGame = { id: Date.now(), name: gameName }
+    const handleCreateGame = (gameName, sport) => {
+        const newGame = { id: Date.now(), name: gameName, sport: sport }
         setGames([...games, newGame])
         setSelectedGame(newGame)
         setCurrentPage('roster')

@@ -1,46 +1,62 @@
 import { useState } from 'react'
+import './GameSelection.css'
 
 const GameSelection = ({ games, onCreateGame, onSelectGame }) => {
     const [newGameName, setNewGameName] = useState('')
+    const [newGameSport, setNewGameSport] = useState('')
 
     return (
-        <div className="flex flex-col items-center space-y-4 p-4">
-            <h1 className="text-2x1 font-bold">Select or Create a Game</h1>
-
-            <select
-                className="p-2 border rounded"
-                onChange={(e) => onSelectGame(Number(e.target.value))}
-                defaultValue=""
-            >
-                <option value="" disabled>Select a Game</option>
-                {
-                    games.map(game => (
-                        <option key={game.id} value={game.id}>
-                            {game.name}
-                        </option>
-                    ))
-                }
-            </select>
-
-            <div className="flex space-x-2">
+        <div className="game-selection">
+            <div className="create-game">
+                <h1>Create a New Game</h1>
                 <input
                     type="text"
                     placeholder="New Game Name"
                     value={newGameName}
-                    onChange={(e) => setNewGameName(e.target.value)}
-                    className="border p-2 rounded"
+                    onChange={e => setNewGameName(e.target.value)}
                 />
+                <select
+                    onChange={e => setNewGameSport(e.target.value)}
+                >
+                    <option value="" disabled selected>Select a game</option>
+                    <option value="Baseball">Baseball</option>
+                    <option value="Softball">Softball</option>
+                    <option value="Football">Football</option>
+                    <option value="Basketball">Basketball</option>
+                    <option value="Soccer">Soccer</option>
+                </select>
                 <button
                     onClick={_ => {
-                        if(newGameName.trim()){
-                            onCreateGame(newGameName)
+                        if(newGameName.trim()) {
+                            onCreateGame(newGameName, newGameSport)
                             setNewGameName('')
+                            setNewGameSport('')
                         }
                     }}
-                    className="px-4 py-2 bg-green-500 text-white rounded hover: bg-green-600"
                 >
                     Create Game
                 </button>
+            </div>
+
+            <div className="game-list">
+                <h2>Select a Game</h2>
+                <ul>
+                    {games.length ? (
+                        games.map(game => (
+                            <li
+                                key={game.id}
+                                onClick={_ => onSelectGame(game.id)}
+                            >
+                                <h3>
+                                {game.name}
+                                </h3>
+                                {game.sport}
+                            </li>
+                        ))
+                    ) : (
+                        <p>No Games Available</p>
+                    )}
+                </ul>
             </div>
         </div>
     )
