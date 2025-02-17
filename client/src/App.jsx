@@ -3,6 +3,8 @@ import Player from './components/Player/Player'
 import PlayerList from './components/PlayerList/PlayerList'
 import Roster from './components/Roster/Roster'
 import GameSelection from './components/GameSelection/GameSelection'
+import BasicEditor from './components/BasicEditor/BasicEditor'
+import StatsEditor from './components/StatsEditor/StatsEditor'
 import './App.css'
 
 const sportsStats = {
@@ -88,10 +90,20 @@ const App = () => {
 
     const [currentPage, setCurrentPage] = useState('selection')
     const [selectedGame, setSelectedGame] = useState(null)
-    const [games, setGames] = useState([
-        { id: 1, name: 'Game 1', sport: 'Baseball' },
-        { id: 2, name: 'Game 2', sport: 'Football' }
-    ])
+    const [games, setGames] = useState([])
+
+    const [editorType, setEditorType] = useState(null)
+    const [editingPlayer, setEditingPlayer] = useState(null)
+
+    const handleEdit = (type, player) => {
+        setEditorType(type)
+        setEditingPlayer(player)
+    }
+
+    const closeEditor = _ => {
+        setEditorType(null)
+        setEditingPlayer(null)
+    }
 
     const handleCreateGame = (gameName, sport) => {
         const newGame = { id: Date.now(), name: gameName, sport: sport }
@@ -160,16 +172,31 @@ const App = () => {
                 />
             ) : (
                 <>
-                    <p>Editing {selectedGame.name}</p>
+                    <p className="editing-title">Editing {selectedGame.name}</p>
+                    <button
+                        onClick={_ => setCurrentPage('selection')}
+                        className="back-button"
+                    >
+                        Back to Game Selection
+                    </button>
+                    
                     <div className="player-list-wrapper">
-                        <PlayerList players={homePlayers} handleDragStart={handleDragStart} handleUpdate={handleUpdate} title="Home" team="home"/>
-                        <PlayerList players={awayPlayers} handleDragStart={handleDragStart} handleUpdate={handleUpdate} title="Away" team="away"/>
+                        <PlayerList players={homePlayers} handleDragStart={handleDragStart} handleUpdate={handleUpdate} onEdit={handleEdit} title="Home" team="home"/>
+                        <PlayerList players={awayPlayers} handleDragStart={handleDragStart} handleUpdate={handleUpdate} onEdit={handleEdit} title="Away" team="away"/>
                     </div>
                     <div className="active-rosters">
-                        <Roster team="Home" roster={homeRoster} handleDrop={handleDrop} />
-                        <Roster team="Away" roster={awayRoster} handleDrop={handleDrop} />
+                        <Roster team="Home" roster={homeRoster} handleDrop={handleDrop} onEdit={handleEdit} />
+                        <Roster team="Away" roster={awayRoster} handleDrop={handleDrop} onEdit={handleEdit} />
                     </div>
-                    <button onClick={_ => setCurrentPage('selection')}>Back to Game Selection</button>
+
+                    {editorType == 'basic' && (
+                        <BasicEditor player={editingPlayer} onClose={closeEditor} />
+                    )}
+
+                    {editorType == 'stats' && (
+                        <StatsEditor player={editingPlayer} onClose={closeEditor} />
+                    )}
+                    
                 </>
             )}
             

@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import Player from '../Player/Player'
 import './PlayerList.css'
 
-const PlayerList = ({ players, handleDragStart, handleUpdate, title, team }) => {
+const PlayerList = ({ players, handleDragStart, onEdit, title, team }) => {
     return (
         <div className='player-list'>
             <h2 className="list-title">{title}</h2>
@@ -14,7 +14,7 @@ const PlayerList = ({ players, handleDragStart, handleUpdate, title, team }) => 
                         onDragStart={e => handleDragStart(e, player, team)}
                         className="draggable-player"
                     >
-                        <Player {...player} onUpdate={(id, updateData) => handleUpdate(id, updateData, team)} onDragStart={handleDragStart} />
+                        <Player key={player.id} player={player} context='list' onEdit={onEdit} onDragStart={handleDragStart} />
                     </div>
                 ))}
             </div>

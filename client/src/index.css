@@ -30,3 +30,27 @@
   justify-content: flex-start;
   margin-left: 20px;
 }
+.back-button {
+  position: absolute;
+  left: 10px;
+  bottom: 5px;
+  padding: 10px;
+  font-size: 12px;
+  width: 160px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #9d4caf;
+  transition: background-color 0.2s;
+}
+
+.back-button:hover {
+  background-color: #8b45a0;
+  cursor: pointer;
+}
+
+.editing-title {
+  position: absolute;
+  left: 10px;
+  bottom: 50px;
+}
