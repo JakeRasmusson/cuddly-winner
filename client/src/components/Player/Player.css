@@ -20,8 +20,11 @@ form {
 }
 
 .player-form button {
-  margin-top: 10px;
+  position: relative;
+  top: -50px;
+  margin-bottom: 5px;
   display: block;
+  margin-left: 165px;
 }
 
 .player-form input {
