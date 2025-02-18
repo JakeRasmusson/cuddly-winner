@@ -22,16 +22,18 @@ const Roster = ({ team, roster, handleDrop, onEdit }) => {
     }
 
     return (
-        <div
-            className='roster'
-            onDragOver={onDragOver}
-            onDrop={onDrop}
-        >
+        <div>
             <h2>{team} Active Roster</h2>
-            <div className="roster-players">
-                {roster.map(player => (
-                    <Player key={player.id} player={player} context='roster' onEdit={onEdit} />
-                ))}
+            <div
+                className='roster'
+                onDragOver={onDragOver}
+                onDrop={onDrop}
+            >
+                <div className="roster-players">
+                    {roster.map(player => (
+                        <Player key={player.id} player={player} context='roster' onEdit={onEdit} />
+                    ))}
+                </div>
             </div>
         </div>
     )

@@ -116,10 +116,10 @@ const App = () => {
         setEditingPlayer(null)
     }
     const handleSave = updatedPlayer => {
-        console.log(updatedPlayer)
+        //console.log(updatedPlayer)
         const updateList = (list, setList) => setList(list.map(p => (p.id == updatedPlayer.id ? updatedPlayer : p)))
 
-        console.log("Updated player from " + updatedPlayer.team)
+        //console.log("Updated player from " + updatedPlayer.team)
 
         if(updatedPlayer.team == 'home'){
             editorType == 'basic'
@@ -182,15 +182,15 @@ const App = () => {
     }
 
     const handleDrop = (player, team) => {
-        console.log("Roster player " + JSON.stringify(player))
-      if(team == 'Home'){
-        setHomeRoster(prevRoster => [...prevRoster, player])
-        setHomePlayers(prevPlayers => prevPlayers.filter(p => p.id != player.id))
-      }
-      if(team == 'Away'){
-        setAwayRoster(prevRoster => [...prevRoster, player])
-        setAwayPlayers(prevPlayers => prevPlayers.filter(p => p.id != player.id))
-      }
+        //console.log("Roster player " + JSON.stringify(player))
+        if(team == 'Home'){
+            setHomeRoster(prevRoster => [...prevRoster, player])
+            setHomePlayers(prevPlayers => prevPlayers.filter(p => p.id != player.id))
+        }
+        if(team == 'Away'){
+            setAwayRoster(prevRoster => [...prevRoster, player])
+            setAwayPlayers(prevPlayers => prevPlayers.filter(p => p.id != player.id))
+        }
     }
 
     return (
@@ -211,7 +211,8 @@ const App = () => {
                         Back to Game Selection
                     </button>
 
-                    <ImportList team='home' onPlayersImported={handlePlayersImported}/>
+                    <ImportList team='home' onPlayersImported={handlePlayersImported} />
+                    <ImportList team='away' onPlayersImported={handlePlayersImported} />
                     
                     <div className="player-list-wrapper">
                         <PlayerList players={homePlayers} handleDragStart={handleDragStart} handleUpdate={handleUpdate} onEdit={handleEdit} title="Home" team="home"/>
