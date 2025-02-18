@@ -12,10 +12,10 @@
 }
 
 .editor {
-    background-color: rgb(255, 255, 255, 0.2);
+    background-color: rgba(47, 0, 48, 0.6);
     padding: 20px;
     border-radius: 8px;
-    border: 2px solid white;
+    border: 2px solid rgb(255, 255, 0);
     width: 300px;
     max-width: 90%;
 }
@@ -34,9 +34,10 @@
 .input-group input {
     width: 100%;
     padding: 8px;
-    border: 1px solid #ccc;
+    border: 1px solid #ffd9005a;
     border-radius: 4px;
     font-size: 14px;
+    background-color: black;
 }
 
 
@@ -56,7 +57,7 @@
 }
 
 .button-group button:hover {
-    background-color: #ddd;
+    background-color: #474747;
 }
 
 .button-group button:first-child {

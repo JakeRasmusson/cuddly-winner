@@ -12,12 +12,18 @@
 }
 
 .editor {
-    background-color: rgb(255, 255, 255, 0.2);
-    padding: 20px;
+    background-color: rgba(47, 0, 48, 0.6);
     border-radius: 8px;
-    border: 2px solid white;
+    border: 2px solid rgb(255, 255, 0);
     width: 1200px;
     max-width: 90%;
+}
+.editor h1 {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+.editor h3 {
+    margin-top: 0;
 }
 .input-container {
     display: grid;
@@ -39,9 +45,10 @@
 .input-group input {
     width: 100%;
     padding: 8px;
-    border: 1px solid #ccc;
+    border: 1px solid #ffd9005a;
     border-radius: 4px;
     font-size: 14px;
+    background-color: rgb(0, 0, 0);
 }
 
 
