@@ -52,14 +52,16 @@ const ImportList = ({onPlayersImported, team}) => {
 
         let obj = {}
 
-        players.forEach(player => {
+        players.forEach((player, index) => {
             obj[player[1]] = {
                 name: player[1],
                 number: player[0],
                 position: player[2],
                 grade: player[3],
                 height: player[4],
-                weight: player[5]
+                weight: player[5],
+                team: team,
+                id: index + 1
             }
         })
 
@@ -87,7 +89,7 @@ const ImportList = ({onPlayersImported, team}) => {
                 )}
             </div>
             */}
-            
+
         </div>
     )
 }
