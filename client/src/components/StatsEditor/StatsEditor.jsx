@@ -2,9 +2,16 @@ import React, { useState, useEffect } from 'react'
 
 import './StatsEditor.css'
 
+
+const calculateHits = (single, double, triple, hr) => {
+    return single + double + triple + hr
+}
+const calculatePlateAppearances = (hits, hbp, walk, strikeout) => {
+    return hits + hbp + walk + strikeout
+}
 const calculateBattingAverage = (hits, ab) => {
     if(ab == 0) return 0
-    return (hits/ab).toFixed(3)
+    return hits/ab
 }
 const calculateSluggingAverage = (singles, doubles, triples, homeRuns, ab) => {
     if(ab == 0) return 0
@@ -12,15 +19,19 @@ const calculateSluggingAverage = (singles, doubles, triples, homeRuns, ab) => {
 }
 const calculateOnBasePercentage = (hits, walks, hbp, ab, sac) => {
     if(ab + walks + hbp + sac == 0) return 0
-    return (((hits + walks + hbp) / (ab + walks + hbp + sac)) * 100).toFixed(1)
+    return ((hits + walks + hbp) / (ab + walks + hbp + sac)) * 100
+}
+const calculateYardsPerCarry = (rushingYards, rushingAttempts) => {
+    if(rushingAttempts == 0) return 0
+    return rushingYards / rushingAttempts
 }
 const calculateCompletionPercentage = (completions, att) => {
     if(att == 0) return 0
-    return ((completions / att) * 100).toFixed(1)
+    return (completions / att) * 100
 }
 const calculateFieldGoalPercentage = (att, make) => {
     if(att == 0) return 0
-    return ((make / att) * 100).toFixed(1)
+    return (make / att) * 100
 }
 const calculateRebounds = (off, def) => {
     return off + def
@@ -29,32 +40,38 @@ const calculateRebounds = (off, def) => {
 const sportsStats = {
     baseball: {
         stats: {
-            offense: ['Sacrifice Flies', 'Home Runs', 'RBI', 'Hits', 'Singles', 'Doubles', 'Triples', 'Base on Balls', 'Plate Appearances', 'Strikeouts', 'Stolen Bases', 'Hit by Pitch'],
+            offense: ['Hit by Pitch', 'Walks', 'Strikeouts', 'Sacrifice Flies', 'Home Runs', 'RBI', 'Singles', 'Doubles', 'Triples'],
             defense: ['Strikeouts', 'Walks', 'Errors'],
             autocalculated: {
+                'Hits': [calculateHits, 'Singles', 'Doubles', 'Triples', 'Home Runs'],
+                'Plate Appearances': [calculatePlateAppearances, 'Hits', 'Hit by Pitch', 'Walks', 'Strikeouts'],
                 'Batting Average': [calculateBattingAverage, 'Hits', 'Plate Appearances'],
                 'Slugging Average': [calculateSluggingAverage, 'Singles', 'Doubles', 'Triples', 'Home Runs', 'Plate Appearances'],
-                'On Base Percentage': [calculateOnBasePercentage, 'Hits', 'Base on Balls', 'Hit by Pitch', 'Plate Appearances', 'Sacrifice Flies']
+                'On Base Percentage': [calculateOnBasePercentage, 'Hits', 'Walks', 'Hit by Pitch', 'Plate Appearances', 'Sacrifice Flies']
             }
         }
     },
     softball: {
         stats: {
-            offense: ['Home Runs', 'RBI', 'Hits', 'Doubles', 'Triples', 'Base on Balls', 'Plate Appearances', 'Strikeouts', 'Stolen Bases', 'Hit by Pitch'],
+            offense: ['Hit by Pitch', 'Walks', 'Strikeouts', 'Sacrifice Flies', 'Home Runs', 'RBI', 'Singles', 'Doubles', 'Triples'],
             defense: ['Strikeouts', 'Walks', 'Errors'],
             autocalculated: {
+                'Hits': [calculateHits, 'Singles', 'Doubles', 'Triples', 'Home Runs'],
+                'Plate Appearances': [calculatePlateAppearances, 'Hits', 'Hit by Pitch', 'Walks', 'Strikeouts'],
                 'Batting Average': [calculateBattingAverage, 'Hits', 'Plate Appearances'],
                 'Slugging Average': [calculateSluggingAverage, 'Singles', 'Doubles', 'Triples', 'Home Runs', 'Plate Appearances'],
-                'On Base Percentage': [calculateOnBasePercentage, 'Hits', 'Base on Balls', 'Hit by Pitch', 'Plate Appearances', 'Sacrifice Flies']
+                'On Base Percentage': [calculateOnBasePercentage, 'Hits', 'Walks', 'Hit by Pitch', 'Plate Appearances', 'Sacrifice Flies']
             }
         }
     },
     football: {
         stats: {
-            offense: ['Passing Attempts', 'Completions', 'Passing Yards', 'Touchdowns Thrown', 'Interceptions', 'Quarterback Rating', 'Rushing Attempts', 'Rushing Yards', 'Touchdowns', 'Yards per Carry', 'Fumbles', 'Receptions', 'Receiving Yards', 'Yards per Reception', 'Targets', 'Sacks Allowed', 'Penalties', 'Snap Counts'],
+            offense: ['Passing Attempts', 'Completions', 'Passing Yards', 'Touchdowns Thrown', 'Interceptions', 'Quarterback Rating', 'Rushing Attempts', 'Rushing Yards', 'Touchdowns', 'Fumbles', 'Receptions', 'Receiving Yards', 'Targets', 'Sacks Allowed', 'Penalties'],
             defense: ['Solo Tackles', 'Assisted Tackles', 'Tackles for Loss', 'Sacks', 'Quarterback Hits', 'Interceptions', 'Passes Defended', 'Forced Fumbles', 'Fumble Recoveries', 'Defensive Touchdowns', 'Safety', 'Blocked Kicks', 'Pressures', 'Hurries'],
             autocalculated: {
-                'Completion Percentage': [calculateCompletionPercentage, 'Completions', 'Passing Attempts']
+                'Completion Percentage': [calculateCompletionPercentage, 'Completions', 'Passing Attempts'],
+                'Yards per Carry': [calculateYardsPerCarry, 'Rushing Yards', 'Rushing Attempts'],
+                'Yards per Reception': [calculateYardsPerCarry, 'Passing Yards', 'Passing Attempts']
             }
         }
     },
@@ -96,15 +113,43 @@ const StatsEditor = ({ player, onSave, onClose, sport }) => {
 
     const computeAutocalculatedValues = (autocalculated, formData) => {
         const results = {};
-
-        Object.entries(autocalculated).forEach(([field, details]) => {
-            const [calculationFn, ...dependencies] = details;
-
-            const args = dependencies.map(dep => parseFloat(formData[dep]) || 0);
-
-            results[field] = calculationFn(...args);
-        });
-
+    
+        
+        const unresolved = { ...autocalculated };
+    
+        
+        while (Object.keys(unresolved).length > 0) {
+            let resolvedInThisPass = false;
+    
+            Object.entries(unresolved).forEach(([field, details]) => {
+                const [calculationFn, ...dependencies] = details;
+    
+                
+                const allDependenciesResolved = dependencies.every(dep => 
+                    results.hasOwnProperty(dep) || formData.hasOwnProperty(dep)
+                );
+    
+                if (allDependenciesResolved) {
+                    
+                    const args = dependencies.map(dep => 
+                        parseFloat(results[dep] || formData[dep]) || 0
+                    );
+    
+                    
+                    results[field] = calculationFn(...args);
+    
+                    
+                    delete unresolved[field];
+                    resolvedInThisPass = true;
+                }
+            });
+    
+            if (!resolvedInThisPass) {
+                console.error('Circular dependency or missing dependency detected:', unresolved);
+                break;
+            }
+        }
+    
         return results;
     };
 
@@ -117,7 +162,20 @@ const StatsEditor = ({ player, onSave, onClose, sport }) => {
 
     const handleChange = e => {
         const { name, value } = e.target;
-        setForm(prev => ({ ...prev, [name]: parseInt(value, 10) || 0 }));
+        const newValue = parseInt(value, 10) || 0;
+    
+        setForm(prev => {
+            const updatedForm = { ...prev, [name]: newValue };
+    
+            if (name == 'Completions') {
+                const previousCompletions = prev[name] || 0;
+                if (newValue > previousCompletions) {
+                    updatedForm['Passing Attempts'] = (prev['Passing Attempts'] || 0) + 1;
+                }
+            }
+    
+            return updatedForm;
+        });
     };
 
     const handleClear = () => {
@@ -139,25 +197,27 @@ const StatsEditor = ({ player, onSave, onClose, sport }) => {
                 <h1>{player.name}</h1>
                 <h3>#{player.number}</h3>
                 <div className="input-container">
-                    {Object.keys(form).map(key => (
-                        <div key={key} className="input-group">
-                            <label htmlFor={key}>{key}</label>
-                            <input
-                                id={key}
-                                name={key}
-                                type="number"
-                                placeholder={key}
-                                value={form[key]}
-                                onChange={handleChange}
-                            />
-                        </div>
-                    ))}
+                    {
+                        Object.keys(form).map(key => (
+                            <div key={key} className="input-group">
+                                <label htmlFor={key}>{key}</label>
+                                <input
+                                    id={key}
+                                    name={key}
+                                    type="number"
+                                    placeholder={key}
+                                    value={form[key]}
+                                    onChange={handleChange}
+                                />
+                            </div>
+                        ))
+                    }
 
                     {
                         autocalculated && Object.keys(autocalculatedResults).map(key => {
                             const value = autocalculatedResults[key];
                             console.log(typeof value, value, key)
-                            const displayValue = parseFloat(value) ? parseFloat(value).toFixed(2) : 'N/A'; // Fallback for non-numbers
+                            const displayValue = parseFloat(value) ? parseFloat(value).toFixed(2) : '0.00'; // Fallback for non-numbers
                             return (
                                 <div key={key} className="input-group">
                                     <label htmlFor={key}>{key}</label>
