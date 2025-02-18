@@ -3,8 +3,9 @@ import './Player.css'
 
 const Player = ({ id, player, onDragStart, context, onEdit }) => {
     const handleClick = _ => {
+        
         if(context == 'list'){
-            onEdit('basic', player)
+            onEdit('basic', player,)
         }
         if(context == 'roster'){
             onEdit('stats', player)
