@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import './BasicEditor.css'
 
 const BasicEditor = ({player, onSave, onClose}) => {
 
@@ -18,19 +19,32 @@ const BasicEditor = ({player, onSave, onClose}) => {
     }
 
     const handleSubmit = _ => {
-        console.log("asdfjasdfkasdf" + player)
+        //console.log("asdfjasdfkasdf" + player)
         onSave({ ...player, ...form })
     }
 
     return (
-        <div className="editor">
-            <h2>Edit Player Info</h2>
-            <input name='name' placeholder="Name" value={form.name} onChange={handleChange} />
-            <input name='number' placeholder="Number" value={form.number} onChange={handleChange} />
-            <input name='position' placeholder="Position" value={form.position} onChange={handleChange} />
-            <button onClick={handleSubmit}>Save</button>
-            <button onClick={handleClear}>Clear</button>
-            <button onClick={onClose}>Cancel</button>
+        <div className="editor-overlay">
+            <div className="editor">
+                <h2>Edit Player Info</h2>
+                <div className="input-group">
+                    <label htmlFor="name">Name</label>
+                    <input id="name" name="name" placeholder="Name" value={form.name} onChange={handleChange} />
+                </div>
+                <div className="input-group">
+                    <label htmlFor="number">Number</label>
+                    <input id="number" name="number" placeholder="Number" value={form.number} onChange={handleChange} />
+                </div>
+                <div className="input-group">
+                    <label htmlFor="position">Position</label>
+                    <input id="position" name="position" placeholder="Position" value={form.position} onChange={handleChange} />
+                </div>
+                <div className="button-group">
+                    <button onClick={handleSubmit}>Save</button>
+                    <button onClick={handleClear}>Clear</button>
+                    <button onClick={onClose}>Cancel</button>
+                </div>
+            </div>
         </div>
     )
 }

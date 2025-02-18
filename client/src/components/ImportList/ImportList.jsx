@@ -8,7 +8,7 @@ const ImportList = ({onPlayersImported, team}) => {
         const file = e.target.files[0]
 
         if(file) {
-            console.log('File selected: ', file)
+            //console.log('File selected: ', file)
             readFile(file)
         }
     }
@@ -18,7 +18,7 @@ const ImportList = ({onPlayersImported, team}) => {
 
         reader.onload = _ => {
             const fileContents = reader.result
-            console.log('File contents: ', fileContents)
+            //console.log('File contents: ', fileContents)
 
             setFileContent(parseCSV(fileContents))
 
