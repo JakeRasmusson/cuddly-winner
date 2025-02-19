@@ -133,6 +133,22 @@ const App = () => {
         }
     }
 
+    const handleAddPlayer = (playerData, team) => {
+        const newPlayer = {
+            ...playerData,
+            id: team == 'home' ? homePlayers.length + 1 : awayPlayers.length + 1
+        }
+
+        if(team == 'home'){
+            setHomePlayers(prevPlayers => [...prevPlayers, newPlayer])
+        }
+        if(team == 'away'){
+            setAwayPlayers(prevPlayers => [...prevPlayers, newPlayer])
+        }
+
+        console.log(`Added player to ${team}: ${newPlayer}`)
+    }
+
     return (
         <>
             {currentPage == 'selection' ? (
@@ -150,21 +166,21 @@ const App = () => {
                     >
                         Back to Game Selection
                     </button>
-
-                    <div>
-                        <button onClick={() => setIsModalOpen(true)}>Import Teams</button>
-                        {isModalOpen && (
-                            <ImportModal
-                                onClose={() => setIsModalOpen(false)}
-                                onPlayersImported={handleImportingPlayers}
-                            />
-                        )}
-                    </div>
                     
                     <div className="player-list-wrapper">
                         <PlayerList players={homePlayers} handleDragStart={handleDragStart} handleUpdate={handleUpdate} onEdit={handleEdit} title="Home" team="home"/>
                         <PlayerList players={awayPlayers} handleDragStart={handleDragStart} handleUpdate={handleUpdate} onEdit={handleEdit} title="Away" team="away"/>
-                                        
+
+                        <div>
+                            <button className="import-modal-button" onClick={() => setIsModalOpen(true)}>Import Teams</button>
+                            {isModalOpen && (
+                                <ImportModal
+                                    onClose={() => setIsModalOpen(false)}
+                                    onPlayersImported={handleImportingPlayers}
+                                    onAddPlayer={handleAddPlayer}
+                                />
+                            )}
+                        </div>
                     </div>
                     <div className="active-rosters">
                         <Roster team="Home" roster={homeRoster} handleDrop={handleDrop} onEdit={handleEdit} />
