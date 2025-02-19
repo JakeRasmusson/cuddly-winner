@@ -1,15 +1,12 @@
 .game-selection {
     display: flex;
-    height: 100vh;
     font-family: Arial, sans-serif;
-    border: 1px solid #ccc;
 }
   
 .create-game, .game-list {
     flex: 1;
     padding: 20px;
     text-align: center;
-    border-right: 1px solid #ddd;
 }
   
 .create-game h1, .game-list h2 {
@@ -45,17 +42,20 @@
 .game-list ul {
     list-style: none;
     padding: 0;
+    max-height: 500px;
+    overflow-y: auto;
 }
   
 .game-list li {
     position: relative;
     padding: 12px;
     margin: 8px 0;
-    border: 1px solid #ccc;
+    border: 1px solid #5a6123;
+    border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.2s;
     font-size: 20px;
-    color: rgb(203, 160, 209);
+    color: rgb(209, 209, 160);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -67,7 +67,7 @@
     left: 5px;
     font-size: 15px;
     font-style: normal;
-    color: rgb(203, 160, 209);
+    color: rgb(205, 209, 160);
     margin: 0;
 }
 
@@ -78,7 +78,7 @@
 
 
 .game-list h3{
-    color: rgb(203, 160, 209);
+    color: rgb(205, 209, 160);
     margin-bottom: 0;
     margin-top: 10px;
     font-size: 30px;

@@ -1,8 +1,12 @@
 import React, { useRef, useState } from 'react'
 
+import './ImportList.css'
+
 const ImportList = ({onPlayersImported, team}) => {
     const fileInputRef = useRef(null)
     const [fileContent, setFileContent] = useState(null)
+
+    console.log('Team in importlist', team)
 
     const handleFileSelection = e => {
         const file = e.target.files[0]
@@ -65,12 +69,14 @@ const ImportList = ({onPlayersImported, team}) => {
             }
         })
 
+        console.log("sadfjkasdflkjas")
+
         return obj
     }
 
     return (
         <div>
-            <button onClick={handleImportClick}>Import {team}</button>
+            <button onClick={handleImportClick}>Import</button>
 
             <input
                 ref={fileInputRef}
@@ -79,16 +85,6 @@ const ImportList = ({onPlayersImported, team}) => {
                 onChange={handleFileSelection}
                 accept={'.csv'}
             />
-
-            {/*
-            <div>
-                {fileContent && (
-                    <pre>
-                        {JSON.stringify(fileContent, 2, null)}
-                    </pre>
-                )}
-            </div>
-            */}
 
         </div>
     )

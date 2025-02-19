@@ -36,6 +36,10 @@ const calculateFieldGoalPercentage = (att, make) => {
 const calculateRebounds = (off, def) => {
     return off + def
 }
+const calculateShootingAccuracy = (goals, shots) => {
+    if(shots == 0) return 0
+    return (goals / shots) * 100
+}
 
 const sportsStats = {
     baseball: {
@@ -86,7 +90,9 @@ const sportsStats = {
     },
     soccer: {
         stats: ['Goals', 'Assists', 'Shots', 'Shots on Target', 'Chances Created', 'Dribbles Completed', 'Passes Completed', 'Tackles', 'Interceptions', 'Blocks', 'Saves', 'Goals Conceded', 'Penalties Faced', 'Penalties Saved', 'Fouls Committed', 'Yellow Cards', 'Red Cards'],
-        autocalculated: ['Shooting Accuracy']
+        autocalculated: {
+            'Shooting Accuracy': [calculateShootingAccuracy, 'Goals', 'Shots']
+        }
     }
 }
 
@@ -206,6 +212,14 @@ const StatsEditor = ({ player, onSave, onClose, sport }) => {
     
                 if (newCompletions > previousCompletions) {
                     updatedForm['Passing Attempts'] = (prev['Passing Attempts'] || 0) + 1
+                }
+            }
+            if(key == 'Goals'){
+                const previousGoals = prev[key] || 0
+                const newGoals = updatedForm[key]
+
+                if(newGoals > previousGoals){
+                    updatedForm['Shots'] = (prev['Shots'] || 0) + 1
                 }
             }
     

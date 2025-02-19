@@ -8,13 +8,12 @@
  */
 
 import { useState } from 'react'
-import Player from './components/Player/Player'
 import PlayerList from './components/PlayerList/PlayerList'
 import Roster from './components/Roster/Roster'
 import GameSelection from './components/GameSelection/GameSelection'
 import BasicEditor from './components/BasicEditor/BasicEditor'
 import StatsEditor from './components/StatsEditor/StatsEditor'
-import ImportList from './components/ImportList/ImportList'
+import ImportModal from './components/ImportModal/ImportModal'
 import './App.css'
 
 const initialHomePlayers = [].map((player, index) => ({...player, id: index + 1, team: 'home'}))
@@ -34,14 +33,7 @@ const App = () => {
     const [editorType, setEditorType] = useState(null)
     const [editingPlayer, setEditingPlayer] = useState(null)
 
-    const handlePlayersImported = (parsedPlayers, team) => {
-        if(team == 'home'){
-            setHomePlayers(parsedPlayers)
-        }
-        if(team == 'away'){
-            setAwayPlayers(parsedPlayers)
-        }
-    }
+    const [isModalOpen, setIsModalOpen] = useState(false)
 
     const handleEdit = (type, player) => {
         setEditorType(type)
@@ -131,6 +123,16 @@ const App = () => {
         }
     }
 
+    const handleImportingPlayers = (players, team) => {
+        console.log(`Importing players for ${team}: ${players}`)
+        if(team == 'home'){
+            setHomePlayers(players)
+        }
+        if(team == 'away'){
+            setAwayPlayers(players)
+        }
+    }
+
     return (
         <>
             {currentPage == 'selection' ? (
@@ -149,8 +151,15 @@ const App = () => {
                         Back to Game Selection
                     </button>
 
-                    <ImportList team='home' onPlayersImported={handlePlayersImported} />
-                    <ImportList team='away' onPlayersImported={handlePlayersImported} />
+                    <div>
+                        <button onClick={() => setIsModalOpen(true)}>Import Teams</button>
+                        {isModalOpen && (
+                            <ImportModal
+                                onClose={() => setIsModalOpen(false)}
+                                onPlayersImported={handleImportingPlayers}
+                            />
+                        )}
+                    </div>
                     
                     <div className="player-list-wrapper">
                         <PlayerList players={homePlayers} handleDragStart={handleDragStart} handleUpdate={handleUpdate} onEdit={handleEdit} title="Home" team="home"/>
