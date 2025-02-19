@@ -15,7 +15,10 @@ const BasicEditor = ({player, onSave, onClose}) => {
     }
 
     const handleClear = _ => {
-        setForm({name: '', number: '', position: ''})
+        if(window.confirm('Are you sure you want to clear all fields?  This action cannot be undone')){
+            setForm({name: '', number: '', position: ''})
+        }
+        
     }
 
     const handleSubmit = _ => {
@@ -25,7 +28,7 @@ const BasicEditor = ({player, onSave, onClose}) => {
 
     return (
         <div className="editor-overlay">
-            <div className="editor">
+            <div className="editor-basic">
                 <h2>Edit Player Info</h2>
                 <div className="input-group">
                     <label htmlFor="name">Name</label>

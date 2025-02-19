@@ -92,104 +92,126 @@ const sportsStats = {
 
 const StatsEditor = ({ player, onSave, onClose, sport }) => {
 
-    sport = sport.toLowerCase();
+    sport = sport.toLowerCase()
 
-    let stats = sportsStats[sport];
-    let autocalculated = stats.stats?.autocalculated || stats.autocalculated;
+    let stats = sportsStats[sport]
+    let autocalculated = stats.stats?.autocalculated || stats.autocalculated
 
     if (stats.stats?.offense) {
-        stats = stats.stats.offense.concat(stats.stats.defense);
+        stats = stats.stats.offense.concat(stats.stats.defense)
     } else {
-        stats = stats.stats;
+        stats = stats.stats
     }
 
-    const initialFormState = {};
+    const initialFormState = {}
     stats.forEach(stat => {
-        initialFormState[stat] = player[stat] || 0;
-    });
+        initialFormState[stat] = player[stat] || 0
+    })
 
-    const [form, setForm] = useState(initialFormState);
-    const [autocalculatedResults, setAutocalculatedResults] = useState({});
+    const [form, setForm] = useState(initialFormState)
+    const [autocalculatedResults, setAutocalculatedResults] = useState({})
 
     const computeAutocalculatedValues = (autocalculated, formData) => {
-        const results = {};
+        const results = {}
     
         
-        const unresolved = { ...autocalculated };
+        const unresolved = { ...autocalculated }
     
         
         while (Object.keys(unresolved).length > 0) {
-            let resolvedInThisPass = false;
+            let resolvedInThisPass = false
     
             Object.entries(unresolved).forEach(([field, details]) => {
-                const [calculationFn, ...dependencies] = details;
+                const [calculationFn, ...dependencies] = details
     
                 
                 const allDependenciesResolved = dependencies.every(dep => 
                     results.hasOwnProperty(dep) || formData.hasOwnProperty(dep)
-                );
+                )
     
                 if (allDependenciesResolved) {
                     
                     const args = dependencies.map(dep => 
                         parseFloat(results[dep] || formData[dep]) || 0
-                    );
+                    )
     
                     
-                    results[field] = calculationFn(...args);
+                    results[field] = calculationFn(...args)
     
                     
-                    delete unresolved[field];
-                    resolvedInThisPass = true;
+                    delete unresolved[field]
+                    resolvedInThisPass = true
                 }
-            });
+            })
     
             if (!resolvedInThisPass) {
-                console.error('Circular dependency or missing dependency detected:', unresolved);
-                break;
+                console.error('Circular dependency or missing dependency detected:', unresolved)
+                break
             }
         }
     
-        return results;
-    };
+        return results
+    }
 
     useEffect(() => {
         if (autocalculated) {
-            const results = computeAutocalculatedValues(autocalculated, form);
-            setAutocalculatedResults(results);
+            const results = computeAutocalculatedValues(autocalculated, form)
+            setAutocalculatedResults(results)
         }
-    }, [form, autocalculated]);
+    }, [form, autocalculated])
 
     const handleChange = e => {
         const { name, value } = e.target;
-        const newValue = parseInt(value, 10) || 0;
+        const newValue = parseInt(value, 10) || 0
     
         setForm(prev => {
-            const updatedForm = { ...prev, [name]: newValue };
+            const updatedForm = { ...prev, [name]: newValue }
     
             if (name == 'Completions') {
-                const previousCompletions = prev[name] || 0;
+                const previousCompletions = prev[name] || 0
                 if (newValue > previousCompletions) {
-                    updatedForm['Passing Attempts'] = (prev['Passing Attempts'] || 0) + 1;
+                    updatedForm['Passing Attempts'] = (prev['Passing Attempts'] || 0) + 1
                 }
             }
     
-            return updatedForm;
-        });
-    };
+            return updatedForm
+        })
+    }
 
     const handleClear = () => {
-        const clearedForm = {};
-        stats.forEach(stat => {
-            clearedForm[stat] = 0;
-        });
-        setForm(clearedForm);
-    };
+        if(window.confirm("Are you sure you want to clear all stats?\n\nThis action cannot be undone")){
+            const clearedForm = {}
+            stats.forEach(stat => {
+                clearedForm[stat] = 0
+            })
+            setForm(clearedForm)
+        }
+    }
 
 
     const handleSubmit = () => {
-        onSave({ ...player, ...form, ...autocalculatedResults });
+        onSave({ ...player, ...form, ...autocalculatedResults })
     };
+
+    const handleIncrementDecrement = (key, delta) => {
+        setForm(prev => {
+            const updatedForm = { 
+                ...prev, 
+                [key]: (prev[key] || 0) + delta 
+            }
+    
+            if (key === 'Completions') {
+                const previousCompletions = prev[key] || 0
+                const newCompletions = updatedForm[key]
+    
+                if (newCompletions > previousCompletions) {
+                    updatedForm['Passing Attempts'] = (prev['Passing Attempts'] || 0) + 1
+                }
+            }
+    
+            return updatedForm
+        })
+    }
 
     return (
         <div className="editor-overlay">
@@ -197,18 +219,23 @@ const StatsEditor = ({ player, onSave, onClose, sport }) => {
                 <h1>{player.name}</h1>
                 <h3>#{player.number}</h3>
                 <div className="input-container">
+                    
                     {
                         Object.keys(form).map(key => (
-                            <div key={key} className="input-group">
+                            <div className="input-group">
                                 <label htmlFor={key}>{key}</label>
-                                <input
-                                    id={key}
-                                    name={key}
-                                    type="number"
-                                    placeholder={key}
-                                    value={form[key]}
-                                    onChange={handleChange}
-                                />
+                                <div className="number-input-container">
+                                    <button className="decrement-button" onClick={() => handleIncrementDecrement(key, -1)}>-</button>
+                                    <input
+                                        id={key}
+                                        name={key}
+                                        type="number"
+                                        placeholder={key}
+                                        value={form[key]}
+                                        onChange={handleChange}
+                                    />
+                                    <button className="increment-button" onClick={() => handleIncrementDecrement(key, 1)}>+</button>
+                                </div>
                             </div>
                         ))
                     }
@@ -216,19 +243,20 @@ const StatsEditor = ({ player, onSave, onClose, sport }) => {
                     {
                         autocalculated && Object.keys(autocalculatedResults).map(key => {
                             const value = autocalculatedResults[key];
-                            console.log(typeof value, value, key)
                             const displayValue = parseFloat(value) ? parseFloat(value).toFixed(2) : '0.00'; // Fallback for non-numbers
                             return (
                                 <div key={key} className="input-group">
                                     <label htmlFor={key}>{key}</label>
-                                    <input
-                                        id={key}
-                                        name={key}
-                                        type="text"
-                                        placeholder={key}
-                                        value={displayValue}
-                                        disabled
-                                    />
+                                    <div className="number-input-container">
+                                        <input
+                                            id={key}
+                                            name={key}
+                                            type="text"
+                                            placeholder={key}
+                                            value={displayValue}
+                                            disabled
+                                        />
+                                    </div>
                                 </div>
                             );
                         })

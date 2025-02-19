@@ -56,6 +56,7 @@
     display: flex;
     justify-content: space-between;
     margin-top: 20px;
+    padding: 20px 20px;
 }
 
 .button-group button {
@@ -87,4 +88,47 @@
 
 .button-group button:last-child:hover {
     background-color: #ff605d;
+}
+
+.number-input-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.number-input-container input {
+    width: 60px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+    text-align: center;
+    margin: 0 5px;
+}
+
+.number-input-container button {
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #000000;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.number-input-container button:hover {
+    background-color: #585858;
+}
+
+.number-input-container button:active {
+    background-color: #7a7a7a;
+}
+
+.number-input-container input[type=number]::-webkit-inner-spin-button,
+.number-input-container input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+.number-input-container input[type=number] {
+    -moz-appearance: texfield;
+    appearance: textfield;
 }
