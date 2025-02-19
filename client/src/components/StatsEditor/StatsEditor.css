@@ -13,6 +13,7 @@
 
 .editor {
     background-color: rgba(47, 0, 48, 0.6);
+    padding: 20px;
     border-radius: 8px;
     border: 2px solid rgb(255, 255, 0);
     width: 1200px;
@@ -51,12 +52,10 @@
     background-color: rgb(0, 0, 0);
 }
 
-
 .button-group {
     display: flex;
     justify-content: space-between;
     margin-top: 20px;
-    padding: 20px 20px;
 }
 
 .button-group button {
@@ -69,7 +68,7 @@
 }
 
 .button-group button:hover {
-    background-color: #ddd;
+    background-color: #474747;
 }
 
 .button-group button:first-child {
@@ -99,7 +98,7 @@
 .number-input-container input {
     width: 60px;
     padding: 8px;
-    border: 1px solid #ccc;
+    border: 1px solid #ffd9005a;
     border-radius: 4px;
     font-size: 14px;
     text-align: center;
@@ -108,7 +107,7 @@
 
 .number-input-container button {
     padding: 8px 12px;
-    border: 1px solid #ccc;
+    border: 1px solid #ffd9005a;
     border-radius: 4px;
     background-color: #000000;
     cursor: pointer;

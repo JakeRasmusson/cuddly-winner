@@ -48,8 +48,8 @@ const App = () => {
     const handleEdit = (type, player) => {
         setEditorType(type)
         setEditingPlayer(player)
-        console.log('type: ' + type)
-        console.log('player: ' + player)
+        //console.log('type: ' + type)
+        //console.log('player: ' + player)
     }
     const closeEditor = _ => {
         setEditorType(null)
