@@ -6,8 +6,18 @@
     box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3);
     display: flex;
     flex-direction: column;
-    min-height: 300px;
+
+    min-height: 200px;
+    max-height: 450px;
+
+    overflow-y: auto;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
 }
+.roster::-webkit-scrollbar {
+    display: none;
+}
+
 .roster-players {
     margin: auto;
 }

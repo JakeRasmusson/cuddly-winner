@@ -5,6 +5,14 @@ const GameSelection = ({ games, onCreateGame, onSelectGame }) => {
     const [newGameName, setNewGameName] = useState('')
     const [newGameSport, setNewGameSport] = useState('')
 
+    const parseDate = dateObj => {
+        const month = dateObj.getUTCMonth() + 1
+        const day = dateObj.getUTCDate()
+        const year = dateObj.getUTCFullYear()
+
+        return `${month}/${day}/${year}`
+    }
+
     return (
         <div className="game-selection">
             <div className="create-game">
@@ -15,16 +23,19 @@ const GameSelection = ({ games, onCreateGame, onSelectGame }) => {
                     value={newGameName}
                     onChange={e => setNewGameName(e.target.value)}
                 />
+                <br/>
                 <select
                     onChange={e => setNewGameSport(e.target.value)}
+                    defaultValue=""
                 >
-                    <option value="" disabled selected>Select a game</option>
+                    <option value="" disabled hidden>Select a game</option>
                     <option value="Baseball">Baseball</option>
                     <option value="Softball">Softball</option>
                     <option value="Football">Football</option>
                     <option value="Basketball">Basketball</option>
                     <option value="Soccer">Soccer</option>
                 </select>
+                <br/>
                 <button
                     onClick={_ => {
                         if(newGameName.trim()) {
@@ -47,10 +58,15 @@ const GameSelection = ({ games, onCreateGame, onSelectGame }) => {
                                 key={game.id}
                                 onClick={_ => onSelectGame(game.id)}
                             >
+                                <p className="date-header">
+                                    {parseDate(game.id)}
+                                </p>
                                 <h3>
-                                {game.name}
+                                    {game.name}
                                 </h3>
-                                {game.sport}
+                                <p className="sport">
+                                    {game.sport}
+                                </p>
                             </li>
                         ))
                     ) : (

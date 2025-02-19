@@ -1,65 +1,24 @@
 import React, { useState } from 'react'
 import './Player.css'
 
-const sport = ''
-
-const Player = ({ id, name, number, position, onUpdate, onDragStart }) => {
-    const [isEditing, setIsEditing] = useState(false)
-    const [formData, setFormData] = useState({name, number, position})
-
-    const handleChange = e => {
-        const { name, value } = e.target
-        setFormData({...formData, [name]: value})
-    }
-
-    const handleSubmit = e => {
-        e.preventDefault()
-        //console.log("Form Submitted")
-        onUpdate(id, formData)
-        setIsEditing(false)
+const Player = ({ id, player, onDragStart, context, onEdit }) => {
+    const handleClick = _ => {
+        
+        if(context == 'list'){
+            onEdit('basic', player,)
+        }
+        if(context == 'roster'){
+            onEdit('stats', player)
+        }
     }
 
     return (
         <div className="player" draggable onDragStart={e => onDragStart(e, id)} data-id={id}>
-            {isEditing ? (
-                <form onSubmit={handleSubmit} className="player-form">
-                    <input
-                        type="text"
-                        name="name"
-                        value={formData.name}
-                        onChange={handleChange}
-                        placeholder="Name"
-                        required
-                    />
-                    <input
-                        type="text"
-                        name="number"
-                        value={formData.number}
-                        onChange={handleChange}
-                        placeholder="Number"
-                        required
-                    />
-                    <input
-                        type="text"
-                        name="position"
-                        value={formData.position}
-                        onChange={handleChange}
-                        placeholder="Position"
-                        required
-                    />
-                    <div className="button-container">
-                        <button type="submit">Save</button>
-                        <button type="button" onClick={ _ => setIsEditing(false)}>Cancel</button>
-                    </div>
-                </form>
-            ) : (
-                <div className="player-details" onClick = { _ => setIsEditing(true)}>
-                    
-                    <p>{position}</p>
-                    <h3>#{number}</h3>
-                    <h5>{name}</h5>
+                <div className="player-details" onClick = {handleClick}>
+                    <p>{player.position}</p>
+                    <h3>#{player.number}</h3>
+                    <h5>{player.name}</h5>
                 </div>
-            )}
         </div>
     )
 }
