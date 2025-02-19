@@ -20,8 +20,6 @@ import './App.css'
 const initialHomePlayers = [].map((player, index) => ({...player, id: index + 1, team: 'home'}))
 const initialAwayPlayers = [].map((player, index) => ({...player, id: index + 1, team: 'away'}))
 
-
-
 const App = () => {
     const [homePlayers, setHomePlayers] = useState([])
     const [awayPlayers, setAwayPlayers] = useState([])
@@ -76,7 +74,7 @@ const App = () => {
     }
 
     const handleCreateGame = (gameName, sport) => {
-        const newGame = { id: Date.now(), name: gameName, sport: sport }
+        const newGame = { id: new Date(Date.now()), name: gameName, sport: sport }
         setGames([...games, newGame])
         setSelectedGame(newGame)
         setCurrentPage('roster')

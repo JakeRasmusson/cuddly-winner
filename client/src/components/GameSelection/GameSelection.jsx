@@ -5,6 +5,14 @@ const GameSelection = ({ games, onCreateGame, onSelectGame }) => {
     const [newGameName, setNewGameName] = useState('')
     const [newGameSport, setNewGameSport] = useState('')
 
+    const parseDate = dateObj => {
+        const month = dateObj.getUTCMonth() + 1
+        const day = dateObj.getUTCDate()
+        const year = dateObj.getUTCFullYear()
+
+        return `${month}/${day}/${year}`
+    }
+
     return (
         <div className="game-selection">
             <div className="create-game">
@@ -50,10 +58,15 @@ const GameSelection = ({ games, onCreateGame, onSelectGame }) => {
                                 key={game.id}
                                 onClick={_ => onSelectGame(game.id)}
                             >
+                                <p className="date-header">
+                                    {parseDate(game.id)}
+                                </p>
                                 <h3>
-                                {game.name}
+                                    {game.name}
                                 </h3>
-                                {game.sport}
+                                <p className="sport">
+                                    {game.sport}
+                                </p>
                             </li>
                         ))
                     ) : (
