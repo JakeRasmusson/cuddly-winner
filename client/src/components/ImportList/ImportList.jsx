@@ -76,7 +76,7 @@ const ImportList = ({onPlayersImported, team}) => {
 
     return (
         <div>
-            <button onClick={handleImportClick}>Import</button>
+            <button className="import-button" onClick={handleImportClick}>Import</button>
 
             <input
                 ref={fileInputRef}
