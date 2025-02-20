@@ -1,5 +1,6 @@
 
 import { useState } from 'react'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 
 import PlayerList from './components/PlayerList/PlayerList'
 import Roster from './components/Roster/Roster'
@@ -159,7 +160,7 @@ const App = () => {
     }
 
     return (
-        <>
+        <BrowserRouter>
             {
             //If the current page is the game selection screen, 
             currentPage == 'selection' ? (
@@ -224,7 +225,7 @@ const App = () => {
                 </>
             )}
             
-        </>
+        </BrowserRouter>
     )
 }
 
