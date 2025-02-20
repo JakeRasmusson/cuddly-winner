@@ -22,8 +22,8 @@ const Roster = ({ team, roster, handleDrop, onEdit }) => {
     }
 
     return (
-        <div>
-            <h2>{team} Active Roster</h2>
+        <div className='roster-list'>
+            <h2 className="roster-title">{team} Active Roster</h2>
             <div
                 className='roster'
                 onDragOver={onDragOver}
