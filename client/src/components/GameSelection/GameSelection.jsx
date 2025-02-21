@@ -59,7 +59,7 @@ const GameSelection = ({ games, onCreateGame, onSelectGame }) => {
                                 onClick={_ => onSelectGame(game.id)}
                             >
                                 <p className="date-header">
-                                    {parseDate(game.id)}
+                                    {parseDate(new Date(game.id))}
                                 </p>
                                 <h3>
                                     {game.name}
