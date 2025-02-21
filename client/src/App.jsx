@@ -16,7 +16,7 @@ import './App.css'
 
 const App = () => {
     const navigate = useNavigate()
-    const { gameId } = useParams()
+    const { gameId } = useParams()//Idk why this is greyed out, it's used don't touch it
 
     const selectedGameRef = useRef(null)
 
@@ -29,7 +29,6 @@ const App = () => {
     const [awayRoster, setAwayRoster] = useState([])
 
     //Are we displaying the game selection screen?
-    const [currentPage, setCurrentPage] = useState('selection')
     const [selectedGame, setSelectedGame] = useState(null)
     const [games, setGames] = useState([])
 
