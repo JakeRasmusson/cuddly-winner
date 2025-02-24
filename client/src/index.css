@@ -3,14 +3,33 @@
   line-height: 1.5;
   font-weight: 400;
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #231d24;
-
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+
+  --pale-yellow: rgb(255, 240, 150);
+  --corn: rgb(255, 232, 99);
+  --gargoyle-gas: rgb(255, 217, 61);
+  --orange-yellow: rgb(245, 189, 31);
+  --mustard-yellow: rgb(204, 160, 30);
+  --goldenrod: rgb(218, 165, 32);
+  
+  --cadmium-violet: rgb(135, 54, 170);
+  --ksu-purple: rgb(93, 38, 137);
+  --spanish-violet: rgb(71, 41, 123);
+  --dark-purple-1: rgb(50, 30, 90);
+  --dark-purple-2: rgb(35, 20, 60);
+  --dark-purple-3: rgb(28, 12, 34);     /*Background*/
+
+  --light-grey: rgb(200, 200, 200);
+  --med-grey: rgb(150, 150, 150);
+  --dark-grey: rgb(100, 100, 100);
+
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: var(--dark-purple-3);
 }
 
 .layout-header {
@@ -58,7 +77,7 @@
   padding: 10px;
   font-size: 13px;
   width: 100px;
-  border: 1px solid #777777;
+  border: 1px solid var(--light-grey);
   border-radius: 5px;
   background-color: rgba(0, 0, 0, 0);
   transition: background-color 0.2s;
@@ -82,7 +101,7 @@
   display: flex;
   left: 50%;
   transform: translateX(-50%);
-  color: rgb(109, 109, 109);
+  color: var(--dark-grey);
   font-style: italic;
   padding-top: 5px;
   font-weight: 600;
@@ -91,7 +110,7 @@
 }
 
 .back-button:hover {
-  background-color: #8b45a039;
+  background-color: var(--ksu-purple);
   cursor: pointer;
 }
 
@@ -102,12 +121,12 @@
   transform: translateX(-50%);
   font-size: 12px;
   width: 160px;
-  border: 1px solid #ccc;
+  border: 1px solid var(--light-grey);
   border-radius: 4px;
-  background-color: #9d4caf;
+  background-color: var(--cadmium-violet);
   transition: background-color 0.2s;
 }
 
 .import-modal-button:hover {
-  background-color: #63336e;
+  background-color: var(--ksu-purple);
 }

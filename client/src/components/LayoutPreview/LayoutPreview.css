@@ -1,6 +1,23 @@
 .layout-preview-container {
+    position: relative;
     width: 50%;
     height: 400px;
     border: 2px solid white;
     border-radius: 6px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.stats-link {
+    width: 95%;
+    height: 95%;
+    position: absolute;
+}
+
+.embedded-preview {
+    border-radius: 5px;
+    border: 1px solid var(--mustard-yellow);
+    width: 95%;
+    height: 95%;
 }

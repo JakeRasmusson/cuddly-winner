@@ -9,6 +9,7 @@ const LayoutSelector = _ => {
     const { setSelectedLayout } = useContext(LayoutContext)
 
     const handleButtonSelect = layoutId => {
+        
         setSelectedLayout(layoutId)
         console.log(layoutId)
     }
