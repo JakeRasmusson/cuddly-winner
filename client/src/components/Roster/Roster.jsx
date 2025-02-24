@@ -2,7 +2,7 @@ import React from 'react'
 import Player from '../Player/Player'
 import './Roster.css'
 
-const Roster = ({ team, roster, handleDrop, onEdit }) => {
+const Roster = ({ team, roster, handleDrop, onEdit, onRemove }) => {
     const onDragOver = e => {
         e.preventDefault()
     }
@@ -31,7 +31,7 @@ const Roster = ({ team, roster, handleDrop, onEdit }) => {
             >
                 <div className="roster-players">
                     {roster.map(player => (
-                        <Player key={player.id} player={player} context='roster' onEdit={onEdit} />
+                        <Player key={player.id} player={player} context='roster' onEdit={onEdit} onRemove={_ => onRemove(player, team)} />
                     ))}
                 </div>
             </div>

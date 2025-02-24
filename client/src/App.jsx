@@ -131,7 +131,7 @@ const App = () => {
         }
     }
 
-    const handleRemove = (id, team) => {
+    const handleRemoveList = (id, team) => {
         if(team == 'home'){
             console.log("Removing player")
             setHomePlayers(prev => prev.filter(p => p.id != id))
@@ -139,6 +139,17 @@ const App = () => {
         if(team == 'away'){
             console.log("Removing away player")
             setAwayPlayers(prev => prev.filter(p => p.id != id))
+        }
+    }
+
+    const handleRemoveRoster = (player, team) => {
+        if(team == 'Home'){
+            setHomePlayers(prev => [...prev, player])
+            setHomeRoster(prev => prev.filter(p => p.id != player.id))
+        }
+        if(team == 'Away'){
+            setAwayPlayers(prev => [...prev, player])
+            setAwayRoster(prev => prev.filter(p => p.id != player.id))
         }
     }
 
@@ -225,8 +236,8 @@ const App = () => {
                         <div className="player-lists">
                             {/* Current Player Lists and Import button*/}
                             <div className="player-list-wrapper">
-                                <PlayerList players={homePlayers} handleDragStart={handleDragStart} handleUpdate={handleUpdate} onRemove={handleRemove} onEdit={handleEdit} title="Home" team="home"/>
-                                <PlayerList players={awayPlayers} handleDragStart={handleDragStart} handleUpdate={handleUpdate} onRemove={handleRemove} onEdit={handleEdit} title="Away" team="away"/>
+                                <PlayerList players={homePlayers} handleDragStart={handleDragStart} handleUpdate={handleUpdate} onRemove={handleRemoveList} onEdit={handleEdit} title="Home" team="home"/>
+                                <PlayerList players={awayPlayers} handleDragStart={handleDragStart} handleUpdate={handleUpdate} onRemove={handleRemoveList} onEdit={handleEdit} title="Away" team="away"/>
 
                                 <div>
                                     <button className="import-modal-button" onClick={() => setIsModalOpen(true)}>Import Teams</button>
@@ -242,8 +253,8 @@ const App = () => {
 
                             {/* Current active team rosters */}
                             <div className="active-rosters">
-                                <Roster team="Home" roster={homeRoster} handleDrop={handleDrop} onEdit={handleEdit} />
-                                <Roster team="Away" roster={awayRoster} handleDrop={handleDrop} onEdit={handleEdit} />
+                                <Roster team="Home" roster={homeRoster} handleDrop={handleDrop} onEdit={handleEdit} onRemove={handleRemoveRoster} />
+                                <Roster team="Away" roster={awayRoster} handleDrop={handleDrop} onEdit={handleEdit} onRemove={handleRemoveRoster} />
                             </div>
                         </div>
 
