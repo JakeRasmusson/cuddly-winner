@@ -164,7 +164,6 @@ const App = () => {
     }
 
     const handleDragStart = (e, player, team) => {
-        console.log("Begin drag")
         e.dataTransfer.setData('player', JSON.stringify(player))
         e.dataTransfer.setData('team', team)
     }
@@ -241,7 +240,7 @@ const App = () => {
 
                         {/* Selection and Preview Header */}
                         <div className="layout-header">
-                            <LayoutSelector />
+                            <LayoutSelector gameType={selectedGameRef.current?.sport || ""}/>
                             <LayoutPreview />
                         </div>
                         <div className="player-lists">
