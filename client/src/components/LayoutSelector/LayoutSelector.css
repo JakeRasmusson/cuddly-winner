@@ -49,3 +49,8 @@
     transform: scale(1.3);
     cursor: pointer;
 }
+
+.not-selected-text {
+    color: var(--med-grey);
+    font-style: italic;
+}

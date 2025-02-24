@@ -77,6 +77,7 @@ const LayoutSelector = ({ gameType }) => {
                 <select
                     onChange = {handlePositionSelect}
                     defaultValue = ''
+                    className="position-select"
                 >
                     <option value="" disabled hidden>Select a Position</option>
                     {
@@ -96,14 +97,13 @@ const LayoutSelector = ({ gameType }) => {
                                 <i 
                                     className="fa-solid fa-user-minus remove-player-icon"
                                     onClick={e => {
-                                        e.stopPropagation()
                                         onRemove(1)
                                     }}
                                 ></i>
                             </div>
                         )}
                         {!player1 && (
-                            <h3>No Player Selected</h3>
+                            <p className="not-selected-text">No Player Selected</p>
                         )}
                         
                     </div>
@@ -114,14 +114,13 @@ const LayoutSelector = ({ gameType }) => {
                                 <i 
                                     className="fa-solid fa-user-minus remove-player-icon"
                                     onClick={e => {
-                                        e.stopPropagation()
                                         onRemove(2)
                                     }}
                                 ></i>
                             </div>
                         )}
                         {!player2 && (
-                            <h3>No Player Selected</h3>
+                            <p className="not-selected-text">No Player Selected</p>
                         )}
                     </div>
                 </div>
