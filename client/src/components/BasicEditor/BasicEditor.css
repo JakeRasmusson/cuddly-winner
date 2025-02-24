@@ -12,10 +12,10 @@
 }
 
 .editor-basic {
-    background-color: rgba(47, 0, 48, 0.6);
+    background-color: rgba(28, 12, 34, 0.9); /* dark-purple-3 at 0.9 opacity */
     padding: 20px;
     border-radius: 8px;
-    border: 2px solid rgb(255, 255, 0);
+    border: 2px solid var(--gargoyle-gas);
     width: 300px;
     max-width: 90%;
 }
@@ -34,7 +34,7 @@
 .input-group input {
     width: 100%;
     padding: 8px;
-    border: 1px solid #ffd9005a;
+    border: 1px solid var(--goldenrod);
     border-radius: 4px;
     font-size: 14px;
     background-color: black;
@@ -57,11 +57,11 @@
 }
 
 .button-group button:hover {
-    background-color: #474747;
+    background-color: #000000;
 }
 
 .button-group button:first-child {
-    background-color: #4CAF50;
+    background-color: rgb(46, 131, 31);
     color: white;
 }
 

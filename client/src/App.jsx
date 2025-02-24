@@ -1,6 +1,6 @@
 
-import { useState } from 'react'
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { useState, useEffect, useRef, createContext } from 'react'
+import { Routes, Route, useNavigate, useParams } from 'react-router-dom'
 
 import PlayerList from './components/PlayerList/PlayerList'
 import Roster from './components/Roster/Roster'
@@ -10,12 +10,21 @@ import StatsEditor from './components/StatsEditor/StatsEditor'
 import ImportModal from './components/ImportModal/ImportModal'
 import LayoutSelector from './components/LayoutSelector/LayoutSelector'
 import LayoutPreview from './components/LayoutPreview/LayoutPreview'
+import LayoutPage from './components/LayoutPage/LayoutPage'
+import NotFound from './components/NotFound/NotFound'
 
 import './App.css'
 
+export const LayoutContext = createContext()
+
 const App = () => {
+    const navigate = useNavigate()
+    const { gameId } = useParams()//Idk why this is greyed out, it's used don't touch it
+
+    const selectedGameRef = useRef(null)
+
     //Set players in each player list
-    const [homePlayers, setHomePlayers] = useState([])
+    const [homePlayers, setHomePlayers] = useState([{name: "sdflakjsdf", number: 69, position: 'sdfasdf', id: 0}])
     const [awayPlayers, setAwayPlayers] = useState([])
 
     //Set players for active roster list
@@ -23,7 +32,6 @@ const App = () => {
     const [awayRoster, setAwayRoster] = useState([])
 
     //Are we displaying the game selection screen?
-    const [currentPage, setCurrentPage] = useState('selection')
     const [selectedGame, setSelectedGame] = useState(null)
     const [games, setGames] = useState([])
 
@@ -33,6 +41,18 @@ const App = () => {
 
     //Import team/create player modal
     const [isModalOpen, setIsModalOpen] = useState(false)
+
+    const [selectedLayout, setSelectedLayout] = useState('')
+
+    useEffect(_ => {
+        if(selectedGame) {
+            selectedGameRef.current = selectedGame
+            console.log(selectedGame.id)
+            navigate(`/edit/${selectedGame.id}`)
+        }
+    }, [selectedGame, navigate])
+
+
 
     //What happens when we click a player?  Are they in the player list or the active roster?
     const handleEdit = (type, player) => {
@@ -71,16 +91,14 @@ const App = () => {
     //Create a new game object and add it to the previous list of games when a new one is created,
     //By default that page is selected to edit
     const handleCreateGame = (gameName, sport) => {
-        const newGame = { id: new Date(Date.now()), name: gameName, sport: sport }
+        const newGame = { id: Date.now(), name: gameName, sport: sport }
         setGames([...games, newGame])
         setSelectedGame(newGame)
-        setCurrentPage('roster')
     }
     //If a user otherwise simply clicks an existing game, select that one
     const handleSelectGame = gameId => {
         const game = games.find(g => g.id == gameId)
         setSelectedGame(game)
-        setCurrentPage('roster')
     }
 
     //When individual player is edited, save that information to the appropriate list
@@ -113,7 +131,40 @@ const App = () => {
         }
     }
 
+    const handleRemoveList = (id, team) => {
+        if(team == 'home'){
+            const playerName = homePlayers.find(p => p.id == id).name
+            if(window.confirm(`Are you sure you'd like to permanently remove ${playerName} from the home team?  `+
+            `You'll need to recreate the player, all stats will be lost.\n\nThis action cannot be undone.`)){
+                setHomePlayers(prev => prev.filter(p => p.id != id))
+            }
+        }
+        if(team == 'away'){
+            const playerName = awayPlayers.find(p => p.id == id).name
+            if(window.confirm(`Are you sure you'd like to permanently remove ${playerName} from the visiting team?  `+
+            `You'll need to recreate the player, all stats will be lost.\n\nThis action cannot be undone.`)){
+                setAwayPlayers(prev => prev.filter(p => p.id != id))
+            }
+        }
+    }
+
+    const handleRemoveRoster = (player, team) => {
+        if(team == 'Home'){
+            if(window.confirm(`Bench ${player.name}?`)){
+                setHomePlayers(prev => [...prev, player])
+                setHomeRoster(prev => prev.filter(p => p.id != player.id))
+            }
+        }
+        if(team == 'Away'){
+            if(window.confirm(`Bench ${player.name}?`)){
+                setAwayPlayers(prev => [...prev, player])
+                setAwayRoster(prev => prev.filter(p => p.id != player.id))
+            }
+        }
+    }
+
     const handleDragStart = (e, player, team) => {
+        console.log("Begin drag")
         e.dataTransfer.setData('player', JSON.stringify(player))
         e.dataTransfer.setData('team', team)
     }
@@ -160,72 +211,78 @@ const App = () => {
     }
 
     return (
-        <BrowserRouter>
-            {
-            //If the current page is the game selection screen, 
-            currentPage == 'selection' ? (
-                <GameSelection
-                    games={games}
-                    onCreateGame={handleCreateGame}
-                    onSelectGame={handleSelectGame}
-                />
-            ) : (
-                <>
-                    {/* Back button and 'Editing Page' title */}
-                    <div className="page-info">
-                        <p className="editing-title">{selectedGame.name}</p>
-                        <h6 className="editing-sport">{selectedGame.sport}</h6>
-                        <button
-                            onClick={_ => setCurrentPage('selection')}
-                            className="back-button"
-                        >
-                            Back
-                        </button>
-                    </div>
-
-                    {/* Selection and Preview Header */}
-                    <div className="layout-header">
-                        <LayoutSelector />
-                        <LayoutPreview stats={{yards: 0, passes: 0}}/>
-                    </div>
+        <LayoutContext.Provider value={{ selectedLayout, setSelectedLayout }}>
+            <Routes>
+                <Route path="/" element = {
+                    <GameSelection
+                        games={games}
+                        onCreateGame={handleCreateGame}
+                        onSelectGame={handleSelectGame}
+                    />
                     
-                    <div className="player-lists">
-                        {/* Current Player Lists and Import button*/}
-                        <div className="player-list-wrapper">
-                            <PlayerList players={homePlayers} handleDragStart={handleDragStart} handleUpdate={handleUpdate} onEdit={handleEdit} title="Home" team="home"/>
-                            <PlayerList players={awayPlayers} handleDragStart={handleDragStart} handleUpdate={handleUpdate} onEdit={handleEdit} title="Away" team="away"/>
+                } />
+                <Route path="/edit/:gameId" element = {
+                    <>
+                        {/* Back button and 'Editing Page' title */}
+                        <div className="page-info">
+                            <p className="editing-title">{selectedGameRef.current?.name || "Jake you suck"}</p>
+                            <h6 className="editing-sport">{selectedGameRef.current?.sport || "Jake you suck"}</h6>
+                            <button
+                                onClick={_ => {
+                                        navigate("/")
+                                        setSelectedGame(null)
+                                    }
+                                }
+                                className="back-button"
+                            >
+                                Back
+                            </button>
+                        </div>
 
-                            <div>
-                                <button className="import-modal-button" onClick={() => setIsModalOpen(true)}>Import Teams</button>
-                                {isModalOpen && (
-                                    <ImportModal
-                                        onClose={() => setIsModalOpen(false)}
-                                        onPlayersImported={handleImportingPlayers}
-                                        onAddPlayer={handleAddPlayer}
-                                    />
-                                )}
+                        {/* Selection and Preview Header */}
+                        <div className="layout-header">
+                            <LayoutSelector />
+                            <LayoutPreview />
+                        </div>
+                        <div className="player-lists">
+                            {/* Current Player Lists and Import button*/}
+                            <div className="player-list-wrapper">
+                                <PlayerList players={homePlayers} handleDragStart={handleDragStart} handleUpdate={handleUpdate} onRemove={handleRemoveList} onEdit={handleEdit} title="Home" team="home"/>
+                                <PlayerList players={awayPlayers} handleDragStart={handleDragStart} handleUpdate={handleUpdate} onRemove={handleRemoveList} onEdit={handleEdit} title="Away" team="away"/>
+
+                                <div>
+                                    <button className="import-modal-button" onClick={() => setIsModalOpen(true)}>Import Teams</button>
+                                    {isModalOpen && (
+                                        <ImportModal
+                                            onClose={() => setIsModalOpen(false)}
+                                            onPlayersImported={handleImportingPlayers}
+                                            onAddPlayer={handleAddPlayer}
+                                        />
+                                    )}
+                                </div>
+                            </div>
+
+                            {/* Current active team rosters */}
+                            <div className="active-rosters">
+                                <Roster team="Home" roster={homeRoster} handleDrop={handleDrop} onEdit={handleEdit} onRemove={handleRemoveRoster} handleDragStart={handleDragStart} />
+                                <Roster team="Away" roster={awayRoster} handleDrop={handleDrop} onEdit={handleEdit} onRemove={handleRemoveRoster} handleDragSTart={handleDragStart} />
                             </div>
                         </div>
 
-                        {/* Current active team rosters */}
-                        <div className="active-rosters">
-                            <Roster team="Home" roster={homeRoster} handleDrop={handleDrop} onEdit={handleEdit} />
-                            <Roster team="Away" roster={awayRoster} handleDrop={handleDrop} onEdit={handleEdit} />
-                        </div>
-                    </div>
+                        {editorType == 'basic' && (
+                            <BasicEditor player={editingPlayer} onSave={handleSave} onClose={closeEditor}/>
+                        )}
 
-                    {editorType == 'basic' && (
-                        <BasicEditor player={editingPlayer} onSave={handleSave} onClose={closeEditor}/>
-                    )}
-
-                    {editorType == 'stats' && (
-                        <StatsEditor player={editingPlayer} onSave={handleSave} onClose={closeEditor} sport={selectedGame.sport}/>
-                    )}
-                    
-                </>
-            )}
-            
-        </BrowserRouter>
+                        {editorType == 'stats' && (
+                            <StatsEditor player={editingPlayer} onSave={handleSave} onClose={closeEditor} sport={selectedGame.sport}/>
+                        )}
+                        
+                    </>
+                } />
+                <Route path="/stats" element = {<LayoutPage />} />
+                <Route path='*' element={<NotFound />} />
+            </Routes>
+        </LayoutContext.Provider>
     )
 }
 

@@ -62,3 +62,17 @@ form {
   transform: translateX(-50%);
   width: 100%;
 }
+
+.remove-icon {
+  color: var(--orange-yellow);
+  font-size: 1.2rem;
+  padding: 8px;
+  border-radius: 50%;
+  transition: transform 0.2s ease, color 0.2s ease, background-color 0.2s ease;
+}
+
+.remove-icon:hover {
+  color: var(--goldenrod);
+  background-color: var(--dark-purple-3);
+  transform: scale(1.3);
+}

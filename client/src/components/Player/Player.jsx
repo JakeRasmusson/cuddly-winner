@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import './Player.css'
 
-const Player = ({ id, player, onDragStart, context, onEdit }) => {
+const Player = ({ id, player, onDragStart, context, onEdit, onRemove}) => {
     const handleClick = _ => {
         
         if(context == 'list'){
@@ -18,6 +18,15 @@ const Player = ({ id, player, onDragStart, context, onEdit }) => {
                     <p>{player.position}</p>
                     <h3>#{player.number}</h3>
                     <h5>{player.name}</h5>
+                    <i 
+                        className="fa-solid fa-user-minus remove-icon"
+                        onClick={e => {
+                            e.stopPropagation()
+                            onRemove()
+                        }}
+                    >
+                        
+                    </i>
                 </div>
         </div>
     )
