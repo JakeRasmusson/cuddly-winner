@@ -24,7 +24,7 @@ const App = () => {
     const selectedGameRef = useRef(null)
 
     //Set players in each player list
-    const [homePlayers, setHomePlayers] = useState([])
+    const [homePlayers, setHomePlayers] = useState([{name: "sdflakjsdf", number: 69, position: 'sdfasdf', id: 0}])
     const [awayPlayers, setAwayPlayers] = useState([])
 
     //Set players for active roster list
@@ -131,6 +131,17 @@ const App = () => {
         }
     }
 
+    const handleRemove = (id, team) => {
+        if(team == 'home'){
+            console.log("Removing player")
+            setHomePlayers(prev => prev.filter(p => p.id != id))
+        }
+        if(team == 'away'){
+            console.log("Removing away player")
+            setAwayPlayers(prev => prev.filter(p => p.id != id))
+        }
+    }
+
     const handleDragStart = (e, player, team) => {
         e.dataTransfer.setData('player', JSON.stringify(player))
         e.dataTransfer.setData('team', team)
@@ -209,14 +220,13 @@ const App = () => {
                         {/* Selection and Preview Header */}
                         <div className="layout-header">
                             <LayoutSelector />
-                            <LayoutPreview stats={{yards: 0, passes: 0}}/>
+                            <LayoutPreview />
                         </div>
-                        
                         <div className="player-lists">
                             {/* Current Player Lists and Import button*/}
                             <div className="player-list-wrapper">
-                                <PlayerList players={homePlayers} handleDragStart={handleDragStart} handleUpdate={handleUpdate} onEdit={handleEdit} title="Home" team="home"/>
-                                <PlayerList players={awayPlayers} handleDragStart={handleDragStart} handleUpdate={handleUpdate} onEdit={handleEdit} title="Away" team="away"/>
+                                <PlayerList players={homePlayers} handleDragStart={handleDragStart} handleUpdate={handleUpdate} onRemove={handleRemove} onEdit={handleEdit} title="Home" team="home"/>
+                                <PlayerList players={awayPlayers} handleDragStart={handleDragStart} handleUpdate={handleUpdate} onRemove={handleRemove} onEdit={handleEdit} title="Away" team="away"/>
 
                                 <div>
                                     <button className="import-modal-button" onClick={() => setIsModalOpen(true)}>Import Teams</button>

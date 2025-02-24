@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 
 import './LayoutPreview.css'
 
-const LayoutPreview = ({ stats }) => {
+const LayoutPreview = _ => {
     return (
         <div className='layout-preview-container'>
             <iframe className="embedded-preview" width="100%" height="100%" src="http://localhost:5173/stats" description="Layout preview" ></iframe>
