@@ -54,3 +54,13 @@
     color: var(--med-grey);
     font-style: italic;
 }
+
+.position-select {
+    margin-top: 10px;
+    background-color: black;
+    appearance: none;
+    
+}
+.position-select:focus {
+    border-color: var(--mustard-yellow);
+}

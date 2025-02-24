@@ -82,7 +82,7 @@ const LayoutSelector = ({ gameType }) => {
                     <option value="" disabled hidden>Select a Position</option>
                     {
                         getPosition(gameType).map(position => 
-                            <option value={position}>{position}</option>
+                            <option key={position} value={position}>{position}</option>
                         )
                     }
                 </select>
