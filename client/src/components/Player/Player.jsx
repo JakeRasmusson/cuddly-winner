@@ -24,7 +24,9 @@ const Player = ({ id, player, onDragStart, context, onEdit, onRemove}) => {
                             e.stopPropagation()
                             onRemove()
                         }}
-                    ></i>
+                    >
+                        
+                    </i>
                 </div>
         </div>
     )

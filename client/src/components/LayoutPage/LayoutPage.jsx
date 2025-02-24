@@ -24,10 +24,7 @@ const LayoutPage = _ => {
     return (
         <div>
             <h1>Statistics Page</h1>
-            {selectedLayout == 1 && <p>Displaying Layout 1</p>}
-            {selectedLayout == 2 && <p>Displaying Layout 2</p>}
-            {selectedLayout == 3 && <p>Displaying Layout 3</p>}
-            {!selectedLayout && <p>Select a layout</p>}
+            <p>Displaying {selectedLayout}</p>
         </div>
     )
 }

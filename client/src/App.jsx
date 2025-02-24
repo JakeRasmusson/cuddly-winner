@@ -164,6 +164,7 @@ const App = () => {
     }
 
     const handleDragStart = (e, player, team) => {
+        console.log("Begin drag")
         e.dataTransfer.setData('player', JSON.stringify(player))
         e.dataTransfer.setData('team', team)
     }
@@ -263,8 +264,8 @@ const App = () => {
 
                             {/* Current active team rosters */}
                             <div className="active-rosters">
-                                <Roster team="Home" roster={homeRoster} handleDrop={handleDrop} onEdit={handleEdit} onRemove={handleRemoveRoster} />
-                                <Roster team="Away" roster={awayRoster} handleDrop={handleDrop} onEdit={handleEdit} onRemove={handleRemoveRoster} />
+                                <Roster team="Home" roster={homeRoster} handleDrop={handleDrop} onEdit={handleEdit} onRemove={handleRemoveRoster} handleDragStart={handleDragStart} />
+                                <Roster team="Away" roster={awayRoster} handleDrop={handleDrop} onEdit={handleEdit} onRemove={handleRemoveRoster} handleDragSTart={handleDragStart} />
                             </div>
                         </div>
 
