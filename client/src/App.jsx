@@ -1,5 +1,5 @@
 
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, createContext } from 'react'
 import { Routes, Route, useNavigate, useParams } from 'react-router-dom'
 
 import PlayerList from './components/PlayerList/PlayerList'
@@ -10,9 +10,12 @@ import StatsEditor from './components/StatsEditor/StatsEditor'
 import ImportModal from './components/ImportModal/ImportModal'
 import LayoutSelector from './components/LayoutSelector/LayoutSelector'
 import LayoutPreview from './components/LayoutPreview/LayoutPreview'
+import LayoutPage from './components/LayoutPage/LayoutPage'
 import NotFound from './components/NotFound/NotFound'
 
 import './App.css'
+
+export const LayoutContext = createContext()
 
 const App = () => {
     const navigate = useNavigate()
@@ -38,6 +41,8 @@ const App = () => {
 
     //Import team/create player modal
     const [isModalOpen, setIsModalOpen] = useState(false)
+
+    const [selectedLayout, setSelectedLayout] = useState('')
 
     useEffect(_ => {
         if(selectedGame) {
@@ -173,76 +178,79 @@ const App = () => {
     }
 
     return (
-        <Routes>
-            <Route path="/" element = {
-                <GameSelection
-                    games={games}
-                    onCreateGame={handleCreateGame}
-                    onSelectGame={handleSelectGame}
-                />
-                
-            } />
-            <Route path="/edit/:gameId" element = {
-                <>
-                    {/* Back button and 'Editing Page' title */}
-                    <div className="page-info">
-                        <p className="editing-title">{selectedGameRef.current?.name || "Jake you suck"}</p>
-                        <h6 className="editing-sport">{selectedGameRef.current?.sport || "Jake you suck"}</h6>
-                        <button
-                            onClick={_ => {
-                                    navigate("/")
-                                    setSelectedGame(null)
-                                }
-                            }
-                            className="back-button"
-                        >
-                            Back
-                        </button>
-                    </div>
-
-                    {/* Selection and Preview Header */}
-                    <div className="layout-header">
-                        <LayoutSelector />
-                        <LayoutPreview stats={{yards: 0, passes: 0}}/>
-                    </div>
+        <LayoutContext.Provider value={{ selectedLayout, setSelectedLayout }}>
+            <Routes>
+                <Route path="/" element = {
+                    <GameSelection
+                        games={games}
+                        onCreateGame={handleCreateGame}
+                        onSelectGame={handleSelectGame}
+                    />
                     
-                    <div className="player-lists">
-                        {/* Current Player Lists and Import button*/}
-                        <div className="player-list-wrapper">
-                            <PlayerList players={homePlayers} handleDragStart={handleDragStart} handleUpdate={handleUpdate} onEdit={handleEdit} title="Home" team="home"/>
-                            <PlayerList players={awayPlayers} handleDragStart={handleDragStart} handleUpdate={handleUpdate} onEdit={handleEdit} title="Away" team="away"/>
+                } />
+                <Route path="/edit/:gameId" element = {
+                    <>
+                        {/* Back button and 'Editing Page' title */}
+                        <div className="page-info">
+                            <p className="editing-title">{selectedGameRef.current?.name || "Jake you suck"}</p>
+                            <h6 className="editing-sport">{selectedGameRef.current?.sport || "Jake you suck"}</h6>
+                            <button
+                                onClick={_ => {
+                                        navigate("/")
+                                        setSelectedGame(null)
+                                    }
+                                }
+                                className="back-button"
+                            >
+                                Back
+                            </button>
+                        </div>
 
-                            <div>
-                                <button className="import-modal-button" onClick={() => setIsModalOpen(true)}>Import Teams</button>
-                                {isModalOpen && (
-                                    <ImportModal
-                                        onClose={() => setIsModalOpen(false)}
-                                        onPlayersImported={handleImportingPlayers}
-                                        onAddPlayer={handleAddPlayer}
-                                    />
-                                )}
+                        {/* Selection and Preview Header */}
+                        <div className="layout-header">
+                            <LayoutSelector />
+                            <LayoutPreview stats={{yards: 0, passes: 0}}/>
+                        </div>
+                        
+                        <div className="player-lists">
+                            {/* Current Player Lists and Import button*/}
+                            <div className="player-list-wrapper">
+                                <PlayerList players={homePlayers} handleDragStart={handleDragStart} handleUpdate={handleUpdate} onEdit={handleEdit} title="Home" team="home"/>
+                                <PlayerList players={awayPlayers} handleDragStart={handleDragStart} handleUpdate={handleUpdate} onEdit={handleEdit} title="Away" team="away"/>
+
+                                <div>
+                                    <button className="import-modal-button" onClick={() => setIsModalOpen(true)}>Import Teams</button>
+                                    {isModalOpen && (
+                                        <ImportModal
+                                            onClose={() => setIsModalOpen(false)}
+                                            onPlayersImported={handleImportingPlayers}
+                                            onAddPlayer={handleAddPlayer}
+                                        />
+                                    )}
+                                </div>
+                            </div>
+
+                            {/* Current active team rosters */}
+                            <div className="active-rosters">
+                                <Roster team="Home" roster={homeRoster} handleDrop={handleDrop} onEdit={handleEdit} />
+                                <Roster team="Away" roster={awayRoster} handleDrop={handleDrop} onEdit={handleEdit} />
                             </div>
                         </div>
 
-                        {/* Current active team rosters */}
-                        <div className="active-rosters">
-                            <Roster team="Home" roster={homeRoster} handleDrop={handleDrop} onEdit={handleEdit} />
-                            <Roster team="Away" roster={awayRoster} handleDrop={handleDrop} onEdit={handleEdit} />
-                        </div>
-                    </div>
+                        {editorType == 'basic' && (
+                            <BasicEditor player={editingPlayer} onSave={handleSave} onClose={closeEditor}/>
+                        )}
 
-                    {editorType == 'basic' && (
-                        <BasicEditor player={editingPlayer} onSave={handleSave} onClose={closeEditor}/>
-                    )}
-
-                    {editorType == 'stats' && (
-                        <StatsEditor player={editingPlayer} onSave={handleSave} onClose={closeEditor} sport={selectedGame.sport}/>
-                    )}
-                    
-                </>
-            } />
-            <Route path='*' element={<NotFound />} />
-        </Routes>
+                        {editorType == 'stats' && (
+                            <StatsEditor player={editingPlayer} onSave={handleSave} onClose={closeEditor} sport={selectedGame.sport}/>
+                        )}
+                        
+                    </>
+                } />
+                <Route path="/stats" element = {<LayoutPage />} />
+                <Route path='*' element={<NotFound />} />
+            </Routes>
+        </LayoutContext.Provider>
     )
 }
 

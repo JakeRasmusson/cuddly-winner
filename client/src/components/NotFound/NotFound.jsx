@@ -12,8 +12,8 @@ const NotFound = () => {
             <Link to="/">home</Link>
             <div className="dale">
                 <h3>Dale</h3>
-                <div class="curved-arrow">
-                    <svg class="arrowhead" viewBox="0 0 20 20" width="20" height="20">
+                <div className="curved-arrow">
+                    <svg className="arrowhead" viewBox="0 0 20 20" width="20" height="20">
                         <polygon points="0,0 20,10 0,20" fill="rgba(216, 115, 0)" />
                     </svg>
                 </div>
