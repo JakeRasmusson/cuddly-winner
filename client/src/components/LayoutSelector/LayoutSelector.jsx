@@ -12,6 +12,8 @@ const LayoutSelector = _ => {
         
         setSelectedLayout(layoutId)
         console.log(layoutId)
+        localStorage.setItem('selectedLayout', layoutId)
+        
     }
 
     return (

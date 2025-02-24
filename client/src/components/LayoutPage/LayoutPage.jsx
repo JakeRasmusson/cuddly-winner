@@ -1,18 +1,32 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import { LayoutContext } from '../../App'
 
 import './LayoutPage.css'
 
 const LayoutPage = _ => {
 
-    const { selectedLayout } = useContext(LayoutContext)
+    //const { selectedLayout } = useContext(LayoutContext)
+
+    const [selectedLayout, setSelectedLayout] = useState(localStorage.getItem('selectedLayout') || null)
+
+    useEffect(_ => {
+        const handleStorageChange = event => {
+            if(event.key == 'selectedLayout'){
+                setSelectedLayout(event.newValue)
+            }
+        }
+
+        window.addEventListener('storage', handleStorageChange)
+
+        return _ => window.removeEventListener('storage', handleStorageChange)
+    }, [])
 
     return (
         <div>
             <h1>Statistics Page</h1>
-            {selectedLayout === 'layout1' && <p>Displaying Layout 1</p>}
-            {selectedLayout === 'layout2' && <p>Displaying Layout 2</p>}
-            {selectedLayout === 'layout3' && <p>Displaying Layout 3</p>}
+            {selectedLayout == 1 && <p>Displaying Layout 1</p>}
+            {selectedLayout == 2 && <p>Displaying Layout 2</p>}
+            {selectedLayout == 3 && <p>Displaying Layout 3</p>}
             {!selectedLayout && <p>Select a layout</p>}
         </div>
     )
