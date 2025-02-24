@@ -19,7 +19,7 @@ const Player = ({ id, player, onDragStart, context, onEdit, onRemove}) => {
                     <h3>#{player.number}</h3>
                     <h5>{player.name}</h5>
                     <i 
-                        className="fa-solid fa-user-minus"
+                        className="fa-solid fa-user-minus remove-icon"
                         onClick={e => {
                             e.stopPropagation()
                             onRemove()

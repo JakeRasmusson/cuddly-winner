@@ -133,23 +133,33 @@ const App = () => {
 
     const handleRemoveList = (id, team) => {
         if(team == 'home'){
-            console.log("Removing player")
-            setHomePlayers(prev => prev.filter(p => p.id != id))
+            const playerName = homePlayers.find(p => p.id == id).name
+            if(window.confirm(`Are you sure you'd like to permanently remove ${playerName} from the home team?  `+
+            `You'll need to recreate the player, all stats will be lost.\n\nThis action cannot be undone.`)){
+                setHomePlayers(prev => prev.filter(p => p.id != id))
+            }
         }
         if(team == 'away'){
-            console.log("Removing away player")
-            setAwayPlayers(prev => prev.filter(p => p.id != id))
+            const playerName = awayPlayers.find(p => p.id == id).name
+            if(window.confirm(`Are you sure you'd like to permanently remove ${playerName} from the visiting team?  `+
+            `You'll need to recreate the player, all stats will be lost.\n\nThis action cannot be undone.`)){
+                setAwayPlayers(prev => prev.filter(p => p.id != id))
+            }
         }
     }
 
     const handleRemoveRoster = (player, team) => {
         if(team == 'Home'){
-            setHomePlayers(prev => [...prev, player])
-            setHomeRoster(prev => prev.filter(p => p.id != player.id))
+            if(window.confirm(`Bench ${player.name}?`)){
+                setHomePlayers(prev => [...prev, player])
+                setHomeRoster(prev => prev.filter(p => p.id != player.id))
+            }
         }
         if(team == 'Away'){
-            setAwayPlayers(prev => [...prev, player])
-            setAwayRoster(prev => prev.filter(p => p.id != player.id))
+            if(window.confirm(`Bench ${player.name}?`)){
+                setAwayPlayers(prev => [...prev, player])
+                setAwayRoster(prev => prev.filter(p => p.id != player.id))
+            }
         }
     }
 
