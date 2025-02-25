@@ -3,11 +3,9 @@ import { useState, useEffect, useRef, createContext } from 'react'
 import { Routes, Route, useNavigate, useParams } from 'react-router-dom'
 
 import NotFound from './components/NotFound/NotFound'
-import Home from './components/Home/Home'
+import Home from './pages/Home/Home'
 
 import './App.css'
-
-
 
 const App = () => {
     return (
