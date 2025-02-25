@@ -24,7 +24,7 @@ const App = () => {
     const selectedGameRef = useRef(null)
 
     //Set players in each player list
-    const [homePlayers, setHomePlayers] = useState([{name: "sdflakjsdf", number: 69, position: 'sdfasdf', id: 0}])
+    const [homePlayers, setHomePlayers] = useState([{name: "Gianarlos Fitzgerald-Schneider VIII", number: 69, position: 'RB/WR', id: 0}])
     const [awayPlayers, setAwayPlayers] = useState([])
 
     //Set players for active roster list
@@ -47,12 +47,10 @@ const App = () => {
     useEffect(_ => {
         if(selectedGame) {
             selectedGameRef.current = selectedGame
-            console.log(selectedGame.id)
+            //console.log(selectedGame.id)
             navigate(`/edit/${selectedGame.id}`)
         }
     }, [selectedGame, navigate])
-
-
 
     //What happens when we click a player?  Are they in the player list or the active roster?
     const handleEdit = (type, player) => {
@@ -61,6 +59,7 @@ const App = () => {
         //console.log('type: ' + type)
         //console.log('player: ' + player)
     }
+
     //Close the editor...
     const closeEditor = _ => {
         setEditorType(null)
@@ -69,7 +68,9 @@ const App = () => {
 
     //Update list of players with new, saved information
     const handleSave = updatedPlayer => {
-        //console.log(updatedPlayer)
+
+        console.log(updatedPlayer.team)
+        
         const updateList = (list, setList) => setList(list.map(p => (p.id == updatedPlayer.id ? updatedPlayer : p)))
 
         //console.log("Updated player from " + updatedPlayer.team)
@@ -78,6 +79,8 @@ const App = () => {
             editorType == 'basic'
                 ? updateList(homePlayers, setHomePlayers)
                 : updateList(homeRoster, setHomeRoster)
+
+            console.log(homeRoster)
         }
         if(updatedPlayer.team == 'away'){
             editorType == 'basic'
@@ -164,7 +167,7 @@ const App = () => {
     }
 
     const handleDragStart = (e, player, team) => {
-        console.log("Begin drag")
+        player = {...player, team: team}
         e.dataTransfer.setData('player', JSON.stringify(player))
         e.dataTransfer.setData('team', team)
     }
@@ -241,7 +244,7 @@ const App = () => {
 
                         {/* Selection and Preview Header */}
                         <div className="layout-header">
-                            <LayoutSelector />
+                            <LayoutSelector gameType={selectedGameRef.current?.sport || ""}/>
                             <LayoutPreview />
                         </div>
                         <div className="player-lists">

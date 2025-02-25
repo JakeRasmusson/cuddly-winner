@@ -8,11 +8,19 @@ const LayoutPage = _ => {
     //const { selectedLayout } = useContext(LayoutContext)
 
     const [selectedLayout, setSelectedLayout] = useState(localStorage.getItem('selectedLayout') || null)
+    const [player1, setPlayer1] = useState(localStorage.getItem('player1'))
+    const [player2, setPlayer2] = useState(localStorage.getItem('player2'))
 
     useEffect(_ => {
         const handleStorageChange = event => {
             if(event.key == 'selectedLayout'){
                 setSelectedLayout(event.newValue)
+            }
+            if(event.key == 'player1'){
+                setPlayer1(event.newValue)
+            }
+            if(event.key == 'player2'){
+                setPlayer2(event.newValue)
             }
         }
 
@@ -23,8 +31,26 @@ const LayoutPage = _ => {
 
     return (
         <div>
-            <h1>Statistics Page</h1>
-            <p>Displaying {selectedLayout}</p>
+            {selectedLayout == 'singleplayer' && (
+                <div className="singleplayer-layout">
+                    <h1 className="player-name">{JSON.parse(player1).name}</h1>
+                    <div className="singleplayer-header">
+                        <p>#{JSON.parse(player1).number}</p>
+                        <p>{JSON.parse(player1).position}</p>
+                    </div>
+                    <br />
+                    <div className="singleplayer-stats-card">
+                        {Object.keys(JSON.parse(player1)).map(stat => {
+                            return (!['name', 'number', 'position', 'id', 'team'].includes(stat)) && (
+                                <div className="singleplayer-stats-list" key={stat}>
+                                    <h3>{stat}</h3>
+                                    <p>{JSON.parse(player1)[stat]}</p>
+                                </div>
+                            )
+                        })}
+                    </div>
+                </div>
+            )}
         </div>
     )
 }

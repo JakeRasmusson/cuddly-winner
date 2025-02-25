@@ -18,7 +18,6 @@ const BasicEditor = ({player, onSave, onClose}) => {
         if(window.confirm('Are you sure you want to clear all fields?  This action cannot be undone')){
             setForm({name: '', number: '', position: ''})
         }
-        
     }
 
     const handleSubmit = _ => {

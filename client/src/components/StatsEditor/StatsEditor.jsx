@@ -40,6 +40,9 @@ const calculateShootingAccuracy = (goals, shots) => {
     if(shots == 0) return 0
     return (goals / shots) * 100
 }
+const calculatePoints = (two, three, one) => {
+    return (two * 2) + (three * 3) + one
+}
 
 const sportsStats = {
     baseball: {
@@ -70,8 +73,8 @@ const sportsStats = {
     },
     football: {
         stats: {
-            offense: ['Passing Attempts', 'Completions', 'Passing Yards', 'Touchdowns Thrown', 'Interceptions', 'Quarterback Rating', 'Rushing Attempts', 'Rushing Yards', 'Touchdowns', 'Fumbles', 'Receptions', 'Receiving Yards', 'Targets', 'Sacks Allowed', 'Penalties'],
-            defense: ['Solo Tackles', 'Assisted Tackles', 'Tackles for Loss', 'Sacks', 'Quarterback Hits', 'Interceptions', 'Passes Defended', 'Forced Fumbles', 'Fumble Recoveries', 'Defensive Touchdowns', 'Safety', 'Blocked Kicks', 'Pressures', 'Hurries'],
+            offense: ['Passing Attempts', 'Completions', 'Passing Yards', 'Touchdowns Thrown', 'Interceptions', 'Rushing Attempts', 'Rushing Yards', 'Touchdowns', 'Fumbles', 'Receptions', 'Receiving Yards', 'Targets', 'Sacks Allowed', 'Penalties'],
+            defense: ['Tackles', 'Tackles for Loss', 'Sacks', 'Interceptions', 'Passes Defended', 'Forced Fumbles', 'Fumble Recoveries', 'Defensive Touchdowns', 'Blocked Kicks'],
             autocalculated: {
                 'Completion Percentage': [calculateCompletionPercentage, 'Completions', 'Passing Attempts'],
                 'Yards per Carry': [calculateYardsPerCarry, 'Rushing Yards', 'Rushing Attempts'],
@@ -80,12 +83,13 @@ const sportsStats = {
         }
     },
     basketball: {
-        stats: ['Points', 'Field Goals Made', 'Field Goals Attempted', 'Three-Point Field Goals Made', 'Three-Point Field Goals Attempted', 'Free Throws Made', 'Free Throws Attempted', 'Offensive Rebounds', 'Defensive Rebounds', 'Assists', 'Steals', 'Blocks', 'Deflections', 'Fouls'],
+        stats: ['Field Goals Made', 'Field Goals Attempted', 'Three-Pointers Made', 'Three-Pointers Attempted', 'Free Throws Made', 'Free Throws Attempted', 'Offensive Rebounds', 'Defensive Rebounds', 'Assists', 'Steals', 'Blocks', 'Deflections', 'Fouls'],
         autocalculated: {
             'Field Goal Percentage': [calculateFieldGoalPercentage, 'Field Goals Attempted', 'Field Goals Made'],
-            'Three-Point Percentage':[calculateFieldGoalPercentage, 'Three-Point Field Goals Attempted', 'Three-Point Field Goals Made'],
+            'Three-Point Percentage':[calculateFieldGoalPercentage, 'Three-Pointers Attempted', 'Three-Pointers Made'],
             'Free Throw Percentage': [calculateFieldGoalPercentage, 'Free Throws Attempted', 'Free Throws Made'],
-            'Rebounds': [calculateRebounds, 'Offensive Rebounds', 'Defensive Rebounds']
+            'Rebounds': [calculateRebounds, 'Offensive Rebounds', 'Defensive Rebounds'],
+            'Points': [calculatePoints, 'Field Goals Made', 'Three-Pointers Made', 'Free Throws Made']
         }
     },
     soccer: {
@@ -194,7 +198,6 @@ const StatsEditor = ({ player, onSave, onClose, sport }) => {
         }
     }
 
-
     const handleSubmit = () => {
         onSave({ ...player, ...form, ...autocalculatedResults })
     };
@@ -220,6 +223,30 @@ const StatsEditor = ({ player, onSave, onClose, sport }) => {
 
                 if(newGoals > previousGoals){
                     updatedForm['Shots'] = (prev['Shots'] || 0) + 1
+                }
+            }
+            if(key == 'Field Goals Made'){
+                const previousGoals = prev[key] || 0
+                const newGoals = updatedForm[key]
+
+                if(newGoals > previousGoals){
+                    updatedForm['Field Goals Attempted'] = (prev['Field Goals Attempted'] || 0) + 1
+                }
+            }
+            if(key == 'Three-Pointers Made'){
+                const previousGoals = prev[key] || 0
+                const newGoals = updatedForm[key]
+
+                if(newGoals > previousGoals){
+                    updatedForm['Three-Pointers Attempted'] = (prev['Three-Pointers Attempted'] || 0) + 1
+                }
+            }
+            if(key == 'Free Throws Made'){
+                const previousGoals = prev[key] || 0
+                const newGoals = updatedForm[key]
+
+                if(newGoals > previousGoals){
+                    updatedForm['Free Throws Attempted'] = (prev['Free Throws Attempted'] || 0) + 1
                 }
             }
     
@@ -277,9 +304,9 @@ const StatsEditor = ({ player, onSave, onClose, sport }) => {
                     }
                 </div>
                 <div className="button-group">
-                    <button onClick={onClose}>Cancel</button>
-                    <button onClick={handleClear}>Clear</button>
                     <button onClick={handleSubmit}>Save</button>
+                    <button onClick={handleClear}>Clear</button>
+                    <button onClick={onClose}>Cancel</button>
                 </div>
             </div>
         </div>
