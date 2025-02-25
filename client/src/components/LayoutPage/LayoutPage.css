@@ -1,0 +1,31 @@
+.singleplayer-layout {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.singleplayer-stats-card {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 10px;
+}
+.singleplayer-stats-list h3 {
+    font-size: 15px;
+    color: var(--pale-yellow);
+    border-bottom: 1px solid var(--cadmium-violet);
+}
+
+.singleplayer-header {
+    display: flex;
+    position: relative;
+    width: 50%;
+    align-items: space-around;
+}
+
+.singleplayer-stats-list p {
+    color: var(--corn)
+}
+
+.player-name {
+    border-bottom: 3px solid var(--mustard-yellow);
+}

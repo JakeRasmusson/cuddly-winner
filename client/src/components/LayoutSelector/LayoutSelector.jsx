@@ -58,13 +58,15 @@ const LayoutSelector = ({ gameType }) => {
     
         if (player === 1) setPlayer1(droppedPlayer)
         if (player === 2) setPlayer2(droppedPlayer)
-    
-        if ((updatedPlayer1 || updatedPlayer2) && !(updatedPlayer1 && updatedPlayer2)) {
+
+        if((updatedPlayer1 || updatedPlayer2) && !(updatedPlayer1 && updatedPlayer2)){
             localStorage.setItem('selectedLayout', 'singleplayer')
+            localStorage.setItem('player1', JSON.stringify(droppedPlayer))
         }
     
         if (updatedPlayer1 && updatedPlayer2) {
             localStorage.setItem('selectedLayout', 'playercompare')
+            localStorage.setItem('player2', JSON.stringify(droppedPlayer))
         }
     }
 

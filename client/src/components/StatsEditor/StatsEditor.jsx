@@ -74,7 +74,7 @@ const sportsStats = {
     football: {
         stats: {
             offense: ['Passing Attempts', 'Completions', 'Passing Yards', 'Touchdowns Thrown', 'Interceptions', 'Rushing Attempts', 'Rushing Yards', 'Touchdowns', 'Fumbles', 'Receptions', 'Receiving Yards', 'Targets', 'Sacks Allowed', 'Penalties'],
-            defense: ['Solo Tackles', 'Assisted Tackles', 'Tackles for Loss', 'Sacks', 'Quarterback Hits', 'Interceptions', 'Passes Defended', 'Forced Fumbles', 'Fumble Recoveries', 'Defensive Touchdowns', 'Safety', 'Blocked Kicks', 'Pressures', 'Hurries'],
+            defense: ['Tackles', 'Tackles for Loss', 'Sacks', 'Interceptions', 'Passes Defended', 'Forced Fumbles', 'Fumble Recoveries', 'Defensive Touchdowns', 'Blocked Kicks'],
             autocalculated: {
                 'Completion Percentage': [calculateCompletionPercentage, 'Completions', 'Passing Attempts'],
                 'Yards per Carry': [calculateYardsPerCarry, 'Rushing Yards', 'Rushing Attempts'],
