@@ -24,7 +24,7 @@ const App = () => {
     const selectedGameRef = useRef(null)
 
     //Set players in each player list
-    const [homePlayers, setHomePlayers] = useState([{name: "sdflakjsdf", number: 69, position: 'sdfasdf', id: 0}])
+    const [homePlayers, setHomePlayers] = useState([{name: "Mitchell Fitzgerald-Mahomes VIII", number: 69, position: 'RB/WR', id: 0}])
     const [awayPlayers, setAwayPlayers] = useState([])
 
     //Set players for active roster list
@@ -47,7 +47,7 @@ const App = () => {
     useEffect(_ => {
         if(selectedGame) {
             selectedGameRef.current = selectedGame
-            console.log(selectedGame.id)
+            //console.log(selectedGame.id)
             navigate(`/edit/${selectedGame.id}`)
         }
     }, [selectedGame, navigate])
@@ -69,7 +69,10 @@ const App = () => {
 
     //Update list of players with new, saved information
     const handleSave = updatedPlayer => {
-        //console.log(updatedPlayer)
+        localStorage.setItem(updatedPlayer.name, updatedPlayer)
+
+        console.log(updatedPlayer)
+        
         const updateList = (list, setList) => setList(list.map(p => (p.id == updatedPlayer.id ? updatedPlayer : p)))
 
         //console.log("Updated player from " + updatedPlayer.team)

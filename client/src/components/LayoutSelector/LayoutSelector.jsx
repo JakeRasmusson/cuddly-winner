@@ -30,7 +30,6 @@ const LayoutSelector = ({ gameType }) => {
 
     const handleButtonSelect = layoutId => {
         setSelectedLayout(layoutId)
-        console.log(layoutId)
         localStorage.setItem('selectedLayout', layoutId)
     }
 
@@ -51,6 +50,8 @@ const LayoutSelector = ({ gameType }) => {
         e.preventDefault()
     
         const droppedPlayer = JSON.parse(e.dataTransfer.getData('player'))
+
+        console.log(droppedPlayer)
     
         const updatedPlayer1 = player === 1 ? droppedPlayer : player1
         const updatedPlayer2 = player === 2 ? droppedPlayer : player2

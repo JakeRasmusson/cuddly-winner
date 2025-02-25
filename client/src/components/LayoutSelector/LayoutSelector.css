@@ -21,7 +21,7 @@
 .player-1-drop, .player-2-drop {
     width: 40%;
     height: 80%;
-    background-color: var(--dark-purple-1)
+    background-color: var(--dark-purple-2)
 }
 
 .player-compare-card {
@@ -62,5 +62,7 @@
     
 }
 .position-select:focus {
+    outline: none;
     border-color: var(--mustard-yellow);
+    box-shadow: 0 0 5px var(--mustard-yellow);
 }
