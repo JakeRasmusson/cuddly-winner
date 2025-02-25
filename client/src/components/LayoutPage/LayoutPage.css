@@ -7,7 +7,7 @@
 .singleplayer-stats-card {
     display: grid;
     grid-template-columns: repeat(6, 1fr);
-    gap: 10px;
+    column-gap: 30px;
 }
 .singleplayer-stats-list h3 {
     font-size: 15px;
@@ -16,10 +16,15 @@
 }
 
 .singleplayer-header {
-    display: flex;
-    position: relative;
-    width: 50%;
-    align-items: space-around;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    column-gap: 200px;
+}
+
+.singleplayer-header p {
+    margin: 0 auto;
+    font-size: 20px;
+    font-weight: 300;
 }
 
 .singleplayer-stats-list p {

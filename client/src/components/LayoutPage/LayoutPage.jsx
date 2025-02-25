@@ -35,13 +35,14 @@ const LayoutPage = _ => {
                 <div className="singleplayer-layout">
                     <h1 className="player-name">{JSON.parse(player1).name}</h1>
                     <div className="singleplayer-header">
-                        #{JSON.parse(player1).number}
-                        {JSON.parse(player1).position}
+                        <p>#{JSON.parse(player1).number}</p>
+                        <p>{JSON.parse(player1).position}</p>
                     </div>
+                    <br />
                     <div className="singleplayer-stats-card">
                         {Object.keys(JSON.parse(player1)).map(stat => {
                             return (!['name', 'number', 'position', 'id', 'team'].includes(stat)) && (
-                                <div className="singleplayer-stats-list">
+                                <div className="singleplayer-stats-list" key={stat}>
                                     <h3>{stat}</h3>
                                     <p>{JSON.parse(player1)[stat]}</p>
                                 </div>
