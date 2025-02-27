@@ -19,7 +19,30 @@ const NotFound = () => {
       >
         Home
       </Link>
+
+      <img src={Dale} className="absolute bottom-0 right-5"/>
+      <svg
+        class="absolute right-90 bottom-35 w-24 h-24 text-orange-500 transform rotate-0"
+        viewBox="0 0 150 150"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M10 80 Q50 20 90 20"
+          stroke="currentColor"
+          stroke-width="4"
+          fill="none"
+          stroke-linecap="round"
+        />
+        <polygon
+          points="90,10 90,30 110,20"
+          fill="currentColor"
+        />
+      </svg>
+
+      <p className="text-yellow-200 text-xl absolute right-110 bottom-35">Dale</p>
     </div>
+
+    
   );
 };
 

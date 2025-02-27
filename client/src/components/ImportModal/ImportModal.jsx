@@ -1,19 +1,21 @@
 import React, { useState, useRef } from 'react'
 
-import { usePlayerList } from '../../contexts/playerListContext';
+import { useHomePlayers } from '../../contexts/homePlayersContext'
+import { useAwayPlayers } from '../../contexts/awayPlayersContext'
 
 const ImportModal = ({ onClose }) => {
+
+    const { homePlayers, setHomePlayers } = useHomePlayers()
+    const { awayPlayers, setAwayPlayers } = useAwayPlayers()
 
     const fileInputRef = useRef(null)
 
     const [isHome, setIsHome] = useState(true)
 
-    const [homePlayers, setHomePlayers] = useState([])
-    const [awayPlayers, setAwayPlayers] = useState([])
+    //const [homePlayers, setHomePlayers] = useState([])
+    //const [awayPlayers, setAwayPlayers] = useState([])
     const [homeFileName, setHomeFileName] = useState(null)
     const [awayFileName, setAwayFileName] = useState(null)
-
-    //const { addPlayer, playerList } = usePlayerList();
 
     const handleToggle = () => {
         setIsHome(prev => !prev)
@@ -84,9 +86,9 @@ const ImportModal = ({ onClose }) => {
                 grade: player[3],
                 height: player[4],
                 weight: player[5],
-                team: isHome ? 'home' : 'away',
-                id: index + 1
+                team: isHome ? 'home' : 'away'
             }
+            obj[player[1]].id = obj[player[1]].team + index
         })
 
         return obj
@@ -107,15 +109,9 @@ const ImportModal = ({ onClose }) => {
         }
     }
 
-    const handleConfirm = _ => {
-        console.log("DO SOMETHING WITH THE PLAYERS HERE")
-
-        onClose()
-    }
-
     return (
         <div className="flex absolute w-[100%] h-[100%] left-0 top-0 bg-black/20 items-center justify-center">
-            <div className="flex flex-col bg-black/80 w-1/2 h-1/2 rounded-2xl border-2 border-yellow-400 shadow-[0_0_25px_rgb(250,204,21)] relative">
+            <div className="flex flex-col bg-[rgba(28,12,34,0.8)] w-1/2 h-1/2 rounded-2xl border-2 border-yellow-400 shadow-[0_0_25px_rgb(250,204,21)] relative">
                 <h1 className="self-center pt-4 border-b-1 text-2xl font-extralight tracking-[8px] text-yellow-300 w-[80%]">
                     Select CSV to Import a Team
                 </h1>
@@ -140,7 +136,7 @@ const ImportModal = ({ onClose }) => {
 
                 <button
                     onClick={handleImportClick}
-                    className="mt-4 mx-auto w-50 rounded-md border border-purple-500 bg-black py-2 font-bold tracking-widest text-yellow-50 shadow hover:cursor-pointer hover:bg-neutral-800 hover:shadow-[0_0_10px_rgb(250,204,21)]"
+                    className="mt-4 mx-auto w-50 rounded-md border border-purple-500 bg-purple-300/10 py-2 font-bold tracking-widest text-yellow-50 hover:cursor-pointer hover:shadow-[0_0_10px_rgb(168,85,247)]"
                 >Import</button>
 
                 {/* Populate Player Display */}
@@ -199,14 +195,14 @@ const ImportModal = ({ onClose }) => {
                 </div>
 
                 <button
-                    onClick={handleConfirm}
-                    className="bg-yellow-400 text-black px-6 py-2 rounded-lg font-bold hover:bg-yellow-500 absolute bottom-3 left-3 hover:cursor-pointer transition-all duration:500"
+                    onClick={onClose}
+                    className="border-1 border-yellow-200 bg-yellow-200/20 text-yellow-200 px-6 py-2 rounded-lg font-bold hover:shadow-[0_0_10px_rgb(250,204,21)] absolute bottom-3 left-3 hover:cursor-pointer transition-all duration:500"
                 >
-                    Confirm Import
+                    Confirm Teams
                 </button>
                 <button
                     onClick={onClose}
-                    className="ml-4 bg-red-400 text-black px-6 py-2 rounded-lg font-bold hover:bg-red-500 absolute bottom-3 right-3 hover:cursor-pointer transition-all duration:500"
+                    className="ml-4 border-1 border-red-300 text-red-200 bg-red-300/20 px-6 py-2 rounded-lg font-bold hover:shadow-[0_0_10px_rgb(239,68,68)] absolute bottom-3 right-3 hover:cursor-pointer transition-all duration:500"
                 >
                     Cancel
                 </button>

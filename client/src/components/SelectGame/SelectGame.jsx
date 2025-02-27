@@ -66,7 +66,7 @@ const SelectGame = () => {
                 </p>
 
                 <h2 className="absolute bottom-2 text-2xl tracking-wide text-yellow-200">
-                  {element.away}@{element.home}
+                  {element.team1.town} VS {element.team2.town}
                 </h2>
               </div>
             ))}

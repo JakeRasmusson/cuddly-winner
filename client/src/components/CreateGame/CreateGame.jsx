@@ -1,35 +1,49 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef } from "react"
 
-import { useGameList } from "../../contexts/gameListContext";
-import { useEditingGame } from "../../contexts/editingGameContext";
+import { useGameList } from "../../contexts/gameListContext"
+import { useEditingGame } from "../../contexts/editingGameContext"
+import { useHomePlayers } from "../../contexts/homePlayersContext"
+import { useAwayPlayers } from "../../contexts/awayPlayersContext"
 
-import ImportModal from "../ImportModal/ImportModal";
+import ImportModal from "../ImportModal/ImportModal"
 
 const CreateGame = () => {
 
   //Define home, away, and sport for a new game
-  const [homeTeam, setHomeTeam] = useState("");
-  const [visitingTeam, setVisitingTeam] = useState("");
-  const [sport, setSport] = useState("");
+  const [homeTeam, setHomeTeam] = useState("")
+  const [visitingTeam, setVisitingTeam] = useState("")
+  const [sport, setSport] = useState("")
+  //const [players, setPlayers] = useState([])
+  const { homePlayers, setHomePlayers } = useHomePlayers()
+  const { awayPlayers, setAwayPlayers } = useAwayPlayers()
 
   //Show the import modal
-  const [showImportModal, setShowImportModal] = useState(false);
+  const [showImportModal, setShowImportModal] = useState(false)
 
   //Use context for accessing the game list and whatever game is currently being edited
-  const { addGame } = useGameList();
-  const { setEditingGame } = useEditingGame();
+  const { addGame } = useGameList()
+  const { setEditingGame } = useEditingGame()
 
   //Upon creation of a new game
-  const handleCreateGame = (homeTeam, visitingTeam, sport) => {
+  const handleCreateGame = (homeTeam, visitingTeam, sport, homeP, awayP) => {
+
+    console.log(homePlayers)
+
     const newGame = {
       id: Date.now(),
-      home: homeTeam,
-      away: visitingTeam,
       sport: sport,
-    };
+      team1: {
+        town: homeTeam,
+        players: homeP,
+      },
+      team2: {
+        town: visitingTeam,
+        players: awayP
+      }
+    }
 
-    setEditingGame(newGame.id); //Automatically switch the current editing game to the newly created one
-    addGame(newGame); //Add the new game to the current list of available games
+    setEditingGame(newGame.id) //Automatically switch the current editing game to the newly created one
+    addGame(newGame) //Add the new game to the current list of available games
   }
 
   return (
@@ -87,30 +101,56 @@ const CreateGame = () => {
         </div>
 
         <button
-          className="mx-auto my-8 w-50 rounded-md border border-yellow-200 bg-black py-2 font-bold tracking-widest text-yellow-50 shadow hover:cursor-pointer hover:bg-neutral-800 hover:shadow-[0_0_10px_rgb(250,204,21)]"
-          onClick={(_) => setShowImportModal(true)}
+          className="mx-auto mt-8 w-50 rounded-md border border-yellow-200 bg-black py-2 font-bold tracking-widest text-yellow-50 shadow hover:cursor-pointer hover:bg-neutral-800 hover:shadow-[0_0_10px_rgb(250,204,21)]"
+          onClick={_ => setShowImportModal(true)}
         >
-          Import Players
+          Import Teams
         </button>
 
+        <div className="self-center flex w-[30%] flex-col pt-2">
+          <div className="relative flex items-center justify-between">
+            <p className="text-sm">Home Team</p>
+            { homePlayers.length ?
+              <i className="fa-solid fa-check text-green-500 scale-75" /> :
+              <i className="fa-solid fa-x text-red-500 scale-75" />
+            }
+          </div>
+          <div className="relative flex items-center justify-between">
+            <p className="text-sm">Visiting Team</p>
+            { awayPlayers.length ?
+              <i className="fa-solid fa-check text-green-500 scale-75" /> :
+              <i className="fa-solid fa-x text-red-500 scale-75" />
+            }
+          </div>
+        </div>
+
         <button
-          className="mx-auto w-50 rounded-md border border-yellow-200 bg-black py-2 font-bold tracking-widest text-yellow-50 shadow hover:cursor-pointer hover:bg-neutral-800 hover:shadow-[0_0_10px_rgb(250,204,21)]"
-          onClick={(_) => {
+          className="mx-auto w-50 mt-8 rounded-md border border-yellow-200
+                   bg-black py-2 font-bold tracking-widest text-yellow-50
+                     shadow hover:cursor-pointer hover:bg-neutral-800
+                     hover:shadow-[0_0_10px_rgb(250,204,21)]"
+          onClick={_ => {
             if (homeTeam.trim() && visitingTeam.trim()) {
-              handleCreateGame(homeTeam, visitingTeam, sport);
-              setHomeTeam("");
-              setVisitingTeam("");
-              setSport("");
+              handleCreateGame(homeTeam, visitingTeam, sport, homePlayers, awayPlayers)
+              setHomeTeam("")
+              setVisitingTeam("")
+              setSport("")
+              setHomePlayers([])
+              setAwayPlayers([])
             }
           }}
         >
           Create Game
         </button>
 
-        {showImportModal ? <ImportModal onClose={_ => setShowImportModal(false)} /> : <div>Not Showing</div>}
+        {showImportModal && (
+          <ImportModal 
+            onClose={_ => setShowImportModal(false)}
+          />
+        )}
       </div>
     </>
-  );
-};
+  )
+}
 
-export default CreateGame;
+export default CreateGame
