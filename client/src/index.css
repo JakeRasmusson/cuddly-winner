@@ -12,20 +12,19 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-
   --pale-yellow: rgb(255, 240, 150);
   --corn: rgb(255, 232, 99);
   --gargoyle-gas: rgb(255, 217, 61);
   --orange-yellow: rgb(245, 189, 31);
   --mustard-yellow: rgb(204, 160, 30);
   --goldenrod: rgb(218, 165, 32);
-  
+
   --cadmium-violet: rgb(135, 54, 170);
   --ksu-purple: rgb(93, 38, 137);
   --spanish-violet: rgb(71, 41, 123);
   --dark-purple-1: rgb(50, 30, 90);
   --dark-purple-2: rgb(35, 20, 60);
-  --dark-purple-3: rgb(28, 12, 34);     /*Background*/
+  --dark-purple-3: rgb(28, 12, 34); /*Background*/
 
   --light-grey: rgb(200, 200, 200);
   --med-grey: rgb(150, 150, 150);

@@ -1,36 +1,35 @@
-
-import { useState, useEffect, useRef } from 'react'
-import { Routes, Route, useNavigate, useParams } from 'react-router-dom'
+import { useState, useEffect, useRef } from "react";
+import { Routes, Route, useNavigate, useParams } from "react-router-dom";
 
 //Contexts
+import AppProviders from "./contexts/AppProviders";
 
 //Components
-import NotFound from './components/NotFound/NotFound'
+import NotFound from "./components/NotFound/NotFound";
 
 //Pages
-import Home from './pages/Home/Home'
-import Editor from './pages/Editor/Editor'
+import Home from "./pages/Home/Home";
+import Editor from "./pages/Editor/Editor";
 
-import './App.css'
+import "./App.css";
 
 const App = () => {
+  return (
+    <>
+      <AppProviders>
+        <Routes>
+          {/* Landing page (create game, select game) */}
+          <Route path="/" element={<Home />} />
 
-    const gameList = []
+          {/* Editing selected game */}
+          <Route path="/edit/:gameId" element={<Editor />} />
 
-    return (
-        <>
-            <Routes>
-                { /* Landing page (create game, select game) */ }
-                <Route path='/' element={ <Home gameList={gameList} /> } />
+          {/* 404 Page (Dale :D) */}
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </AppProviders>
+    </>
+  );
+};
 
-                { /* Editing selected game */ }
-                <Route path='/edit' element={ <Editor />} />
-
-                { /* 404 Page (Dale :D) */ }
-                <Route path='*' element={ <NotFound /> } />
-            </Routes>
-        </>
-    )
-}
-
-export default App
+export default App;
