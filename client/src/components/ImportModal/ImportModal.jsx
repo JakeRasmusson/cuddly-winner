@@ -201,7 +201,7 @@ const ImportModal = ({ onClose }) => {
                     Confirm Teams
                 </button>
                 <button
-                    onClick={onClose}
+                    onClick={_ => {clearUpload('home'), clearUpload('away'), onClose()}}
                     className="ml-4 border-1 border-red-300 text-red-200 bg-red-300/20 px-6 py-2 rounded-lg font-bold hover:shadow-[0_0_10px_rgb(239,68,68)] absolute bottom-3 right-3 hover:cursor-pointer transition-all duration:500"
                 >
                     Cancel
