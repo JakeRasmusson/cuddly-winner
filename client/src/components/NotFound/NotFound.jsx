@@ -1,7 +1,7 @@
-import { Link } from "react-router-dom";
-import Dale from "../../assets/Dale_nobackground.png";
+import { Link } from "react-router-dom"
+import Dale from "../../assets/Dale_nobackground.png"
 
-const NotFound = () => {
+const NotFound = _ => {
   return (
     <div className="pt-10 text-8xl">
       <p className="text-5xl font-extrabold tracking-widest text-yellow-400">

@@ -1,21 +1,24 @@
 import React, { useState, useRef } from 'react'
 
+//Contexts
 import { useHomePlayers } from '../../contexts/homePlayersContext'
 import { useAwayPlayers } from '../../contexts/awayPlayersContext'
 
 const ImportModal = ({ onClose }) => {
 
+    //Contexts
     const { homePlayers, setHomePlayers } = useHomePlayers()
     const { awayPlayers, setAwayPlayers } = useAwayPlayers()
 
+    //References
     const fileInputRef = useRef(null)
 
+    //States
     const [isHome, setIsHome] = useState(true)
-
-    //const [homePlayers, setHomePlayers] = useState([])
-    //const [awayPlayers, setAwayPlayers] = useState([])
     const [homeFileName, setHomeFileName] = useState(null)
     const [awayFileName, setAwayFileName] = useState(null)
+
+    //This is all pretty much the same as `AddModal.jsx`, just a little bit simlper cause there's no form to handle individual creation
 
     const handleToggle = () => {
         setIsHome(prev => !prev)
@@ -33,9 +36,9 @@ const ImportModal = ({ onClose }) => {
         }
 
         e.target.value = ''
-    };
+    }
     
-    const readFile = (file) => {
+    const readFile = file => {
         const reader = new FileReader()
 
         reader.onload = _ => {
@@ -63,7 +66,7 @@ const ImportModal = ({ onClose }) => {
         reader.readAsText(file)
     }
 
-    const parseCSV = (contents) => {
+    const parseCSV = contents => {
         const lines = contents.split("\n")
 
         let players = []

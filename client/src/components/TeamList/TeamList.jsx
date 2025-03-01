@@ -1,34 +1,47 @@
 import React, { useState } from 'react'
 
+//Components
 import Player from '../Player/Player'
 import AddModal from '../AddModal/AddModal'
 
+//Contexts
 import { useGameList } from '../../contexts/gameListContext'
 
+//CSS cause spinner arrows on the number lookup field  :rolling_eyes:
 import './TeamList.css'
+
 
 const TeamList = ({ game }) => {
 
+    //Contexts
     const { gameList, editGame } = useGameList()
 
-    const [team1Search, setTeam1Search] = useState('')
-    const [team2Search, setTeam2Search] = useState('')
+    //STates
+    const [team1Search, setTeam1Search] = useState('') //Filtering team 1 by this number
+    const [team2Search, setTeam2Search] = useState('') //Filtering team 2 by this number
 
+    //Only show the players that have a number that matches whatever the user wanted to search for
     const filteredTeam1Players = game.team1.players.filter(player => player.number.toString().includes(team1Search)).filter(player => !player.active)
     const filteredTeam2Players = game.team2.players.filter(player => player.number.toString().includes(team2Search)).filter(player => !player.active)
 
+    //Are they wanting to add players?
     const [showAddModal, setShowAddModal] = useState(false)
 
     //Remove player completely from the game (remove icon when in player list)
     const handleDeletePlayer = player => {
+        //Throw an alert that warns the user of what they are going to do, allow them to back out one last time
         if(window.confirm(`Are you sure you want to permanently remove ${player.name} from the game?\n\nAll stats will be lost, this action cannot be undone`)){
+            
+            //If the victim was on the home (team 1) team, filter them out of the current array, and update the array to not include them
             if(player.team == 'home'){
                 const updatedPlayers = game.team1.players.filter(p => p.id != player.id)
 
                 game.team1.players = updatedPlayers
 
-                editGame(game)
+                editGame(game) //Trigger re-render
             }
+
+            //Same as home, but away
             if(player.team == 'away'){
                 const updatedPlayers = game.team2.players.filter(p => p.id != player.id)
 

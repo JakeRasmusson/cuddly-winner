@@ -1,23 +1,29 @@
 import React, { useState, useRef } from 'react'
 
+//Contexts
 import { useGameList } from '../../contexts/gameListContext'
 
 const AddModal = ({ game, onClose }) => {
 
+    //Prevent scrolling when the modal is open so you can't see the bottom of the transparent background
     document.body.style.overflow = "hidden"
 
+    //Contexts
     const { gameList, editGame } = useGameList()
 
+    //References
     const fileInputRef = useRef(null)
 
-    const [isHome, setIsHome] = useState(true)
-    const [homeFileName, setHomeFileName] = useState('')
+    //States
+    const [isHome, setIsHome] = useState(true)            //For toggle switch
+
+    const [homeFileName, setHomeFileName] = useState('')  //For displaying file name when uploading
     const [awayFileName, setAwayFileName] = useState('')
 
-    const [homePlayers, setHomePlayers] = useState([])
+    const [homePlayers, setHomePlayers] = useState([])    //For storing players to concatenate with exiting player list
     const [awayPlayers, setAwayPlayers] = useState([])
 
-    const [formData, setFormData] = useState({
+    const [formData, setFormData] = useState({            //For creation of single player
         name: '',
         number: '',
         position: '',
@@ -27,60 +33,72 @@ const AddModal = ({ game, onClose }) => {
     })
 
 
-    const handleToggle = () => {
+    //Alternate 'isHome' state back and forth when the switch is toggled
+    const handleToggle = _ => {
         setIsHome(prev => !prev)
     }
 
+    //Import button, register the click on the file input
     const handleImportClick = _ => {
         fileInputRef.current.click()
     }
 
+    //When a file is selected...
     const handleFileSelection = e => {
         const file = e.target.files[0]
     
+        //Read it
         if (file) {
             readFile(file)
         }
 
         e.target.value = ''
-    };
+    }
     
-    const readFile = (file) => {
+
+    const readFile = file => {
         const reader = new FileReader()
 
         reader.onload = _ => {
+
             const fileContents = reader.result
             const parsedPlayers = parseCSV(fileContents)
 
             if(isHome){
-                setHomePlayers(Object.values(parsedPlayers))
-                setHomeFileName(file.name)
+                setHomePlayers(Object.values(parsedPlayers))  //  Upload parsed players into Home team
+                setHomeFileName(file.name)                    //  Save the file name so it can be displayed prettier than default
             }
             else {
-                setAwayPlayers(Object.values(parsedPlayers))
+                setAwayPlayers(Object.values(parsedPlayers))  //  Same but with away
                 setAwayFileName(file.name)
             }
 
+            //Reset the file reference so we can upload another one
             if(fileInputRef.current){
                 fileInputRef.current.value = ''
             }
         }
 
+        //Throw an error if something goes wrong
         reader.onerror = (error) => {
-            console.error("Error while reading file:", error)
+            console.error('Error while reading file:', error)
         }
 
         reader.readAsText(file)
     }
 
-    const parseCSV = (contents) => {
+    //Custom CSV Parser
+    const parseCSV = contents => {
+        //Break into individual lines
         const lines = contents.split("\n")
 
         let players = []
 
+        //For every line, get rid of the double quotes and separate into cells by breaking on commas
         for (let line of lines) {
-            let curLine = line.replace(/\"/g, "").split(",")
+            let curLine = line.replace(/\"/g, '').split(',')
 
+            //If the first line is a number, which signifies a player, then add them to the array
             if (!isNaN(parseInt(curLine[0]))) {
                 players.push(curLine)
             }
@@ -88,6 +106,7 @@ const AddModal = ({ game, onClose }) => {
 
         let obj = {}
 
+        //Create a new player object for each player in this array
         players.forEach((player, index) => {
             obj[player[1]] = {
                 name: player[1],
@@ -105,7 +124,9 @@ const AddModal = ({ game, onClose }) => {
         return obj
     }
 
+    //If the user decides they uploaded the wrong file, let them clear it out
     const clearUpload = team => {
+        //Reset the file name and player array
         if(team == 'home'){
             setHomePlayers([])
             setHomeFileName(null)
@@ -115,27 +136,39 @@ const AddModal = ({ game, onClose }) => {
             setAwayFileName(null)
         }
 
+        //And don't forget the file reference!
         if(fileInputRef.current){
             fileInputRef.current.value = ""
         }
     }
 
+    //If the user decides they're happy with the uploads, then add the players to their respective teams
     const onConfirm = _ => {
+        //Update the ids so that there aren't any overlaps if players did exist in the team already...
         homePlayers.forEach(player => player.id += game.team1.players.length)
         awayPlayers.forEach(player => player.id += game.team2.players.length)
 
+        //Combine the new players with the old ones
         game.team1.players = [...game.team1.players, ...homePlayers]
         game.team2.players = [...game.team2.players, ...awayPlayers]
 
+        //Edit the game state to trigger a rerender
         editGame(game)
 
+        //Close the form
         onClose()
     }
 
+    //If the user decides they want to add a player that was created separately...
     const handleCreatePlayer = e => {
-        e.preventDefault()
+
+        //Pretty sure this is just for form submission but I'm not using that anymore, oh well now we're preventing default behavior
+        e.preventDefault()   
+        
+        //Are we adding to the home or away team?
         const team = isHome ? 'home' : 'away'
 
+        //Create a new player object holding all the information that was entered in the form
         const newPlayer = {
             grade: formData.grade,
             height: formData.height,
@@ -148,6 +181,7 @@ const AddModal = ({ game, onClose }) => {
             active: false
         }
 
+        //Add them to the proper array
         if(isHome){
             game.team1.players = [...game.team1.players, newPlayer]
         }
@@ -155,8 +189,10 @@ const AddModal = ({ game, onClose }) => {
             game.team2.players = [...game.team2.players, newPlayer]
         }
 
+        //Edit the game to trigger a rerender
         editGame(game)
 
+        //Be sure to clear the form so they can make another one if they want
         setFormData({
             name: '',
             number: '',
@@ -167,6 +203,7 @@ const AddModal = ({ game, onClose }) => {
         })
     }
 
+    //Update the value of the form state if an input changes!
     const handleChange = e => {
         const { name, value } = e.target
         setFormData(prevState => ({
@@ -179,6 +216,7 @@ const AddModal = ({ game, onClose }) => {
         <>
             <div className="fixed flex w-[100%] h-[100%] left-0 top-0 bg-black/20 items-center justify-center">
                 <div className="flex flex-col bg-[rgba(28,12,34,0.9)] w-[80%] h-1/2 rounded-2xl border-2 border-yellow-400 shadow-[0_0_25px_rgb(250,204,21)] relative">
+                    
                     <h1 className="self-center pt-4 border-b-1 text-2xl font-extralight tracking-[8px] text-yellow-300 w-[80%]">
                         Import a File or Create a New Player
                     </h1>
@@ -368,9 +406,6 @@ const AddModal = ({ game, onClose }) => {
                         </div>
                     </form>
                 </div>
-
-
-
             </div>
         </>
     )

@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 
 const Player = ({ player, handleIconClick }) => {
 
+    //Set transfer data when we grab a player
     const onDragStart = e => {
         e.dataTransfer.setData('application/json', JSON.stringify(player))
     }
