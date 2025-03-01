@@ -86,7 +86,8 @@ const ImportModal = ({ onClose }) => {
                 grade: player[3],
                 height: player[4],
                 weight: player[5],
-                team: isHome ? 'home' : 'away'
+                team: isHome ? 'home' : 'away',
+                active: false
             }
             obj[player[1]].id = obj[player[1]].team + index
         })
@@ -115,6 +116,7 @@ const ImportModal = ({ onClose }) => {
                 <h1 className="self-center pt-4 border-b-1 text-2xl font-extralight tracking-[8px] text-yellow-300 w-[80%]">
                     Select CSV to Import a Team
                 </h1>
+                
                 <div className="absolute bottom-4 w-full flex justify-center items-center">
                     <p className="font-light text-yellow-300 tracking-widest mr-5">Home</p>
                     { /* https://www.creative-tim.com/twcomponents/component/toggle-switches */}

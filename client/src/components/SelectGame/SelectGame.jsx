@@ -24,9 +24,9 @@ const SelectGame = () => {
 
   //Beautify the game ID to display it as a date
   const parseDate = (dateObj) => {
-    const month = dateObj.getUTCMonth();
-    const day = dateObj.getUTCDate();
-    const year = dateObj.getUTCFullYear();
+    const month = dateObj.getMonth();
+    const day = dateObj.getDate();
+    const year = dateObj.getFullYear();
 
     const monthString =
       "January February March April May June July August September October November December".split(

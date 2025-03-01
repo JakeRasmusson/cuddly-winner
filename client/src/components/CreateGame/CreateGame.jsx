@@ -27,8 +27,6 @@ const CreateGame = () => {
   //Upon creation of a new game
   const handleCreateGame = (homeTeam, visitingTeam, sport, homeP, awayP) => {
 
-    console.log(homePlayers)
-
     const newGame = {
       id: Date.now(),
       sport: sport,

@@ -23,15 +23,125 @@ const Editor = () => {
     sport: "Cup Stacking",
     team1: {
       town: "Town 1",
-      players: []
+      players: [
+        {
+          grade: "11",
+          height: "6'2",
+          id: "home0",
+          name: "Mark Abelang",
+          number: "15",
+          position: "TE/LB",
+          team: "home",
+          weight: "182",
+          active: false
+        },
+        {
+          grade: "12",
+          height: "5'11",
+          id: "home1",
+          name: "Joesepth Smith",
+          number: "69",
+          position: "QB/RB",
+          team: "home",
+          weight: "205",
+          active: false
+        },
+        {
+          grade: "12",
+          height: "5'11",
+          id: "home2",
+          name: "Reallylongplayer NameTest1",
+          number: "9",
+          position: "QB/RB",
+          team: "home",
+          weight: "205",
+          active: false
+        },
+        {
+          grade: "12",
+          height: "5'1",
+          id: "home3",
+          name: "Test player 2",
+          number: "34",
+          position: "QB/RB",
+          team: "home",
+          weight: "205",
+          active: false
+        },
+        {
+          grade: "12",
+          height: "5'11",
+          id: "home4",
+          name: "Test player 3",
+          number: "96",
+          position: "QB/RB",
+          team: "home",
+          weight: "205",
+          active: false
+        },
+      ]
     },
     team2: {
       town: "Town 2",
-      players: []
+      players: [
+        {
+          grade: "11",
+          height: "6'2",
+          id: "away0",
+          name: "away Mark Abelang",
+          number: "15",
+          position: "TE/LB",
+          team: "away",
+          weight: "182",
+          active: false
+        },
+        {
+          grade: "12",
+          height: "5'11",
+          id: "away1",
+          name: "Joesepth asdf Smith",
+          number: "69",
+          position: "QB/RB",
+          team: "away",
+          weight: "205",
+          active: false
+        },
+        {
+          grade: "12",
+          height: "5'11",
+          id: "away2",
+          name: "a really long player name test abcde",
+          number: "45",
+          position: "QB/RB",
+          team: "away",
+          weight: "205",
+          active: false
+        },
+        {
+          grade: "12",
+          height: "5'1",
+          id: "away3",
+          name: "steven h rodrick",
+          number: "73",
+          position: "QB/RB",
+          team: "away",
+          weight: "205",
+          active: false
+        },
+        {
+          grade: "12",
+          height: "5'11",
+          id: "away4",
+          name: "Test player 3",
+          number: "64",
+          position: "QB/RB",
+          team: "away",
+          weight: "205",
+          active: false
+        },
+      ]
     }
   }
-
-  console.log(game.team1.players)
 
   //Upon click of the back button
   const handleReturn = (_) => {
@@ -43,7 +153,7 @@ const Editor = () => {
     <>
       <button
         onClick={handleReturn}
-        className="absolute top-5 left-5 cursor-pointer rounded-md border-1 border-yellow-400 bg-transparent px-5 py-1 text-yellow-200 shadow transition-all duration-300 hover:bg-white/15 hover:shadow-[0_0_10px_rgb(250,204,21)]"
+        className="text-sm absolute top-3 left-3 cursor-pointer rounded-md border-1 border-yellow-400 bg-transparent px-2 py-1 text-yellow-200 shadow transition-all duration-300 hover:bg-white/15 hover:shadow-[0_0_10px_rgb(250,204,21)]"
       >
         Return to Game List
       </button>
@@ -64,7 +174,7 @@ const Editor = () => {
 
       <div className="flex">
         <ActiveRoster game={game}/>
-        <TeamList game={game}/>
+        <TeamList game={game} />
       </div>
     </>
   )
