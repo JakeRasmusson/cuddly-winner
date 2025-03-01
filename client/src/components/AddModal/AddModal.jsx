@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react'
 
-const AddModal = ({ onClose }) => {
+const AddModal = ({ game, onClose }) => {
 
     const fileInputRef = useRef(null)
 
@@ -104,18 +104,18 @@ const AddModal = ({ onClose }) => {
             <div className="absolute flex w-[100%] h-full left-0 top-0 bg-black/20 items-center justify-center">
                 <div className="flex flex-col bg-[rgba(28,12,34,0.8)] w-[80%] h-1/2 rounded-2xl border-2 border-yellow-400 shadow-[0_0_25px_rgb(250,204,21)] relative">
                     <h1 className="self-center pt-4 border-b-1 text-2xl font-extralight tracking-[8px] text-yellow-300 w-[80%]">
-                        Manage Players: Import or Create
+                        Import a File or Create a New Player
                     </h1>
 
                     {/* Toggle */}
                     <div className="absolute bottom-4 w-full flex justify-center items-center">
-                        <p className="font-light text-yellow-300 tracking-widest mr-5">Home</p>
+                        <p className="font-light text-yellow-300 tracking-widest mr-5">{game.team1.town}</p>
                         { /* https://www.creative-tim.com/twcomponents/component/toggle-switches */}
                         <label className="relative inline-flex cursor-pointer items-center">
                             <input id="switch" type="checkbox" className="peer sr-only" checked={!isHome} onChange={handleToggle}/>
                             <div className="peer h-4 w-11 rounded-full border bg-purple-300 after:absolute after:-top-1 after:left-0 after:h-6 after:w-6 after:rounded-full after:border-6 after:border-gray-300 after:bg-purple-900 after:transition-all duration-100 after:content-[''] peer-checked:bg-yellow-200 peer-checked:after:translate-x-full"></div>
                         </label>
-                        <p className="font-light text-yellow-300 tracking-widest ml-5">Away</p>
+                        <p className="font-light text-yellow-300 tracking-widest ml-5">{game.team2.town}</p>
                     </div>
 
                     {/* File Upload */}

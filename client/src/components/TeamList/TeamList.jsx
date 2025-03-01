@@ -104,7 +104,7 @@ const TeamList = ({ game }) => {
             </div>
 
             {showAddModal && (
-                <AddModal onClose={_ => setShowAddModal(false)} />
+                <AddModal game={game} onClose={_ => setShowAddModal(false)} />
             )}
         </>
     )
