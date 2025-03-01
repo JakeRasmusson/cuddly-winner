@@ -52,7 +52,7 @@ const TeamList = ({ game }) => {
 
                     <div className="px-5 w-[46%] flex flex-col max-h-[400px] items-center">
                         <p className="border-b-1 text-lg italic tracking-widest w-auto min-w-[70%] self-center mb-5">{game.team1.town}</p>
-                        <div className="overflow-auto flex flex-col h-[400px] w-full self-center bg-black/30">
+                        <div className="overflow-auto flex flex-col h-[400px] w-full self-center bg-black/30 overscroll-none">
                             {
                                 game.team1.players.length? (
                                     filteredTeam1Players.map(player => (
@@ -77,7 +77,7 @@ const TeamList = ({ game }) => {
 
                     <div className="px-5 w-[46%] flex flex-col items-center max-h-[400px]">
                     <p className="border-b-1 text-lg italic tracking-widest w-auto min-w-[70%] self-center mb-5">{game.team2.town}</p>
-                        <div className="overflow-auto flex flex-col h-[400px] w-full self-center bg-black/30">
+                        <div className="overflow-auto flex flex-col h-[400px] w-full self-center bg-black/30 overscroll-none">
                             {
                                 game.team2.players.length? (
                                     filteredTeam2Players.map(player => (
@@ -103,9 +103,7 @@ const TeamList = ({ game }) => {
 
             </div>
 
-            {showAddModal && (
-                <AddModal game={game} onClose={_ => setShowAddModal(false)} />
-            )}
+            {showAddModal && ( <AddModal game={game} onClose={_ => (setShowAddModal(false), document.body.style.overflow = "auto")} /> )}
         </>
     )
 }

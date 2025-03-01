@@ -94,7 +94,7 @@ const ActiveRoster = ({ game }) => {
                     <p className="border-b-1 text-lg italic tracking-widest w-auto min-w-[70%] self-center mb-5">{game.team1.town}</p>
                     
                     <div 
-                        className="overflow-auto flex flex-col h-[400px] w-full self-center bg-black/30"
+                        className="overflow-auto flex flex-col h-[400px] w-full self-center bg-black/30 overscroll-none"
                         onDrop={e => onDrop(e, 'home')}
                         onDragOver={onDragOver}
                     >
@@ -118,7 +118,7 @@ const ActiveRoster = ({ game }) => {
                     <p className="border-b-1 text-lg italic tracking-widest w-auto min-w-[70%] self-center mb-5">{game.team2.town}</p>
 
                     <div 
-                        className="overflow-auto flex flex-col h-[400px] w-full self-center bg-black/30"
+                        className="overflow-auto flex flex-col h-[400px] w-full self-center bg-black/30 overscroll-none"
                         onDrop={e => onDrop(e, 'away')}
                         onDragOver={onDragOver}
                     >
