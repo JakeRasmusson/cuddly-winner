@@ -18,7 +18,6 @@ const CreateGame = _ => {
     const { addGame } = useGameList()
     const { setEditingGame } = useEditingGame()
 
-
     //States
     const [homeTeam, setHomeTeam] = useState('') //Define home, away, and sport for a new game
     const [visitingTeam, setVisitingTeam] = useState('')

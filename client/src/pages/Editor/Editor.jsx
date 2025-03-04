@@ -18,7 +18,7 @@ const Editor = () => {
     const { editingGame, setEditingGame } = useEditingGame()
 
     //Get all the details of this current game
-    let game = gameList.find(g => g.id == editingGame) || {
+    const game = gameList.find(g => g.id == editingGame) || {
         id: 1,
         sport: "Cup Stacking",
         team1: {
@@ -142,6 +142,122 @@ const Editor = () => {
             ]
         }
     }
+
+    const stats = {
+        baseball: {
+            offense: {
+                base: 'Singles, Doubles, Triples, Home Runs, Walks, Hit by Pitch, Strikeouts'.split(', '),
+                //Calculation function, dependencies
+                autocalculated: {
+                    'Hits' : [(s, d, t, hr) => {return s + d + t + hr}, 'Singles', 'Doubles', 'Triples', 'Home Runs'],
+                    'Plate Appearances': [(h, hbp, w, k) => {return h + hbp + w + k}, 'Hits', 'Hit by Pitch', 'Walks', 'Strikeouts'],
+                    'Batting Average': [(h, ab) => {return !ab ? 0 : h / ab}, 'Hits', 'Plate Appearances'],
+                    'Slugging Average': [(s, d, t, hr, ab) => {return !ab ? 0 : (s + (2 * d) + (3 * t) + (4 * hr)) / ab}]
+                }
+            },
+            defense: {
+                base: 'Errors'.split(', '),
+                autocalculated: {}
+            }
+        },
+        softball: {
+            offense: {
+                base: 'Singles, Doubles, Triples, Home Runs, Walks, Hit by Pitch, Strikeouts'.split(', '),
+                //Calculation function, dependencies
+                autocalculated: {
+                    'Hits' : [(s, d, t, hr) => {return s + d + t + hr}, 'Singles', 'Doubles', 'Triples', 'Home Runs'],
+                    'Plate Appearances': [(h, hbp, w, k) => {return h + hbp + w + k}, 'Hits', 'Hit by Pitch', 'Walks', 'Strikeouts'],
+                    'Batting Average': [(h, ab) => {return !ab ? 0 : h / ab}, 'Hits', 'Plate Appearances'],
+                    'Slugging Average': [(s, d, t, hr, ab) => {return !ab ? 0 : (s + (2 * d) + (3 * t) + (4 * hr)) / ab}]
+                }
+            },
+            defense: {
+                base: 'Errors'.split(', '),
+                autocalculated: {}
+            }
+        },
+        football: {
+            offense: {
+                base: ''.split(', '),
+                autocalculated: {
+
+                }
+            },
+            defense: {
+                base: ''.split(', '),
+                autocalculated: {
+
+                }
+            }
+        },
+        basketball: {
+            offense: {
+                base: ''.split(', '),
+                autocalculated: {
+
+                }
+            },
+            defense: {
+                base: ''.split(', '),
+                autocalculated: {
+                    
+                }
+            }
+        },
+        soccer: {
+            offense: {
+                base: ''.split(', '),
+                autocalculated: {
+
+                }
+            },
+            defense: {
+                base: ''.split(', '),
+                autocalculated: {
+                    
+                }
+            }
+        }
+    }
+
+    game.team1.players = game.team1.players.map(player => {
+        const sportStats = stats[game?.sport.toLowerCase()]
+
+        const initializeBaseStats = category => {
+            return Object.fromEntries(
+                sportStats[category].base.map(stat => [stat, player.stats?.[category]?.base?.[stat] ?? 0])
+            )
+        }
+
+        const calculateAutoStats = (category, baseStats) => {
+            return Object.fromEntries(
+                Object.entries(sportStats[category].autocalculated).map(([statName, [calcFunc, ...dependencies]]) => {
+                    const values = dependencies.map(dep => baseStats[dep] ?? 0)
+                    return [statName, calcFunc(...values)]
+                })
+            )
+        }
+
+        const offenseBase = initializeBaseStats('offense')
+        const defenseBase = initializeBaseStats('defense')
+
+        return {
+            ...player,
+            stats: {
+                offense: {
+                    base: offenseBase,
+                    autocalculated: calculateAutoStats('offense', offenseBase),
+                },
+                defense: {
+                    base: defenseBase,
+                    autocalculated: calculateAutoStats('defense', defenseBase)
+                }
+            }
+        }
+    })
+
+
+    console.log(game.team1.players)
 
     //Upon click of the back button
     const handleReturn = _ => {

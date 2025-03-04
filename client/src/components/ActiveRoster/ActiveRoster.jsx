@@ -2,25 +2,22 @@ import React, { useState } from 'react'
 
 //Contexts
 import { useGameList } from '../../contexts/gameListContext'
-import { useEditingGame } from '../../contexts/editingGameContext'
-import { useAwayPlayers } from '../../contexts/awayPlayersContext'
-import { useHomePlayers } from '../../contexts/homePlayersContext'
 
 //Components
 import Player from '../Player/Player'
-
+import StatsModal from '../StatsModal/statsModal'
 
 const ActiveRoster = ({ game }) => {
 
     //Contexts
     const { gameList, editGame } = useGameList()
-    const { editingGame } = useEditingGame()
-    const { homePlayers, setHomePlayers } = useHomePlayers()
-    const { awayPlayers, setAwayPlayers } = useAwayPlayers()
     
     //States
     const [homeRoster, setHomeRoster] = useState([])
     const [awayRoster, setAwayRoster] = useState([])
+    const [homeOffense, setHomeOffense] = useState(false)
+    const [showStatsModal, setShowStatsModal] = useState(false)
+    const [showingPlayer, setShowingPlayer] = useState({})
 
     //When the user is dragging a player on top of the roster drop zone
     const onDragOver = e => {
@@ -113,15 +110,22 @@ const ActiveRoster = ({ game }) => {
         }
     }
 
+    const handleClick = player => {
+        setShowStatsModal(true)
+        setShowingPlayer(player)
+    }
+
     return (
         <div className="flex flex-col items-center w-1/2 h-[500px]">
             {/* Header */}
-            <h2 className="border-b-1 text-2xl font-extralight tracking-[8px] text-yellow-300 mt-2 mb-4 h-[35px] w-[65%]">Active Roster</h2>
+            <h2 className="border-b-1 text-2xl font-extralight tracking-[8px] text-yellow-300 mt-2 h-[35px] w-[65%]">Active Roster</h2>
+            <button className="tracking-tighter font-light text-sm hover:text-yellow-600 hover:tracking-normal hover:scale-105 transition-all duration-300 hover:cursor-pointer border-yellow-200 border-1 py-[3px] px-[15px] rounded-lg mt-2" onClick={_ => setHomeOffense(!homeOffense)}>Toggle Offense/Defense</button>
 
             <div className="flex justify-between w-full min-h-[200px]">
                 {/* Left (home) team title */}
                 <div className="px-5 w-[46%] flex flex-col max-h-[80%] items-center">
-                    <p className="border-b-1 text-lg italic tracking-widest w-auto min-w-[70%] self-center mb-5">{game.team1.town}</p>
+                    <p className="border-b-1 text-lg italic tracking-widest w-auto min-w-[70%] self-center">{game.team1.town}</p>
+                    <p className="text-xs my-1 italic tracking-widest">{homeOffense ? "Offense" : "Defense"}</p>
                     
                     {/* Left (home) team drop zone */}
                     <div 
@@ -133,7 +137,7 @@ const ActiveRoster = ({ game }) => {
                             //If there's someone there, render them
                             homeRoster.length ? (
                                 homeRoster.map(player => (
-                                    <Player key={player.id} player={player} handleIconClick={_ => handleRemovePlayer(player)}/>
+                                    <Player key={player.id} player={player} handleIconClick={_ => handleRemovePlayer(player)} handleClick={_ => handleClick(player)} />
                                 ))
                             ) : (
                                 //Otherwise, show a message saying how to work it
@@ -149,7 +153,8 @@ const ActiveRoster = ({ game }) => {
 
                 {/* Right (away) team column, header, and drop zone */}
                 <div className="px-5 w-[46%] flex flex-col max-h-[80%] items-center">
-                    <p className="border-b-1 text-lg italic tracking-widest w-auto min-w-[70%] self-center mb-5">{game.team2.town}</p>
+                    <p className="border-b-1 text-lg italic tracking-widest w-auto min-w-[70%] self-center">{game.team2.town}</p>
+                    <p className="text-xs my-1 italic tracking-widest">{homeOffense ? "Defense" : "Offense"}</p>
 
                     <div 
                         className="overflow-auto flex flex-col h-[400px] w-full self-center bg-black/30 overscroll-none"
@@ -158,16 +163,22 @@ const ActiveRoster = ({ game }) => {
                     >
                         {awayRoster.length ? (
                             awayRoster.map(player => (
-                                <Player key={player.id} player={player} handleIconClick={_ => handleRemovePlayer(player)}/>
-                        ))) : (
+                                <Player key={player.id} player={player} handleIconClick={_ => handleRemovePlayer(player)} handleClick={_ => handleClick(player)} />
+                            ))) : (
                                 <div className="h-[400px]">
                                     <p className="text-xl italic text-yellow-200 font-light pt-3">No active players</p>
                                     <p className="italic text-yellow-300 pt-5 font-extralight">Drag a player from <span className="not-italic font-medium">{game.team2.town}</span> to get started</p>
-                                </div>)
+                                </div>
+                            )
                         }
                     </div>
                 </div>
             </div>
+
+            {showStatsModal && (
+                <StatsModal player={showingPlayer} isOffense={homeOffense} />
+            )}
+
         </div>
     )
 }

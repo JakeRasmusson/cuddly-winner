@@ -52,6 +52,11 @@ const TeamList = ({ game }) => {
         }
     }
 
+    //When player itself is clicked to pull up basic editor
+    const handleClick = player => {
+
+    }
+
     return (
         <>
             <div className="relative flex flex-col items-center w-1/2 h-[500px]">
@@ -69,7 +74,7 @@ const TeamList = ({ game }) => {
                             {
                                 game.team1.players.length? (
                                     filteredTeam1Players.map(player => (
-                                        <Player key={player.id} player={player} handleIconClick={_ => handleDeletePlayer(player)}/>
+                                        <Player key={player.id} player={player} handleIconClick={_ => handleDeletePlayer(player)} handleClick={_ => handleClick(player)} />
                                     ))
                                 ) : (
                                     <div className="">
@@ -94,7 +99,7 @@ const TeamList = ({ game }) => {
                             {
                                 game.team2.players.length? (
                                     filteredTeam2Players.map(player => (
-                                        <Player key={player.id} player={player} handleIconClick={_ => handleDeletePlayer(player)}/>
+                                        <Player key={player.id} player={player} handleIconClick={_ => handleDeletePlayer(player)} handleClick={_ => handleClick(player)} />
                                     ))
                                 ) : (
                                     <div className="">
