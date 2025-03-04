@@ -7,7 +7,7 @@ import { useGameList } from '../../contexts/gameListContext'
 import Player from '../Player/Player'
 import StatsModal from '../StatsModal/statsModal'
 
-const ActiveRoster = ({ game }) => {
+const ActiveRoster = ({ game, sportStats }) => {
 
     //Contexts
     const { gameList, editGame } = useGameList()
@@ -115,6 +115,11 @@ const ActiveRoster = ({ game }) => {
         setShowingPlayer(player)
     }
 
+    const onClose = _ => {
+        setShowStatsModal(false)
+        setShowingPlayer({})
+    }
+
     return (
         <div className="flex flex-col items-center w-1/2 h-[500px]">
             {/* Header */}
@@ -176,7 +181,7 @@ const ActiveRoster = ({ game }) => {
             </div>
 
             {showStatsModal && (
-                <StatsModal player={showingPlayer} isOffense={homeOffense} />
+                <StatsModal player={showingPlayer} isOffense={homeOffense} sportStats={sportStats} onClose={onClose} />
             )}
 
         </div>

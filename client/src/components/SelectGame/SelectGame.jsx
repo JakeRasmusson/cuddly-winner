@@ -1,5 +1,5 @@
 import React, { useEffect } from "react"
-import { useNavigate, useParams } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 
 import { useGameList } from "../../contexts/gameListContext"
 import { useEditingGame } from "../../contexts/editingGameContext"
@@ -8,9 +8,6 @@ const SelectGame = _ => {
     //So we can change pages
     const navigate = useNavigate()
 
-    //'parameter' of the URL for each game ID
-    const { gameId } = useParams //This is used, don't touch it.  idk why it's greyed out
-
     //Allow access to the game list and the currently editing game
     const { gameList } = useGameList()
     const { editingGame, setEditingGame } = useEditingGame()
@@ -18,7 +15,7 @@ const SelectGame = _ => {
     //If `editingGame` gets a change, navigate to that page
     useEffect( _ => {
         if (editingGame) {
-            navigate(`/edit/${editingGame.id}`)
+            navigate(`/edit/${editingGame}`)
         }
     }, [editingGame, navigate])
 
@@ -34,8 +31,7 @@ const SelectGame = _ => {
 
     //Upon selecting a game, find whatever one was clicked and set that to be the current editing one
     const handleSetEditGame = gameId => {
-        const game = gameList.find((g) => g.id == gameId)
-        setEditingGame(game.id)
+        setEditingGame(gameId)
     }
 
     return (
@@ -48,28 +44,28 @@ const SelectGame = _ => {
                 {
                     gameList.length ? (
                         <div className="flex max-h-[400px] min-h-0 flex-col items-center overflow-auto">
-                          {
+                            {
                               gameList.map(element => (
-                                  <div
-                                      key={element.id}
-                                      className="relative mt-4 flex h-[100px] w-[85%] flex-none cursor-pointer justify-center rounded-md bg-white/5 hover:bg-white/10"
-                                      onClick={_ => {
-                                          handleSetEditGame(element.id)
-                                      }}
-                                  >
-                                      <p className="text-md absolute top-1 left-2 font-extralight text-yellow-100">
-                                          { parseDate(new Date(element.id)) }
-                                      </p>
-                                      <p className="text-md absolute top-1 right-2 font-extralight text-yellow-100">
-                                          { element.sport.toUpperCase() }
-                                      </p>
+                                    <div
+                                        key={element.id}
+                                        className="relative mt-4 flex h-[100px] w-[85%] flex-none cursor-pointer justify-center rounded-md bg-white/5 hover:bg-white/10"
+                                        onClick={_ => {
+                                            handleSetEditGame(element.id)
+                                        }}
+                                    >
+                                        <p className="text-md absolute top-1 left-2 font-extralight text-yellow-100">
+                                            { parseDate(new Date(element.id)) }
+                                        </p>
+                                        <p className="text-md absolute top-1 right-2 font-extralight text-yellow-100">
+                                            { element.sport.toUpperCase() }
+                                        </p>
 
-                                      <h2 className="absolute bottom-2 text-2xl tracking-wide text-yellow-200">
-                                          {element.team1.town} VS {element.team2.town}
-                                      </h2>
-                                  </div>
-                              ))
-                          }
+                                        <h2 className="absolute bottom-2 text-2xl tracking-wide text-yellow-200">
+                                            {element.team1.town} VS {element.team2.town}
+                                        </h2>
+                                    </div>
+                                ))
+                            }
                         </div>
                     ) : (
                         <div>

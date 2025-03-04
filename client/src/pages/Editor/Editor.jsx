@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 
 import { useGameList } from "../../contexts/gameListContext"
 import { useEditingGame } from "../../contexts/editingGameContext"
@@ -12,6 +12,9 @@ import ActiveRoster from "../../components/ActiveRoster/ActiveRoster"
 const Editor = () => {
     //So the back button can navigate us back to the home page
     const navigate = useNavigate()
+
+    //'parameter' of the URL for each game ID
+    const { gameId } = useParams() //This is used, don't touch it.  idk why it's greyed out
 
     //Context to allow us to access the list of available games and the currently editing game
     const { gameList } = useGameList()
@@ -152,11 +155,11 @@ const Editor = () => {
                     'Hits' : [(s, d, t, hr) => {return s + d + t + hr}, 'Singles', 'Doubles', 'Triples', 'Home Runs'],
                     'Plate Appearances': [(h, hbp, w, k) => {return h + hbp + w + k}, 'Hits', 'Hit by Pitch', 'Walks', 'Strikeouts'],
                     'Batting Average': [(h, ab) => {return !ab ? 0 : h / ab}, 'Hits', 'Plate Appearances'],
-                    'Slugging Average': [(s, d, t, hr, ab) => {return !ab ? 0 : (s + (2 * d) + (3 * t) + (4 * hr)) / ab}]
+                    'Slugging Average': [(s, d, t, hr, ab) => {return !ab ? 0 : (s + (2 * d) + (3 * t) + (4 * hr)) / ab}, 'Singles', 'Doubles', 'Triples', 'Home Runs', 'Plate Appearances']
                 }
             },
             defense: {
-                base: 'Errors'.split(', '),
+                base: 'Errors, Strikeouts, Walks, Hits Allowed, Home Runs Allowed'.split(', '),
                 autocalculated: {}
             }
         },
@@ -220,8 +223,9 @@ const Editor = () => {
         }
     }
 
+    const sportStats = stats[game?.sport.toLowerCase()]
+
     game.team1.players = game.team1.players.map(player => {
-        const sportStats = stats[game?.sport.toLowerCase()]
 
         const initializeBaseStats = category => {
             return Object.fromEntries(
@@ -256,9 +260,6 @@ const Editor = () => {
         }
     })
 
-
-    console.log(game.team1.players)
-
     //Upon click of the back button
     const handleReturn = _ => {
         setEditingGame('')        //We're no longer editing a game
@@ -289,7 +290,7 @@ const Editor = () => {
             </div>
 
             <div className="flex">
-                <ActiveRoster game={game}/>
+                <ActiveRoster game={game} sportStats={sportStats} />
                 <TeamList game={game} />
             </div>
         </>
