@@ -10,14 +10,14 @@ import StatsModal from '../StatsModal/statsModal'
 const ActiveRoster = ({ game, sportStats }) => {
 
     //Contexts
-    const { gameList, editGame } = useGameList()
+    const { gameList, editGame, editPlayer } = useGameList()
     
     //States
     const [homeRoster, setHomeRoster] = useState([])
     const [awayRoster, setAwayRoster] = useState([])
     const [homeOffense, setHomeOffense] = useState(false)
     const [showStatsModal, setShowStatsModal] = useState(false)
-    const [showingPlayer, setShowingPlayer] = useState({})
+    const [showingPlayer, setShowingPlayer] = useState(null)
 
     //When the user is dragging a player on top of the roster drop zone
     const onDragOver = e => {
@@ -117,7 +117,13 @@ const ActiveRoster = ({ game, sportStats }) => {
 
     const onClose = _ => {
         setShowStatsModal(false)
-        setShowingPlayer({})
+        setShowingPlayer(null)
+    }
+
+    const handleSave = (playerId, team, updatedStats) => {
+        console.log(updatedStats)
+        editPlayer(game.id, team, playerId, updatedStats)
+        onClose()
     }
 
     return (
@@ -181,7 +187,9 @@ const ActiveRoster = ({ game, sportStats }) => {
             </div>
 
             {showStatsModal && (
-                <StatsModal player={showingPlayer} isOffense={homeOffense} sportStats={sportStats} onClose={onClose} />
+                <>
+                    <StatsModal game={game} p={showingPlayer.id} team={showingPlayer.team} isOffense={homeOffense} sportStats={sportStats} onClose={onClose} onSave={handleSave} />
+                </>
             )}
 
         </div>

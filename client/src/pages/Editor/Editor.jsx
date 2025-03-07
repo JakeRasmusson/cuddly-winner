@@ -9,7 +9,7 @@ import OverlayPreview from "../../components/OverlayPreview/OverlayPreview"
 import TeamList from "../../components/TeamList/TeamList"
 import ActiveRoster from "../../components/ActiveRoster/ActiveRoster"
 
-const Editor = () => {
+const Editor = _ => {
     //So the back button can navigate us back to the home page
     const navigate = useNavigate()
 
