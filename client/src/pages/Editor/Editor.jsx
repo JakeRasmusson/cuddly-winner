@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react"
 import { useNavigate, useParams } from "react-router-dom"
+import { flushSync } from 'react-dom'
 
 import { useGameList } from "../../contexts/gameListContext"
 import { useEditingGame } from "../../contexts/editingGameContext"
@@ -146,6 +147,14 @@ const Editor = _ => {
         }
     }
 
+    const positions = {
+        baseball: 'P C 1B 2B 3B SS LF RF CF'.split(' '),
+        softball: 'P C 1B 2B 3B SS LF RF CF'.split(' '),
+        basketball: 'PG SG SF PF C'.split(' '),
+        soccer: 'GK RF LF CB CM RM F LM'.split(' '),
+        football: 'TE LB OL DL RB QB DB K'.split(' ')
+    }
+
     const stats = {
         baseball: {
             offense: {
@@ -224,6 +233,7 @@ const Editor = _ => {
     }
 
     const sportStats = stats[game?.sport.toLowerCase()]
+    const sportPositions = positions[game?.sport.toLowerCase()]
 
     game.team1.players = game.team1.players.map(player => {
 
@@ -261,10 +271,11 @@ const Editor = _ => {
     })
 
     //Upon click of the back button
-    const handleReturn = _ => {
-        setEditingGame('')        //We're no longer editing a game
-        navigate('/')             //Take us back home!
+    const handleReturn = () => {
+        navigate('/')
+        setTimeout(() => setEditingGame(null), 0)
     }
+    
 
     return (
         <>
@@ -277,7 +288,7 @@ const Editor = _ => {
 
             <div className="flex flex-col items-center justify-center">
                 <p className="text-4xl font-light tracking-[15px] text-yellow-200 italic">
-                    {game.team1.town} VS {game.team2.town}
+                    {game.team1.town} <span className="text-2xl font-thin tracking-normal">VS</span> {game.team2.town}
                 </p>
                 <p className="text-md my-5 font-extralight tracking-[10px] text-yellow-50 italic">
                     {game.sport.toUpperCase()}
@@ -285,7 +296,7 @@ const Editor = _ => {
             </div>
 
             <div className="flex">
-                <StatsSelector />
+                <StatsSelector sportPositions={sportPositions} />
                 <OverlayPreview />
             </div>
 

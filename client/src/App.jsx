@@ -10,6 +10,7 @@ import NotFound from "./components/NotFound/NotFound"
 //Pages
 import Home from "./pages/Home/Home"
 import Editor from "./pages/Editor/Editor"
+import OverlayPage from './pages/OverlayPage/OverlayPage'
 
 import "./App.css"
 
@@ -33,6 +34,9 @@ const App = _ => {
 
                     {/* 404 Page but on undefined game */}
                     <Route path="/edit/undefined" element={ <NotFound /> } />
+
+                    {/* Displayed stats */}
+                    <Route path="/stats" element={ <OverlayPage /> } />
                 </Routes>
             </AppProviders>
         </>

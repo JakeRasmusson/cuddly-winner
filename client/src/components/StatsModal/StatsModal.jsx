@@ -30,7 +30,6 @@ const StatsModal = ({ game, p, team, isOffense, sportStats, onClose, onSave }) =
             ])
         )
 
-        console.log("Initial stats", initialBaseStats)
         setBaseStats(initialBaseStats)
     }, [player, sportStats, isOffense])
 

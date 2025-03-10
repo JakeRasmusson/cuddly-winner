@@ -14,7 +14,6 @@ export const GameListProvider = ({ children }) => {
     }
 
     const editPlayer = (gameId, team, playerId, updatedStats) => {
-        console.log("Stats passed to edit player", updatedStats)
         setGameList(prev =>
             prev.map(game => {
                 if(game.id != gameId) return game
@@ -34,8 +33,6 @@ export const GameListProvider = ({ children }) => {
                         }
                         : player
                 )
-
-                console.log("Updated players:", updatedPlayers)
 
                 return {
                     ...game,
