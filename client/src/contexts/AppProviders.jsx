@@ -2,6 +2,7 @@ import { EditingGameProvider } from "./editingGameContext"
 import { GameListProvider } from "./gameListContext"
 import { HomePlayersProvider } from "./homePlayersContext"
 import { AwayPlayersProvider } from "./awayPlayersContext"
+import { OverlayProvider } from "./OverlayContext"
 
 const AppProviders = ({ children }) => {
     return (
@@ -9,7 +10,9 @@ const AppProviders = ({ children }) => {
             <EditingGameProvider>
                 <HomePlayersProvider>
                     <AwayPlayersProvider>
-                        {children}
+                        <OverlayProvider>
+                            {children}
+                        </OverlayProvider>
                     </AwayPlayersProvider>
                 </HomePlayersProvider>
             </EditingGameProvider>

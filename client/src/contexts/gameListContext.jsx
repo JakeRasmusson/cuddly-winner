@@ -1,9 +1,13 @@
-import React, { createContext, useContext, useState } from "react"
+import React, { createContext, useContext, useState, useEffect } from "react"
 
 const GameListContext = createContext()
 
 export const GameListProvider = ({ children }) => {
     const [gameList, setGameList] = useState([])
+
+    useEffect(_ => {
+        localStorage.setItem('gameList', gameList)
+    }, [gameList])
 
     const addGame = newGame => {
         setGameList((prev) => [...prev, newGame])

@@ -20,26 +20,24 @@ const App = _ => {
     const { gameId } = useParams() //This is used, don't touch it.  idk why it's greyed out
 
     return (
-        <>
-            <AppProviders>
-                <Routes>
-                    {/* Landing page (create game, select game) */}
-                    <Route path="/" element={ <Home /> } />
+        <AppProviders>
+            <Routes>
+                {/* Displayed stats */}
+                <Route path="/stats" element={ <OverlayPage /> }/>
 
-                    {/* Editing selected game */}
-                    <Route path="/edit/:gameId" element={ <Editor /> } />
+                {/* Landing page (create game, select game) */}
+                <Route path="/" element={ <Home /> } />
 
-                    {/* 404 Page (Dale :D) */}
-                    <Route path="*" element={ <NotFound /> } />
+                {/* Editing selected game */}
+                <Route path="/edit/:gameId" element={ <Editor /> } />
 
-                    {/* 404 Page but on undefined game */}
-                    <Route path="/edit/undefined" element={ <NotFound /> } />
+                {/* 404 Page (Dale :D) */}
+                <Route path="*" element={ <NotFound /> } />
 
-                    {/* Displayed stats */}
-                    <Route path="/stats" element={ <OverlayPage /> } />
-                </Routes>
-            </AppProviders>
-        </>
+                {/* 404 Page but on undefined game */}
+                <Route path="/edit/undefined" element={ <NotFound /> } />
+            </Routes>
+        </AppProviders>
     )
 }
 

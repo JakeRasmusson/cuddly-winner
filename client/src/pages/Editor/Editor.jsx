@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react"
 import { useNavigate, useParams } from "react-router-dom"
-import { flushSync } from 'react-dom'
 
 import { useGameList } from "../../contexts/gameListContext"
 import { useEditingGame } from "../../contexts/editingGameContext"
@@ -275,13 +274,12 @@ const Editor = _ => {
         navigate('/')
         setTimeout(() => setEditingGame(null), 0)
     }
-    
 
     return (
         <>
             <button
                 onClick={handleReturn}
-                className="text-sm absolute top-3 left-3 cursor-pointer rounded-md border-1 border-yellow-400 bg-transparent px-2 py-1 text-yellow-200 shadow transition-all duration-300 hover:bg-white/15 hover:shadow-[0_0_10px_rgb(250,204,21)]"
+                className="w-[15%] absolute left-3 top-1 tracking-tighter font-light text-sm hover:text-yellow-600 hover:tracking-normal hover:scale-105 transition-all duration-300 hover:cursor-pointer border-yellow-200 border-1 py-[3px] px-[15px] rounded-lg mt-2"
             >
                 Return to Game List
             </button>
@@ -290,7 +288,7 @@ const Editor = _ => {
                 <p className="text-4xl font-light tracking-[15px] text-yellow-200 italic">
                     {game.team1.town} <span className="text-2xl font-thin tracking-normal">VS</span> {game.team2.town}
                 </p>
-                <p className="text-md my-5 font-extralight tracking-[10px] text-yellow-50 italic">
+                <p className="text-md mb-5 mt-2 font-light tracking-[10px] text-yellow-50 italic">
                     {game.sport.toUpperCase()}
                 </p>
             </div>

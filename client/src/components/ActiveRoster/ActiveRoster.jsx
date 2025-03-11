@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 //Contexts
 import { useGameList } from '../../contexts/gameListContext'
@@ -18,6 +18,13 @@ const ActiveRoster = ({ game, sportStats }) => {
     const [homeOffense, setHomeOffense] = useState(false)
     const [showStatsModal, setShowStatsModal] = useState(false)
     const [showingPlayer, setShowingPlayer] = useState(null)
+
+    useEffect(_ => {
+        const activeHomePlayers = game.team1.players.filter(player => player.active)
+        const activeAwayPlayers = game.team2.players.filter(player => player.active)
+        setHomeRoster(activeHomePlayers)
+        setAwayRoster(activeAwayPlayers)
+    }, [])
 
     //When the user is dragging a player on top of the roster drop zone
     const onDragOver = e => {
