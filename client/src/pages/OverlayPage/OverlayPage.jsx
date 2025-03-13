@@ -57,7 +57,7 @@ const OverlayPage = _ => {
 
                         /* Somehow something ended up as the selected overlay that I didn't anticipate */
                         : (
-                            <h2>Something went wrong</h2>
+                            <h2>Something went wrong.  Overlay is {selectedOverlay}</h2>
                         )
                     }
                 </div>

@@ -76,7 +76,7 @@ const StatsSelector = ({ sportPositions }) => {
                             {
                                 /* If there's no player, tell them how to work it */
                                 !players.length ? (
-                                    <div className="h-[400px]">
+                                    <div>
                                         <p className="text-xl italic text-yellow-200 font-light pt-3">No players selected</p>
                                         <p className="italic text-yellow-300 pt-5 font-extralight">Drop a player here to get started</p>
                                     </div>
