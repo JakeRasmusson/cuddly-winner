@@ -2,13 +2,16 @@ import React, { useRef, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 
 import { useOverlay } from '../../contexts/OverlayContext'
+import { useEditingGame } from '../../contexts/editingGameContext'
 
 const OverlayPreview = _ => {
 
     const { overlayID, setOverlayID } = useOverlay()
+    const { editingGame } = useEditingGame()
 
     useEffect(_ => {
         localStorage.setItem('selectedOverlay', overlayID)
+        localStorage.setItem('gameID', editingGame)
     }, [overlayID])
 
     const desiredWidth = 430

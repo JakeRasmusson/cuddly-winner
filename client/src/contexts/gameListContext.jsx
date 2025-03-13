@@ -5,12 +5,9 @@ const GameListContext = createContext()
 export const GameListProvider = ({ children }) => {
     const [gameList, setGameList] = useState([])
 
-    useEffect(_ => {
-        localStorage.setItem('gameList', gameList)
-    }, [gameList])
-
     const addGame = newGame => {
-        setGameList((prev) => [...prev, newGame])
+        console.log('adding')
+        setGameList(prev => [...prev, newGame])
     }
 
     const editGame = editedGame => {

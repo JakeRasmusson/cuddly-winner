@@ -12,6 +12,11 @@ const SelectGame = _ => {
     const { gameList } = useGameList()
     const { editingGame, setEditingGame } = useEditingGame()
 
+    useEffect( _ => {
+        console.log('theoretically updating to', gameList)
+        localStorage.setItem('gameList', JSON.stringify(gameList))
+    }, [gameList])
+
     //If `editingGame` gets a change, navigate to that page
     useEffect( _ => {
         if (editingGame) {

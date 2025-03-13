@@ -39,7 +39,6 @@ const StatsSelector = ({ sportPositions }) => {
     }
 
     const handleSelect = id => {
-        console.log("Setting overlay", id)
         setOverlayID(id)
     }
 
