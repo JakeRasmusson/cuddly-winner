@@ -12,12 +12,8 @@ const StatsSelector = ({ sportPositions }) => {
     const [ players, setPlayers ] = useState([])
 
     useEffect( _ => {
-        setOverlayID(players.length)
+        if(players.length) setOverlayID(players.length)
     }, [players])
-
-    useEffect( _ => {
-        console.log('detected change', overlayID)
-    }, [overlayID])
 
     const onDragOver = e => {
         e.preventDefault()
