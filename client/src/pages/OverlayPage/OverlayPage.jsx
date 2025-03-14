@@ -8,7 +8,7 @@ const OverlayPage = _ => {
 
     const [ gameList, setGameList ] = useState(JSON.parse(localStorage.getItem('gameList')) || null)
 
-    const [selectedOverlay, setSelectedOverlay] = useState(localStorage.getItem('selectedOverlay') || null)
+    const [selectedOverlay, setSelectedOverlay] = useState(localStorage.getItem('selectedOverlay'))
     const [ gameID, setGameID ] = useState(localStorage.getItem('gameID') || null)
 
     useEffect(_ => {
@@ -16,24 +16,18 @@ const OverlayPage = _ => {
         if(storedGames) setGameList(storedGames)
     }, [])
 
-    console.log('List', gameList)
-
     const game = gameList.find(g => g.id == gameID)
 
+    console.log(game)
 
     const handleStorageChange = e => {
         if(e.key == 'selectedOverlay'){
-            console.log("Updating overlay status", e.newValue)
             setSelectedOverlay(e.newValue)
         }
-        if(e.key == 'gameList'){
-            console.log(e.oldValue, e.newValue)
-            gameList = JSON.parse(e.newValue)
-        }
-        
     }
 
     window.addEventListener('storage', handleStorageChange)
+    
 
     const team1 = game?.team1
     const team2 = game?.team2
@@ -76,9 +70,58 @@ const OverlayPage = _ => {
                             <h2 className='text-7xl'>{team2?.town}</h2>
                         )
 
+                        /* If players are provided, display their stats */
+                        : selectedOverlay?.split(' ')[0] == 'playerid' ? (
+                            <div>
+                                <h1>Player Comparison</h1>
+                                <div className='flex justify-around'>
+                                    {
+                                        selectedOverlay.split(' ').filter(e => e.match(/\d/g)).map(id => {
+                                            const player = id.startsWith('home') ? team1.players.find(p => p.id === id) : team2.players.find(p => p.id === id);
+
+                                            return (
+                                                <div key={id} className="p-4 rounded-xl shadow-md w-1/5 border-1 bg-[rgba(28,12,34,0.2)]">
+                                                    {player ? (
+                                                        <>
+                                                            <h2 className="text-lg font-bold mb-2">{player.name}</h2>
+                                                            <div className="grid grid-cols-2 gap-4">
+                                                                {Object.entries(player.stats).map(([category, subcategories]) => (
+                                                                    <div key={category}>
+                                                                        <h3 className="font-semibold text-center">{category.toUpperCase()}</h3>
+                                                                        {Object.entries(subcategories).map(([subCategory, stats]) => (
+                                                                            <div key={subCategory} className="border-t mt-2 pt-2">
+                                                                                <ul>
+                                                                                    {Object.entries(stats).map(([statName, value]) => (
+                                                                                        <li key={statName} className="my-1 text-xs tracking-tighter font-light flex justify-between">
+                                                                                            <span>{statName}:</span>
+                                                                                            <span className="font-bold">{value}</span>
+                                                                                        </li>
+                                                                                    ))}
+                                                                                </ul>
+                                                                            </div>
+                                                                        ))}
+                                                                    </div>
+                                                                ))}
+                                                            </div>
+                                                        </>
+                                                    ) : (
+                                                        <p>Player not found</p>
+                                                    )}
+                                                </div>
+                                            );
+                                        })
+                                    }
+
+                                </div>
+                            </div>
+                        )
+
                         /* Somehow something ended up as the selected overlay that I didn't anticipate */
                         : (
-                            <h2>Something went wrong.  Overlay is {selectedOverlay}</h2>
+                            <div className='flex w-full h-full flex-col items-center justify-center'>
+                                <h2 className='text-9xl'>borkded</h2>
+                                <h2 className='text-3xl'>Selected overlay is equal to an unforseen {typeof selectedOverlay}<br/>Its value is {selectedOverlay}</h2>
+                            </div>
                         )
                     }
                 </div>

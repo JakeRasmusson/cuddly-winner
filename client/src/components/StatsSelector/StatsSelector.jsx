@@ -12,7 +12,9 @@ const StatsSelector = ({ sportPositions }) => {
     const [ players, setPlayers ] = useState([])
 
     useEffect( _ => {
-        if(players.length) setOverlayID(players.length)
+            const playerIDs = players.map(p => p.id)
+            console.log('PLAYER IDS', playerIDs)
+            if(players.length) setOverlayID('playerid ' + playerIDs.join(' '))
     }, [players])
 
     const onDragOver = e => {

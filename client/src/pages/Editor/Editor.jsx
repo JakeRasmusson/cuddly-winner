@@ -17,7 +17,7 @@ const Editor = _ => {
     const { gameId } = useParams() //This is used, don't touch it.  idk why it's greyed out
 
     //Context to allow us to access the list of available games and the currently editing game
-    const { gameList } = useGameList()
+    const { gameList, editGame } = useGameList()
     const { editingGame, setEditingGame } = useEditingGame()
 
     //Get all the details of this current game
@@ -234,40 +234,45 @@ const Editor = _ => {
     const sportStats = stats[game?.sport.toLowerCase()]
     const sportPositions = positions[game?.sport.toLowerCase()]
 
-    game.team1.players = game.team1.players.map(player => {
+    useEffect(_ => {
 
-        const initializeBaseStats = category => {
-            return Object.fromEntries(
-                sportStats[category].base.map(stat => [stat, player.stats?.[category]?.base?.[stat] ?? 0])
-            )
-        }
+        game.team1.players = game.team1.players.map(player => {
+            const initializeBaseStats = category => {
+                return Object.fromEntries(
+                    sportStats[category].base.map(stat => [stat, player.stats?.[category]?.base?.[stat] ?? 0])
+                )
+            }
 
-        const calculateAutoStats = (category, baseStats) => {
-            return Object.fromEntries(
-                Object.entries(sportStats[category].autocalculated).map(([statName, [calcFunc, ...dependencies]]) => {
-                    const values = dependencies.map(dep => baseStats[dep] ?? 0)
-                    return [statName, calcFunc(...values)]
-                })
-            )
-        }
+            const calculateAutoStats = (category, baseStats) => {
+                return Object.fromEntries(
+                    Object.entries(sportStats[category].autocalculated).map(([statName, [calcFunc, ...dependencies]]) => {
+                        const values = dependencies.map(dep => baseStats[dep] ?? 0)
+                        return [statName, calcFunc(...values)]
+                    })
+                )
+            }
 
-        const offenseBase = initializeBaseStats('offense')
-        const defenseBase = initializeBaseStats('defense')
+            const offenseBase = initializeBaseStats('offense')
+            const defenseBase = initializeBaseStats('defense')
 
-        return {
-            ...player,
-            stats: {
-                offense: {
-                    base: offenseBase,
-                    autocalculated: calculateAutoStats('offense', offenseBase),
-                },
-                defense: {
-                    base: defenseBase,
-                    autocalculated: calculateAutoStats('defense', defenseBase)
+            return {
+                ...player,
+                stats: {
+                    offense: {
+                        base: offenseBase,
+                        autocalculated: calculateAutoStats('offense', offenseBase),
+                    },
+                    defense: {
+                        base: defenseBase,
+                        autocalculated: calculateAutoStats('defense', defenseBase)
+                    }
                 }
             }
-        }
-    })
+        })
+
+        editGame(game)
+
+    }, [])
 
     //Upon click of the back button
     const handleReturn = () => {

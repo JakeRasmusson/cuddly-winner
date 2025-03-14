@@ -13,7 +13,6 @@ const SelectGame = _ => {
     const { editingGame, setEditingGame } = useEditingGame()
 
     useEffect( _ => {
-        console.log('theoretically updating to', gameList)
         localStorage.setItem('gameList', JSON.stringify(gameList))
     }, [gameList])
 
