@@ -13,7 +13,6 @@ const StatsSelector = ({ sportPositions }) => {
 
     useEffect( _ => {
             const playerIDs = players.map(p => p.id)
-            console.log('PLAYER IDS', playerIDs)
             if(players.length) setOverlayID('playerid ' + playerIDs.join(' '))
     }, [players])
 

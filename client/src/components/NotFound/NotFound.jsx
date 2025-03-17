@@ -29,9 +29,9 @@ const NotFound = _ => {
         <path
           d="M10 80 Q50 20 90 20"
           stroke="currentColor"
-          stroke-width="4"
+          strokeWidth="4"
           fill="none"
-          stroke-linecap="round"
+          strokeLinecap="round"
         />
         <polygon
           points="90,10 90,30 110,20"

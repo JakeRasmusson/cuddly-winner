@@ -18,15 +18,21 @@ const OverlayPage = _ => {
 
     const game = gameList.find(g => g.id == gameID)
 
-    console.log(game)
+    useEffect(_ => {
 
-    const handleStorageChange = e => {
-        if(e.key == 'selectedOverlay'){
-            setSelectedOverlay(e.newValue)
+        const handleStorageChange = e => {
+            if(e.key == 'selectedOverlay'){
+                setSelectedOverlay(e.newValue)
+            }
+            if(e.key == 'gameList'){
+                setGameList(JSON.parse(e.newValue))
+            }
         }
-    }
 
-    window.addEventListener('storage', handleStorageChange)
+        window.addEventListener('storage', handleStorageChange)
+        return _ => window.removeEventListener('storage', handleStorageChange)
+
+    }, [])
     
 
     const team1 = game?.team1
@@ -53,7 +59,7 @@ const OverlayPage = _ => {
                                     times: [0, 0.2, 0.8, 1],
                                     ease: 'easeInOut',
                                     repeat: Infinity,
-                                    repeatDelay: 2
+                                    repeatDelay: 1
                                 }}
                             >
                                 <img src="/easdlogo.png" alt="Elk" className="w-130 h-130 object-cover" />
@@ -85,7 +91,7 @@ const OverlayPage = _ => {
                                                         <>
                                                             <h2 className="text-lg font-bold mb-2">{player.name}</h2>
                                                             <div className="grid grid-cols-2 gap-4">
-                                                                {Object.entries(player.stats).map(([category, subcategories]) => (
+                                                                {Object.entries(player.stats ?? {}).map(([category, subcategories]) => (
                                                                     <div key={category}>
                                                                         <h3 className="font-semibold text-center">{category.toUpperCase()}</h3>
                                                                         {Object.entries(subcategories).map(([subCategory, stats]) => (

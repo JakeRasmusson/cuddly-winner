@@ -1,4 +1,5 @@
-import React, { useState, useRef } from "react"
+import React, { useState, useEffect } from "react"
+import { useNavigate } from 'react-router-dom'
 
 //Contexts
 import { useGameList } from "../../contexts/gameListContext"
@@ -10,13 +11,14 @@ import { useAwayPlayers } from "../../contexts/awayPlayersContext"
 import ImportModal from "../ImportModal/ImportModal"
 
 const CreateGame = _ => {
+    const navigate = useNavigate()
 
     //Contexts
     const { homePlayers, setHomePlayers } = useHomePlayers()
     const { awayPlayers, setAwayPlayers } = useAwayPlayers()
 
     const { addGame } = useGameList()
-    const { setEditingGame } = useEditingGame()
+    const { setEditingGame, editingGame } = useEditingGame()
 
     //States
     const [homeTeam, setHomeTeam] = useState('') //Define home, away, and sport for a new game
@@ -25,6 +27,12 @@ const CreateGame = _ => {
 
     //Show the import modal
     const [showImportModal, setShowImportModal] = useState(false)
+
+    useEffect( _ => {
+        if (editingGame) {
+            navigate(`/edit/${editingGame}`)
+        }
+    }, [editingGame, navigate])
 
     //Upon creation of a new game
     const handleCreateGame = (homeTeam, visitingTeam, sport, homeP, awayP) => {

@@ -183,7 +183,7 @@ const Editor = _ => {
                 }
             },
             defense: {
-                base: 'Errors'.split(', '),
+                base: 'Errors, Strikeouts, Walks, Hits Allowed, Home Runs Allowed'.split(', '),
                 autocalculated: {}
             }
         },

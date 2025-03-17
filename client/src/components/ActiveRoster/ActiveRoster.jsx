@@ -128,7 +128,6 @@ const ActiveRoster = ({ game, sportStats }) => {
     }
 
     const handleSave = (playerId, team, updatedStats) => {
-        console.log(updatedStats)
         editPlayer(game.id, team, playerId, updatedStats)
         onClose()
     }
