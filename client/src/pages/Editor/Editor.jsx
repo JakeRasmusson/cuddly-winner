@@ -272,6 +272,42 @@ const Editor = _ => {
 
         editGame(game)
 
+        game.team2.players = game.team2.players.map(player => {
+            const initializeBaseStats = category => {
+                return Object.fromEntries(
+                    sportStats[category].base.map(stat => [stat, player.stats?.[category]?.base?.[stat] ?? 0])
+                )
+            }
+
+            const calculateAutoStats = (category, baseStats) => {
+                return Object.fromEntries(
+                    Object.entries(sportStats[category].autocalculated).map(([statName, [calcFunc, ...dependencies]]) => {
+                        const values = dependencies.map(dep => baseStats[dep] ?? 0)
+                        return [statName, calcFunc(...values)]
+                    })
+                )
+            }
+
+            const offenseBase = initializeBaseStats('offense')
+            const defenseBase = initializeBaseStats('defense')
+
+            return {
+                ...player,
+                stats: {
+                    offense: {
+                        base: offenseBase,
+                        autocalculated: calculateAutoStats('offense', offenseBase),
+                    },
+                    defense: {
+                        base: defenseBase,
+                        autocalculated: calculateAutoStats('defense', defenseBase)
+                    }
+                }
+            }
+        })
+
+        editGame(game)
+
     }, [])
 
     //Upon click of the back button

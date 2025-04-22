@@ -6,7 +6,6 @@ export const GameListProvider = ({ children }) => {
     const [gameList, setGameList] = useState([])
 
     const addGame = newGame => {
-        console.log('adding')
         setGameList(prev => [...prev, newGame])
     }
 

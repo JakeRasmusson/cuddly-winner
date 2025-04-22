@@ -43,6 +43,10 @@ const StatsSelector = ({ sportPositions }) => {
         setOverlayID(id)
     }
 
+    const handleRemovePlayer = player => {
+        setPlayers(players.filter(p => player.id != p.id))
+    }
+
     return (
         <>
             <div className='w-full flex flex-col'>
@@ -84,7 +88,7 @@ const StatsSelector = ({ sportPositions }) => {
                                     <>
                                         {
                                             players.map(player => (
-                                                <Player key={player.name} player={player} />
+                                                <Player key={player.name} player={player} handleIconClick={_ => handleRemovePlayer(player)}/>
                                             ))
                                         }
                                     </>

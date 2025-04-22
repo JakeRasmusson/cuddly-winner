@@ -78,18 +78,31 @@ const OverlayPage = _ => {
 
                         /* If players are provided, display their stats */
                         : selectedOverlay?.split(' ')[0] == 'playerid' ? (
-                            <div>
-                                <h1>Player Comparison</h1>
-                                <div className='flex justify-around'>
+                            <div className='flex items-center justify-center min-h-screen'>
+                                <div className='flex justify-center w-full gap-4'>
                                     {
                                         selectedOverlay.split(' ').filter(e => e.match(/\d/g)).map(id => {
-                                            const player = id.startsWith('home') ? team1.players.find(p => p.id === id) : team2.players.find(p => p.id === id);
+                                            const player = id.startsWith('home') 
+                                                            ? team1.players.find(p => p.id === id)
+                                                            : team2.players.find(p => p.id === id)
+
+                                            const teamName = id.startsWith('home')
+                                                              ? team1.town
+                                                              : team2.town
 
                                             return (
-                                                <div key={id} className="p-4 rounded-xl shadow-md w-1/5 border-1 bg-[rgba(28,12,34,0.2)]">
+                                                <div 
+                                                    key={id}
+                                                    className="p-4 rounded-xl shadow-md border-1 min-w-[20%] max-w-[30%] flex-grow bg-[rgba(28,12,34,0.2)] relative"
+                                                    style={{
+                                                        fontSize: 'calc(0.2rem + 1vw)'
+                                                    }}
+                                                >
                                                     {player ? (
                                                         <>
-                                                            <h2 className="text-lg font-bold mb-2">{player.name}</h2>
+                                                            <h2 className="text-2xl font-bold my-2">{player.name}</h2>
+                                                            <h1 className='text-md font-medium absolute left-2 top-0'><span className='font-light'>#</span>{player.number}</h1>
+                                                            <h1 className='text-md font-medium absolute right-2 top-0'>{teamName}</h1>
                                                             <div className="grid grid-cols-2 gap-4">
                                                                 {Object.entries(player.stats ?? {}).map(([category, subcategories]) => (
                                                                     <div key={category}>
@@ -98,9 +111,15 @@ const OverlayPage = _ => {
                                                                             <div key={subCategory} className="border-t mt-2 pt-2">
                                                                                 <ul>
                                                                                     {Object.entries(stats).map(([statName, value]) => (
-                                                                                        <li key={statName} className="my-1 text-xs tracking-tighter font-light flex justify-between">
-                                                                                            <span>{statName}:</span>
-                                                                                            <span className="font-bold">{value}</span>
+                                                                                        <li 
+                                                                                            key={statName}
+                                                                                            className="my-1 text-xs tracking-tighter font-light flex justify-between"
+                                                                                            style={{
+                                                                                                fontSize: 'calc(0.1rem + 1vw)'
+                                                                                            }}
+                                                                                        >
+                                                                                            <span>{statName.replace('Average', 'Avg.')}</span>
+                                                                                            <span className="font-bold">{Number.isInteger(value) ? value : value.toFixed(3)}</span>
                                                                                         </li>
                                                                                     ))}
                                                                                 </ul>
