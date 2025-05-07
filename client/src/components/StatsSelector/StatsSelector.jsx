@@ -37,6 +37,7 @@ const StatsSelector = ({ sportPositions }) => {
     const handleClear = _ => {
         setPlayers([])
         setOverlayID('')
+        setPosition('')
     }
 
     const handleSelect = id => {
@@ -59,7 +60,7 @@ const StatsSelector = ({ sportPositions }) => {
                             id="position"
                             className="pt-5 text-md w-50 appearance-none border-b-2 border-yellow-200 bg-transparent text-yellow-200 outline-none self-center"
                             style={{ textAlignLast: "center" }}
-                            onChange={(e) => setPosition(e.target.value)}
+                            onChange={(e) => {setPosition(e.target.value), setOverlayID(`Position ${e.target.value}`)}}
                             value={position}
                         >
                             <option value="" disabled hidden>
