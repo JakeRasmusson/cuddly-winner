@@ -26,7 +26,7 @@ const App = _ => {
                 <Route path="/stats" element={ <OverlayPage /> }/>
 
                 {/* Landing page (create game, select game) */}
-                <Route path="/" element={ <Home /> } />
+                <Route path="/" element={ <Home /> }/>
 
                 {/* Editing selected game */}
                 <Route path="/edit/:gameId" element={ <Editor /> } />

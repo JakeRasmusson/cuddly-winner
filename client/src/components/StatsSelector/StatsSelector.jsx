@@ -12,7 +12,8 @@ const StatsSelector = ({ sportPositions }) => {
     const [ players, setPlayers ] = useState([])
 
     useEffect( _ => {
-        if(players.length) setOverlayID(players.length)
+            const playerIDs = players.map(p => p.id)
+            if(players.length) setOverlayID('playerid ' + playerIDs.join(' '))
     }, [players])
 
     const onDragOver = e => {
@@ -36,11 +37,15 @@ const StatsSelector = ({ sportPositions }) => {
     const handleClear = _ => {
         setPlayers([])
         setOverlayID('')
+        setPosition('')
     }
 
     const handleSelect = id => {
-        console.log("Setting overlay", id)
         setOverlayID(id)
+    }
+
+    const handleRemovePlayer = player => {
+        setPlayers(players.filter(p => player.id != p.id))
     }
 
     return (
@@ -55,7 +60,7 @@ const StatsSelector = ({ sportPositions }) => {
                             id="position"
                             className="pt-5 text-md w-50 appearance-none border-b-2 border-yellow-200 bg-transparent text-yellow-200 outline-none self-center"
                             style={{ textAlignLast: "center" }}
-                            onChange={(e) => setPosition(e.target.value)}
+                            onChange={(e) => {setPosition(e.target.value), setOverlayID(`Position ${e.target.value}`)}}
                             value={position}
                         >
                             <option value="" disabled hidden>
@@ -76,7 +81,7 @@ const StatsSelector = ({ sportPositions }) => {
                             {
                                 /* If there's no player, tell them how to work it */
                                 !players.length ? (
-                                    <div className="h-[400px]">
+                                    <div>
                                         <p className="text-xl italic text-yellow-200 font-light pt-3">No players selected</p>
                                         <p className="italic text-yellow-300 pt-5 font-extralight">Drop a player here to get started</p>
                                     </div>
@@ -84,7 +89,7 @@ const StatsSelector = ({ sportPositions }) => {
                                     <>
                                         {
                                             players.map(player => (
-                                                <Player key={player.name} player={player} />
+                                                <Player key={player.name} player={player} handleIconClick={_ => handleRemovePlayer(player)}/>
                                             ))
                                         }
                                     </>

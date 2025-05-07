@@ -12,6 +12,10 @@ const SelectGame = _ => {
     const { gameList } = useGameList()
     const { editingGame, setEditingGame } = useEditingGame()
 
+    useEffect( _ => {
+        localStorage.setItem('gameList', JSON.stringify(gameList))
+    }, [gameList])
+
     //If `editingGame` gets a change, navigate to that page
     useEffect( _ => {
         if (editingGame) {
@@ -45,7 +49,7 @@ const SelectGame = _ => {
                     gameList.length ? (
                         <div className="flex max-h-[400px] min-h-0 flex-col items-center overflow-auto">
                             {
-                              gameList.map(element => (
+                              gameList.slice().reverse().map(element => (
                                     <div
                                         key={element.id}
                                         className="relative mt-4 flex h-[100px] w-[85%] flex-none cursor-pointer justify-center rounded-md bg-white/5 hover:bg-white/10"

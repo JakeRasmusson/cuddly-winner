@@ -17,7 +17,7 @@ const Editor = _ => {
     const { gameId } = useParams() //This is used, don't touch it.  idk why it's greyed out
 
     //Context to allow us to access the list of available games and the currently editing game
-    const { gameList } = useGameList()
+    const { gameList, editGame } = useGameList()
     const { editingGame, setEditingGame } = useEditingGame()
 
     //Get all the details of this current game
@@ -154,13 +154,34 @@ const Editor = _ => {
         football: 'TE LB OL DL RB QB DB K'.split(' ')
     }
 
+    /**
+     Autocalculated Stat Layout:
+
+        'Stat Name': [
+            function(values) {
+                return formula
+            },
+            Dependencies IN ORDER OF APPEARANCE IN FUNCTION ARGUMENTS
+        ]
+        
+        Example:
+
+        'Hits': [
+            (singles, doubles, triples, homeruns) => { return s + d + t + hr },
+            'Singles',
+            'Doubles',
+            'Triples',
+            'Home Runs'
+        ]
+     */
+
     const stats = {
         baseball: {
             offense: {
                 base: 'Singles, Doubles, Triples, Home Runs, Walks, Hit by Pitch, Strikeouts'.split(', '),
                 //Calculation function, dependencies
                 autocalculated: {
-                    'Hits' : [(s, d, t, hr) => {return s + d + t + hr}, 'Singles', 'Doubles', 'Triples', 'Home Runs'],
+                    'Hits': [(s, d, t, hr) => {return s + d + t + hr}, 'Singles', 'Doubles', 'Triples', 'Home Runs'],
                     'Plate Appearances': [(h, hbp, w, k) => {return h + hbp + w + k}, 'Hits', 'Hit by Pitch', 'Walks', 'Strikeouts'],
                     'Batting Average': [(h, ab) => {return !ab ? 0 : h / ab}, 'Hits', 'Plate Appearances'],
                     'Slugging Average': [(s, d, t, hr, ab) => {return !ab ? 0 : (s + (2 * d) + (3 * t) + (4 * hr)) / ab}, 'Singles', 'Doubles', 'Triples', 'Home Runs', 'Plate Appearances']
@@ -168,7 +189,9 @@ const Editor = _ => {
             },
             defense: {
                 base: 'Errors, Strikeouts, Walks, Hits Allowed, Home Runs Allowed'.split(', '),
-                autocalculated: {}
+                autocalculated: {
+                    'Batters Faced': [(k, w, h) => {return k + w + h}, 'Strikeouts', 'Walks', 'Hits Allowed']
+                }
             }
         },
         softball: {
@@ -176,15 +199,17 @@ const Editor = _ => {
                 base: 'Singles, Doubles, Triples, Home Runs, Walks, Hit by Pitch, Strikeouts'.split(', '),
                 //Calculation function, dependencies
                 autocalculated: {
-                    'Hits' : [(s, d, t, hr) => {return s + d + t + hr}, 'Singles', 'Doubles', 'Triples', 'Home Runs'],
+                    'Hits': [(s, d, t, hr) => {return s + d + t + hr}, 'Singles', 'Doubles', 'Triples', 'Home Runs'],
                     'Plate Appearances': [(h, hbp, w, k) => {return h + hbp + w + k}, 'Hits', 'Hit by Pitch', 'Walks', 'Strikeouts'],
                     'Batting Average': [(h, ab) => {return !ab ? 0 : h / ab}, 'Hits', 'Plate Appearances'],
-                    'Slugging Average': [(s, d, t, hr, ab) => {return !ab ? 0 : (s + (2 * d) + (3 * t) + (4 * hr)) / ab}]
+                    'Slugging Average': [(s, d, t, hr, ab) => {return !ab ? 0 : (s + (2 * d) + (3 * t) + (4 * hr)) / ab}, 'Singles', 'Doubles', 'Triples', 'Home Runs', 'Plate Appearances']
                 }
             },
             defense: {
-                base: 'Errors'.split(', '),
-                autocalculated: {}
+                base: 'Errors, Strikeouts, Walks, Hits Allowed, Home Runs Allowed'.split(', '),
+                autocalculated: {
+                    'Batters Faced': [(k, w, h) => {return k + w + h}, 'Strikeouts', 'Walks', 'Hits Allowed']
+                }
             }
         },
         football: {
@@ -234,40 +259,81 @@ const Editor = _ => {
     const sportStats = stats[game?.sport.toLowerCase()]
     const sportPositions = positions[game?.sport.toLowerCase()]
 
-    game.team1.players = game.team1.players.map(player => {
+    useEffect(_ => {
 
-        const initializeBaseStats = category => {
-            return Object.fromEntries(
-                sportStats[category].base.map(stat => [stat, player.stats?.[category]?.base?.[stat] ?? 0])
-            )
-        }
+        game.team1.players = game.team1.players.map(player => {
+            const initializeBaseStats = category => {
+                return Object.fromEntries(
+                    sportStats[category].base.map(stat => [stat, player.stats?.[category]?.base?.[stat] ?? 0])
+                )
+            }
 
-        const calculateAutoStats = (category, baseStats) => {
-            return Object.fromEntries(
-                Object.entries(sportStats[category].autocalculated).map(([statName, [calcFunc, ...dependencies]]) => {
-                    const values = dependencies.map(dep => baseStats[dep] ?? 0)
-                    return [statName, calcFunc(...values)]
-                })
-            )
-        }
+            const calculateAutoStats = (category, baseStats) => {
+                return Object.fromEntries(
+                    Object.entries(sportStats[category].autocalculated).map(([statName, [calcFunc, ...dependencies]]) => {
+                        const values = dependencies.map(dep => baseStats[dep] ?? 0)
+                        return [statName, calcFunc(...values)]
+                    })
+                )
+            }
 
-        const offenseBase = initializeBaseStats('offense')
-        const defenseBase = initializeBaseStats('defense')
+            const offenseBase = initializeBaseStats('offense')
+            const defenseBase = initializeBaseStats('defense')
 
-        return {
-            ...player,
-            stats: {
-                offense: {
-                    base: offenseBase,
-                    autocalculated: calculateAutoStats('offense', offenseBase),
-                },
-                defense: {
-                    base: defenseBase,
-                    autocalculated: calculateAutoStats('defense', defenseBase)
+            return {
+                ...player,
+                stats: {
+                    offense: {
+                        base: offenseBase,
+                        autocalculated: calculateAutoStats('offense', offenseBase),
+                    },
+                    defense: {
+                        base: defenseBase,
+                        autocalculated: calculateAutoStats('defense', defenseBase)
+                    }
                 }
             }
-        }
-    })
+        })
+
+        editGame(game)
+
+        game.team2.players = game.team2.players.map(player => {
+            const initializeBaseStats = category => {
+                return Object.fromEntries(
+                    sportStats[category].base.map(stat => [stat, player.stats?.[category]?.base?.[stat] ?? 0])
+                )
+            }
+
+            const calculateAutoStats = (category, baseStats) => {
+                return Object.fromEntries(
+                    Object.entries(sportStats[category].autocalculated).map(([statName, [calcFunc, ...dependencies]]) => {
+                        const values = dependencies.map(dep => baseStats[dep] ?? 0)
+                        return [statName, calcFunc(...values)]
+                    })
+                )
+            }
+
+            const offenseBase = initializeBaseStats('offense')
+            const defenseBase = initializeBaseStats('defense')
+
+            return {
+                ...player,
+                stats: {
+                    offense: {
+                        base: offenseBase,
+                        autocalculated: calculateAutoStats('offense', offenseBase),
+                    },
+                    defense: {
+                        base: defenseBase,
+                        autocalculated: calculateAutoStats('defense', defenseBase)
+                    }
+                }
+            }
+        })
+
+        editGame(game)
+
+    }, [])
 
     //Upon click of the back button
     const handleReturn = () => {

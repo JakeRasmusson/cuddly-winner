@@ -2,16 +2,19 @@ import React, { useRef, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 
 import { useOverlay } from '../../contexts/OverlayContext'
+import { useEditingGame } from '../../contexts/editingGameContext'
 
 const OverlayPreview = _ => {
 
     const { overlayID, setOverlayID } = useOverlay()
+    const { editingGame } = useEditingGame()
 
     useEffect(_ => {
         localStorage.setItem('selectedOverlay', overlayID)
+        localStorage.setItem('gameID', editingGame)
     }, [overlayID])
 
-    const desiredWidth = 400
+    const desiredWidth = 430
     const assumedAspectRatio = 16 / 9
     const assumedHeight = desiredWidth / assumedAspectRatio
 
@@ -21,12 +24,28 @@ const OverlayPreview = _ => {
 
     return (
         <>
-            <div className="relative h-[300px] w-1/2 rounded-3xl border-2 border-white flex flex-col items-center">
-                <Link to='/stats' className="" target="_blank">{`http://localhost:5173/stats`}</Link>
-                <iframe className={`absolute bottom-[50%] translate-y-[50%] w-screen h-screen origin-center`} style={{
-                    transform: `scale(${scale})`
-                }} src={`http://localhost:5173/stats`} description="Layout preview" ></iframe>
-                <Link to="/stats" className="" target="_blank"/>
+            <div className="relative h-[300px] w-1/2 rounded-3xl flex flex-col items-center">
+                <h1 className="mb-4 self-center border-b-1 w-[90%] text-2xl font-extralight tracking-[8px] text-yellow-300">
+                    Overlay Preview
+                </h1>
+                <iframe 
+                    className={`absolute bottom-[50%] translate-y-[50%] w-screen h-screen origin-center shadow-[0_0_30px_rgb(250,204,21)]`}
+                    style={{
+                        transform: `scale(${scale})`
+                    }}
+                    src={`http://localhost:5173/stats`}
+                    description="Layout preview" >
+                </iframe>
+                <Link 
+                    to="/stats" 
+                    className="text-white/0 hover:text-yellow-300 tracking-widest font-light hover:bg-white/10 absolute bottom-[50%] translate-y-[50%] w-screen h-screen origin-center text-[80px] flex items-end justify-center transition-all duration-300"
+                    style={{ transform: `scale(${scale})` }} 
+                    target="_blank"
+                >
+                        http://localhost:5173/stats
+                </Link>
+
+                
             </div>
         </>
     )

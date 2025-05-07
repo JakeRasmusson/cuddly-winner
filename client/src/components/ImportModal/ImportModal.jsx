@@ -18,9 +18,12 @@ const ImportModal = ({ onClose }) => {
     const [homeFileName, setHomeFileName] = useState(null)
     const [awayFileName, setAwayFileName] = useState(null)
 
+    let uploadedHome = false
+    let uploadedAway = false
+
     //This is all pretty much the same as `AddModal.jsx`, just a little bit simlper cause there's no form to handle individual creation
 
-    const handleToggle = () => {
+    const handleToggle = _ => {
         setIsHome(prev => !prev)
     }
 
@@ -46,10 +49,12 @@ const ImportModal = ({ onClose }) => {
             const parsedPlayers = parseCSV(fileContents)
 
             if(isHome){
+                uploadedHome = true
                 setHomePlayers(Object.values(parsedPlayers))
                 setHomeFileName(file.name)
             }
             else {
+                uploadedAway = true
                 setAwayPlayers(Object.values(parsedPlayers))
                 setAwayFileName(file.name)
             }
@@ -59,7 +64,7 @@ const ImportModal = ({ onClose }) => {
             }
         }
 
-        reader.onerror = (error) => {
+        reader.onerror = error => {
             console.error("Error while reading file:", error)
         }
 
@@ -111,6 +116,17 @@ const ImportModal = ({ onClose }) => {
         if(fileInputRef.current){
             fileInputRef.current.value = ""
         }
+    }
+
+    const onCancel = _ => {
+        console.log('ancalskdfn')
+        if(uploadedHome){
+            clearUpload('home')
+        }
+        if(uploadedAway){
+            clearUpload('away')
+        }
+        onClose()
     }
 
     return (
@@ -206,7 +222,7 @@ const ImportModal = ({ onClose }) => {
                     Confirm Teams
                 </button>
                 <button
-                    onClick={_ => {clearUpload('home'), clearUpload('away'), onClose()}}
+                    onClick={_ => onCancel()}
                     className="ml-4 border-1 border-red-300 text-red-200 bg-red-300/20 px-6 py-2 rounded-lg font-bold hover:shadow-[0_0_10px_rgb(239,68,68)] absolute bottom-3 right-3 hover:cursor-pointer transition-all duration:500"
                 >
                     Cancel
