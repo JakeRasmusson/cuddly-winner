@@ -196,12 +196,20 @@ const Editor = _ => {
         },
         softball: {
             offense: {
-                base: ''.split(', '),
-                autocalculated: {}
+                base: 'Singles, Doubles, Triples, Home Runs, Walks, Hit by Pitch, Strikeouts'.split(', '),
+                //Calculation function, dependencies
+                autocalculated: {
+                    'Hits': [(s, d, t, hr) => {return s + d + t + hr}, 'Singles', 'Doubles', 'Triples', 'Home Runs'],
+                    'Plate Appearances': [(h, hbp, w, k) => {return h + hbp + w + k}, 'Hits', 'Hit by Pitch', 'Walks', 'Strikeouts'],
+                    'Batting Average': [(h, ab) => {return !ab ? 0 : h / ab}, 'Hits', 'Plate Appearances'],
+                    'Slugging Average': [(s, d, t, hr, ab) => {return !ab ? 0 : (s + (2 * d) + (3 * t) + (4 * hr)) / ab}, 'Singles', 'Doubles', 'Triples', 'Home Runs', 'Plate Appearances']
+                }
             },
             defense: {
-                base: ''.split(', '),
-                autocalculated: {}
+                base: 'Errors, Strikeouts, Walks, Hits Allowed, Home Runs Allowed'.split(', '),
+                autocalculated: {
+                    'Batters Faced': [(k, w, h) => {return k + w + h}, 'Strikeouts', 'Walks', 'Hits Allowed']
+                }
             }
         },
         football: {

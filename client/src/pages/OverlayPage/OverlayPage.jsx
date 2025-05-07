@@ -220,16 +220,43 @@ const OverlayPage = _ => {
         }
     }
 
+    const footballConfiguration = {
+        offensiveWeights: {},
+        defensiveWeights: {},
+        offensiveStatMap: {},
+        defensiveStatMap: {}
+    }
+
+    const soccerConfiguration = {
+        offensiveWeights: {},
+        defensiveWeights: {},
+        offensiveStatMap: {},
+        defensiveStatMap: {}
+    }
+
+    const basketballConfiguration = {
+        offensiveWeights: {},
+        defensiveWeights: {},
+        offensiveStatMap: {},
+        defensiveStatMap: {}
+    }
+
+
     const team = selectedOverlay == 'overall team 1' ? team1 : selectedOverlay == 'overall team 2' ? team2 : null
+    const analyzer = playerAnalyzer({
+        baseball: baseballConfiguration,
+        softball: baseballConfiguration,
+        football: footballConfiguration,
+        soccer: soccerConfiguration,
+        basketball: basketballConfiguration
+    }[game?.sport])
 
     let star1 = null
     let star2 = null
 
-    const baseballAnalyzer = playerAnalyzer(baseballConfiguration)
-
     if(selectedOverlay?.split(' ')[0] == 'Position'){
-        star1 = baseballAnalyzer.findStarPlayer(team1.players)
-        star2 = baseballAnalyzer.findStarPlayer(team2.players)
+        star1 = analyzer.findStarPlayer(team1.players)
+        star2 = analyzer.findStarPlayer(team2.players)
     }
 
     return (
